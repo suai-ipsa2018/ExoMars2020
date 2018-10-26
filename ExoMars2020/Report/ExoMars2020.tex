@@ -1,0 +1,57 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fontspec}
+\defaultfontfeatures{Mapping=tex-text}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\setmainfont{FreeSerif}
+\setmonofont{FreeMono}
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[margin=2.5cm]{geometry}
+
+\author{Anas Naïri \and Julien Plante}
+\title{Modelisation of ExoMars 2020's network using SystemC}
+
+
+\begin{document}
+\maketitle
+
+\section{Devices description}
+\subsection{Navigation}
+\subsubsection{NavCam}
+\subsubsection{Wheels}
+\subsubsection{Solar panels}
+\subsubsection{Solar sensors}
+
+\pagebreak
+\subsection{Scientific instrumentation}
+\subsubsection{PanCam}
+\subsubsection{ISEM}
+\subsubsection{CLUPI}
+\subsubsection{WISDOM}
+\subsubsection{Adron}
+\subsubsection{Ma\_MISS}
+Ma\_MISS, for Mars Multispectral Imager for Subsurface Studies, is an spectrometer located in the drill of the rover, used to determine horizontal and vertical composition of the Martian soil. By illuminating the borehole and analysing the reflected light and its spectrum, it will be able to gather information about the distribution of minerals, especially of water-related ones, to search potential indicators of life.
+
+It will work alongside the three other spectrometers (RLS, MicrOmega, MOMA), being specialised in studying unexposed material, and in collaboration with WISDOM and ADRON to choose interesting drilling location
+
+\subsubsection{MicrOmega}
+
+MicrOmega is an infra-red spectrometer made to identify composition of Martian soil samples at a grain scale, after their gathering by the drilling system. It is similar as RLS and MOMA in this way, since the three spectrometers will study samples collected by the drill. The infra-red study of the samples is adapted to find evidences of past or present carbon and water presence. 
+250x256 pixels + $\lambda$ (max 320 wave length)
+
+\subsubsection{RLS}
+RLS uses the Raman effect to find life signatures in Martian soil samples in a non-destructive way.
+The measurements carried out by the RLS will be performed as described within the ExoMars Rover Reference Surface Mission, which includes six experiment cycles (with two samples each, one extracted from a surface target and the other at depth) and two vertical surveys (with five samples each extracted at different depths).
+\subsubsection{MOMA}
+Before sample analysis by MOMA, the MicrOmega and RLS instruments will conduct contextual measurements of mineralogy and organic functional groups that may be present. In cases where uplink and downlink schedules permit a tactical response during the science operations cycle, quick look snapshots of these data may be used to select or tune the MOMA analytical approach.
+
+
+\pagebreak
+\nocite{*}
+\bibliographystyle{unsrt}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,58 @@
+\begin{thebibliography}{10}
+
+\bibitem{PanCam}
+{PanCam team}.
+\newblock {The PanCam Instrument for the ExoMars Rover}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{ISEM}
+{ISEM team}.
+\newblock {Infrared Spectrometer for ExoMars: A Mast-Mounted Instrument for the
+  Rover}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{CLUPI}
+{CLUPI team}.
+\newblock {The Close-Up Imager Onboard the ESA ExoMars Rover: Objectives,
+  Description, Operations, and Science Validation Activities}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{WISDOM}
+{WISDOM team}.
+\newblock {The WISDOM Radar: Unveiling the Subsurface Beneath the ExoMars Rover
+  and Identifying the Best Locations for Drilling}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{ADRON}
+{ADRON team}.
+\newblock {The ADRON-RM Instrument Onboard the ExoMars Rover}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{MaMISS}
+{Ma\_MISS team}.
+\newblock {Ma\_MISS on Exomars: Mineralogical Characterization of the Martian
+  Subsurface}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{MicrOmega}
+{MicrOmega team}.
+\newblock {The MicrOmega Investigation Onboard ExoMars}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{MOMA}
+{MOMA team}.
+\newblock {The Mars Organic Molecule Analyzer (MOMA) Instrument:
+  Characterization of Organic Material in Martian Sediments}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{RLS}
+{RLS team}.
+\newblock {The Raman Laser Spectrometer for the ExoMars Rover Mission to Mars}.
+\newblock {\em Astrobiology}, 17(6 and 7), 2017.
+
+\bibitem{SpW}
+Steve Parkes.
+\newblock {\em SpaceWire User's Guide}.
+\newblock STAR-Dundee, 2012.
+
+\end{thebibliography}
