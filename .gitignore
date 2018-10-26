@@ -1,0 +1,9 @@
+.vs
+ExoMars2020/ExoMars2020/Network
+
+*.tlog
+*.lastbuildstate
+*.obj
+*.iobj
+*.ipdb
+*.pdb
