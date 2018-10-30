@@ -11,7 +11,7 @@ int sc_main(int argc, char *argv[])
     std::cout << std::endl;
 	
     // Actual program
-    NetworkUnit nu("nu", 10, 24e6);
+    NetworkUnit nu("nu", 24e6);
     sc_start(300, SC_US); // Starts simulation for 300 us
 
     return 0;

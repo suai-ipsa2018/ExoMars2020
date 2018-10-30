@@ -2,8 +2,8 @@
 
 
 SC_HAS_PROCESS(Ma_MISS);
-Ma_MISS::Ma_MISS(size_t logical_address, sc_time delay_between_bytes, sc_module_name mn) :
-	Node(mn, logical_address, delay_between_bytes)
+Ma_MISS::Ma_MISS(size_t logical_address, size_t psize, sc_time delay_between_bytes, sc_module_name mn) :
+	Node(mn, logical_address, psize, delay_between_bytes)
 {
 	SC_THREAD(gen_thread);
 }
@@ -15,7 +15,9 @@ void Ma_MISS::gen_thread()
 	{
 		Packet p;
 		p << 32 << logical_address;
-		for (size_t i = 0; i < 25; i++)
+		std::cout << "psize_" << name() << " = " << psize << std::endl;
+
+		for (size_t i = 0; i < psize; i++)
 			p << rand();
 
 

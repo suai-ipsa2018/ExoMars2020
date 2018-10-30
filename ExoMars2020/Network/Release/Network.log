@@ -1,30 +1,37 @@
-﻿  crc.cpp
+﻿  Adron.cpp
+  CLUPI.cpp
+  crc.cpp
+  Drill.cpp
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
   io_port.cpp
+  ISEM.cpp
   main.cpp
   Ma_MISS.cpp
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
   MicrOmega.cpp
   MOMA.cpp
+  NavCam.cpp
   networkunit.cpp
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
   Node.cpp
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
   Packet.cpp
   printunit.cpp
   RLS.cpp
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
   switchunit.cpp
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-d:\ipsa\aero4\russie\exomars2020\exomars2020\network\switchunit.cpp(128): warning C4244: 'argument' : conversion de 'sc_dt::uint_type' en 'size_t', perte possible de données
-d:\ipsa\aero4\russie\exomars2020\exomars2020\network\switchunit.cpp(166): warning C4244: 'argument' : conversion de 'sc_dt::uint_type' en 'size_t', perte possible de données
-d:\ipsa\aero4\russie\exomars2020\exomars2020\network\switchunit.cpp(179): warning C4244: 'argument' : conversion de 'sc_dt::uint_type' en 'size_t', perte possible de données
+  Wisdom.cpp
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\type_traits(16707566): warning C4244: 'argument' : conversion de 'sc_dt::uint_type' en 'size_t', perte possible de données (compilation du fichier source printunit.cpp)
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\type_traits(16707566): note: voir la référence à l'instanciation de la fonction modèle 'void std::_Invoker_pmf_pointer::_Call<_Cv_FD,_Cv_TiD&,sc_dt::sc_uint<16>&,int&>(_Decayed,_Ty1,sc_dt::sc_uint<16> &,int &) noexcept(false)' en cours de compilation
           with
@@ -73,13 +80,227 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
           [
               T=std::_Binder<std::_Unforced,void (__thiscall PrintUnit::* )(size_t,bool),PrintUnit *,sc_dt::sc_uint<16> &,int>
           ] (compilation du fichier source printunit.cpp)
-  d:\ipsa\aero4\russie\exomars2020\exomars2020\network\printunit.cpp(27): note: voir la référence à l'instanciation de la fonction modèle 'sc_core::sc_process_handle sc_core::sc_spawn<std::_Binder<std::_Unforced,_Ty,PrintUnit*,sc_dt::sc_uint<16> &,int>>(T,const char *,const sc_core::sc_spawn_options *)' en cours de compilation
+  d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\printunit.cpp(27): note: voir la référence à l'instanciation de la fonction modèle 'sc_core::sc_process_handle sc_core::sc_spawn<std::_Binder<std::_Unforced,_Ty,PrintUnit*,sc_dt::sc_uint<16> &,int>>(T,const char *,const sc_core::sc_spawn_options *)' en cours de compilation
           with
           [
               _Ty=void (__thiscall PrintUnit::* )(size_t,bool),
               T=std::_Binder<std::_Unforced,void (__thiscall PrintUnit::* )(size_t,bool),PrintUnit *,sc_dt::sc_uint<16> &,int>
           ]
-  Génération de code en cours
-  All 923 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Fin de la génération du code
-  Network.vcxproj -> D:\IPSA\Aero4\Russie\ExoMars2020\ExoMars2020\Release\Network.exe
+  Unknown compiler version - please run the configure tests and report the results
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\switchunit.cpp(128): warning C4244: 'argument' : conversion de 'sc_dt::uint_type' en 'size_t', perte possible de données
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\switchunit.cpp(166): warning C4244: 'argument' : conversion de 'sc_dt::uint_type' en 'size_t', perte possible de données
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\switchunit.cpp(179): warning C4244: 'argument' : conversion de 'sc_dt::uint_type' en 'size_t', perte possible de données
+systemc.lib(sc_ver.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_ver.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_time.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_time.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_report_handler.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_report_handler.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_utils_ids.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_utils_ids.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_port.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_port.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_module.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_module.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_process.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_process.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_object.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_object.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_sensitive.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_sensitive.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_simcontext.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_simcontext.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_wait.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_wait.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_module_name.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_module_name.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_value_base.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_value_base.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_uint_base.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_uint_base.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_concatref.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_concatref.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_interface.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_interface.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_prim_channel.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_prim_channel.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_event.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_event.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_trace.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_trace.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_mutex.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_mutex.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_report.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_report.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_stop_here.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_stop_here.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_list.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_list.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_signal.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_signal.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_module_registry.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_module_registry.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_name_gen.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_name_gen.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_object_manager.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_object_manager.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_reset.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_reset.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_logic.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_logic.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_attribute.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_attribute.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_mempool.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_mempool.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_phase_callback_registry.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_phase_callback_registry.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_event_finder.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_event_finder.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_except.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_except.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_export.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_export.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_pq.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_pq.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_spawn_options.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_spawn_options.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_method_process.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_method_process.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_thread_process.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_thread_process.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_cor_fiber.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_cor_fiber.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_cthread_process.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_cthread_process.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_hash.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_hash.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_signed.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_signed.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_unsigned.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_unsigned.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_int_base.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_int_base.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_lv_base.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_lv_base.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_bv_base.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_bv_base.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(scfx_mant.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(scfx_mant.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(scfx_rep.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(scfx_rep.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_fxnum.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_fxnum.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_int_mask.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_int_mask.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_nbutils.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_nbutils.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_nbexterns.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_nbexterns.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(scfx_utils.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(scfx_utils.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(scfx_pow10.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(scfx_pow10.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_fxdefs.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_fxdefs.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_fxcast_switch.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_fxcast_switch.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_fxtype_params.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_fxtype_params.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_fxval.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_fxval.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_main.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_main.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+systemc.lib(sc_main_main.obj) : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '2' ne correspond pas à la valeur '0' in Adron.obj
+systemc.lib(sc_main_main.obj) : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MDd_DynamicDebug' ne correspond pas à la valeur 'MD_DynamicRelease' in Adron.obj
+LINK : warning LNK4098: conflit entre la bibliothèque par défaut 'MSVCRTD' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+networkunit.obj : error LNK2001: symbole externe non résolu "public: __thiscall PanCam::PanCam(unsigned int,unsigned int,class sc_core::sc_time)" (??0PanCam@@QAE@IIVsc_time@sc_core@@@Z)
+systemc.lib(sc_fxcast_switch.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_fxtype_params.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_fxval.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_main_main.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(scfx_rep.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_fxnum.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_nbutils.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_fxdefs.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_unsigned.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_int_base.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_lv_base.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_bv_base.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_thread_process.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_cthread_process.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_hash.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_signed.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_event_finder.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_export.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_spawn_options.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_method_process.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_reset.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_logic.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_attribute.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_phase_callback_registry.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_signal.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_module_registry.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_name_gen.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_object_manager.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_prim_channel.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_event.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_trace.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_report.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_simcontext.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_wait.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_uint_base.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_concatref.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_module.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_process.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_object.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_sensitive.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_ver.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_time.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_report_handler.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_port.obj) : error LNK2001: symbole externe non résolu __imp___invalid_parameter
+systemc.lib(sc_fxcast_switch.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_fxtype_params.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_fxval.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_main_main.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(scfx_rep.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_fxnum.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_nbutils.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_fxdefs.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_unsigned.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_int_base.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_lv_base.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_bv_base.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_thread_process.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_cthread_process.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_hash.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_signed.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_event_finder.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_export.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_spawn_options.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_method_process.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_reset.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_logic.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_attribute.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_phase_callback_registry.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_signal.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_module_registry.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_name_gen.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_object_manager.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_prim_channel.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_event.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_trace.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_report.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_simcontext.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_wait.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_uint_base.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_concatref.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_module.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_process.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_object.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_sensitive.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_ver.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_time.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_report_handler.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+systemc.lib(sc_port.obj) : error LNK2001: symbole externe non résolu __imp___CrtDbgReport
+D:\IPSA_cours_ex_etc\AERO4_SUAI\ExoMars2020\ExoMars2020\Release\Network.exe : fatal error LNK1120: 3 externes non résolus
