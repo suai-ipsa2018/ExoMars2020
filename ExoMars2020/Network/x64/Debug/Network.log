@@ -1,0 +1,44 @@
+﻿  Adron.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\adron.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  CLUPI.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\clupi.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  Drill.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\drill.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  ISEM.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\isem.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  main.cpp
+  Unknown compiler version - please run the configure tests and report the results
+  Ma_MISS.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\ma_miss.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  MicrOmega.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\micromega.cpp(7): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  MOMA.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\moma.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  NavCam.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\navcam.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  networkunit.cpp
+  Unknown compiler version - please run the configure tests and report the results
+  Node.cpp
+  Unknown compiler version - please run the configure tests and report the results
+  printunit.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\printunit.cpp(6): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  RLS.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\rls.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  switchunit.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\switchunit.cpp(120): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  Wisdom.cpp
+  Unknown compiler version - please run the configure tests and report the results
+d:\ipsa_cours_ex_etc\aero4_suai\exomars2020\exomars2020\network\wisdom.cpp(8): warning C4407: cast entre différentes représentations du pointeur en membre, le compilateur peut générer du code incorrect
+  Génération de code en cours...
+systemc.lib(sc_utils_ids.obj) : fatal error LNK1112: type d'ordinateur module 'x86' en conflit avec le type d'ordinateur cible 'x64'

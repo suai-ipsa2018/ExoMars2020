@@ -1,7 +1,7 @@
 #include "printunit.h"
 
 SC_HAS_PROCESS(PrintUnit);
-PrintUnit::PrintUnit(sc_module_name mn, double speed) : Node(mn, 32, sc_time(1.0 / speed, SC_SEC))
+PrintUnit::PrintUnit(sc_module_name mn, double speed) : Node(mn, 32, 10, sc_time(1.0 / speed, SC_SEC))
 {
     SC_THREAD(printing_thread);
 }
