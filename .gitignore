@@ -1,6 +1,6 @@
 .vs
-ExoMars2020/ExoMars2020/Network/Debug/
-ExoMars2020/ExoMars2020/Network/Release/
+Debug/
+Release/
 
 *.tlog
 *.lastbuildstate
