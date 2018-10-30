@@ -30,7 +30,7 @@ public:
      * @param psize Packet size
      * @param speed Speed of the network, in bit/s
      */
-    NetworkUnit(sc_module_name mn, double speed=24e6);
+    NetworkUnit(sc_module_name mn, double speed=24e6, bool verbose=true);
 
 private:
 	sc_time delay_between_bytes;
@@ -42,7 +42,7 @@ private:
 	CLUPI m_CLUPI;
 	Drill m_Drill;
 	Adron m_Adron;
-	Wisdom m_Wisdom;
+	WISDOM m_WISDOM;
 	Ma_MISS m_Ma_MISS;
 	MicrOmega m_MicrOmega;
 	RLS m_RLS;

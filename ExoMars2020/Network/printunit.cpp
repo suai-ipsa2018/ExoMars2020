@@ -1,7 +1,7 @@
 #include "printunit.h"
 
 SC_HAS_PROCESS(PrintUnit);
-PrintUnit::PrintUnit(sc_module_name mn, double speed) : Node(mn, 32, 10, sc_time(1.0 / speed, SC_SEC))
+PrintUnit::PrintUnit(sc_module_name mn, double speed, bool verbose_) : Node(mn, 32, 10, sc_time(1.0 / speed, SC_SEC)), verbose(verbose_)
 {
     SC_THREAD(printing_thread);
 }
@@ -15,11 +15,8 @@ void PrintUnit::printing_thread()
 		Packet p;
 		sc_time t(recv(p));
 
-		std::cout << p.get_receiver_address() << " " << p.get_sender_address() << std::endl;
-
-
-		std::cout << "It took " << t.to_seconds() << " to receive this packet °o°" << std::endl;
-		std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
+		std::cout << "It took " << t.to_seconds() << " to receive the packet sent by " << p.get_sender_address() << std::endl;
+		if (verbose) std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
 
         if (p.get_crc())
         {

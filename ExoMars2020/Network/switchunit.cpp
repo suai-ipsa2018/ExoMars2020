@@ -99,7 +99,7 @@ const sc_event& waitable_mutex::unlock_event() const
 
 
 SC_HAS_PROCESS(SwitchUnit);
-SwitchUnit::SwitchUnit(sc_module_name mn, size_t n_ports_)
+SwitchUnit::SwitchUnit(sc_module_name mn, size_t n_ports_, bool verbose)
     : sc_module(mn), sm(n_ports_), n_ports(n_ports_)
 {
 	ports = std::vector<io_port>(n_ports);
@@ -114,8 +114,11 @@ void SwitchUnit::connections_done()
 	{
 		ports[i_port](unused_channel);
 	}
-	std::cout << "Switch Matrix of " << name() << ":" << std::endl;
-	std::cout << sm << std::endl;
+	if (verbose)
+	{
+		std::cout << "Switch Matrix of " << name() << ":" << std::endl;
+		std::cout << sm << std::endl;
+	}
 
 	SC_THREAD(init_thread);
 }

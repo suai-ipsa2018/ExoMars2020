@@ -173,7 +173,7 @@
     <ClCompile Include="printunit.cpp" />
     <ClCompile Include="RLS.cpp" />
     <ClCompile Include="switchunit.cpp" />
-    <ClCompile Include="Wisdom.cpp" />
+    <ClCompile Include="WISDOM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Adron.h" />
@@ -193,7 +193,7 @@
     <ClInclude Include="printunit.h" />
     <ClInclude Include="RLS.h" />
     <ClInclude Include="switchunit.h" />
-    <ClInclude Include="Wisdom.h" />
+    <ClInclude Include="WISDOM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -85,7 +85,7 @@ public:
      * @param mn Module's name
      * @param routing_matrix Routing matrix (aka Table of commutation)
      */
-    SwitchUnit(sc_module_name mn, size_t n_ports_=32);
+    SwitchUnit(sc_module_name mn, size_t n_ports_=32, bool verbose=true);
 	 void connections_done();
 	 ~SwitchUnit(); //!< Deallocates memory
 
@@ -109,4 +109,5 @@ private:
     size_t n_ports; //!< Number of ports, deduced from sm
 	size_t i_port{ 0 };
 	io_channel unused_channel{ "unused_channel" };
+	bool verbose;
 };

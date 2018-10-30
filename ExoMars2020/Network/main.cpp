@@ -5,13 +5,12 @@
 
 int sc_main(int argc, char *argv[])
 {
-    // Written to remove warnings about unused parameter argc and argv, but we don't use command line arguments...
-    for (int i=0 ; i<argc ; i++) // Goes through potential command line arguments and print them (usually only the name of the file)
-        std::cout << argv[i] << " ";
-    std::cout << std::endl;
+	bool verbose(false);
+	for (int i = 1; i < argc; i++)
+		if (std::string(argv[i]) == "-v") verbose = true;
 	
     // Actual program
-    NetworkUnit nu("nu", 24e6);
+    NetworkUnit nu("nu", 24e6, verbose);
     sc_start(300, SC_US); // Starts simulation for 300 us
 
     return 0;
