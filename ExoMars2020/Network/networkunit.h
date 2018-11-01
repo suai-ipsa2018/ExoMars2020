@@ -58,7 +58,7 @@ private:
 		CLUPI_channel{ "CLUPI_channel" },
 		Drill_channel{ "Drill_channel" },
 		Adron_channel{ "Adron_channel" },
-		Wisdom_channel{ "Wisdom_channel" },
+		WISDOM_channel{ "WISDOM_channel" },
 		PrintUnit_channel{ "PrintUnit_channel" },
 		Ma_MISS_channel{ "Ma_MISS_channel" },
 		MicrOmega_channel{ "MicrOmega_channel" }, 
@@ -66,4 +66,6 @@ private:
 		MOMA_channel{ "MOMA_channel" };
 
     double network_speed; //!< Keeps track of the network's speed
+
+	sc_trace_file* tf;
 };

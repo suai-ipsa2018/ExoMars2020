@@ -20,17 +20,34 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 	router("router", 32, verbose),
 	network_speed(speed)
 {
+	tf = sc_create_vcd_trace_file("traces/network");
+	sc_trace(tf, PanCam_channel, "PanCam_channel");
+	sc_trace(tf, NavCam_channel, "NavCam_channel");
+	sc_trace(tf, ISEM_channel, "ISEM_channel");
+	sc_trace(tf, CLUPI_channel, "CLUPI_channel");
+	sc_trace(tf, Drill_channel, "Drill_channel");
+	sc_trace(tf, Adron_channel, "Adron_channel");
+	sc_trace(tf, WISDOM_channel, "WISDOM_channel");
+	sc_trace(tf, Ma_MISS_channel, "Ma_MISS_channel");
+	sc_trace(tf, MicrOmega_channel, "MicrOmega_channel");
+	sc_trace(tf, RLS_channel, "RLS_channel");
+	sc_trace(tf, MOMA_channel, "MOMA_channel");
+
+	sc_trace(tf, PrintUnit_channel, "PrintUnit_channel");
+
+
 	router.connect(m_PanCam, PanCam_channel);
 	router.connect(m_NavCam, NavCam_channel);
 	router.connect(m_ISEM, ISEM_channel);
 	router.connect(m_CLUPI, CLUPI_channel);
 	router.connect(m_Drill, Drill_channel);
 	router.connect(m_Adron, Adron_channel);
-	router.connect(m_WISDOM, Wisdom_channel);
-	router.connect(pu, PrintUnit_channel);
+	router.connect(m_WISDOM, WISDOM_channel);
 	router.connect(m_Ma_MISS, Ma_MISS_channel);
 	router.connect(m_MicrOmega, MicrOmega_channel);
 	router.connect(m_RLS, RLS_channel);
 	router.connect(m_MOMA, MOMA_channel);
+
+	router.connect(pu, PrintUnit_channel);
 	router.connections_done();
 }
