@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Instruments">
+      <UniqueIdentifier>{70035862-0071-48fd-a4de-ec46d62b50eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Instruments">
+      <UniqueIdentifier>{d76db549-8ee0-477c-a74e-4bb9928e2e7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="io_port.cpp">
@@ -39,38 +45,38 @@
     <ClCompile Include="printunit.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Ma_MISS.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="MicrOmega.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="RLS.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="MOMA.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="CLUPI.cpp">
+      <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
     <ClCompile Include="Adron.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CLUPI.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
     <ClCompile Include="Drill.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
     <ClCompile Include="ISEM.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Ma_MISS.cpp">
+      <Filter>Fichiers sources\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="MicrOmega.cpp">
+      <Filter>Fichiers sources\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="MOMA.cpp">
+      <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
     <ClCompile Include="NavCam.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
     <ClCompile Include="PanCam.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="RLS.cpp">
+      <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
     <ClCompile Include="WISDOM.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,38 +101,38 @@
     <ClInclude Include="printunit.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Ma_MISS.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="MicrOmega.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="RLS.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="MOMA.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Adron.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
     <ClInclude Include="CLUPI.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
     <ClInclude Include="Drill.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
     <ClInclude Include="ISEM.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="Ma_MISS.h">
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="MicrOmega.h">
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="MOMA.h">
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
     <ClInclude Include="NavCam.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
     <ClInclude Include="PanCam.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="RLS.h">
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
     <ClInclude Include="WISDOM.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
