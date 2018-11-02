@@ -19,7 +19,6 @@ void CLUPI::gen_thread()
 		for (size_t i = 0; i < psize; i++)
 			p << rand();
 
-
 		Packet ack;
 		do
 		{

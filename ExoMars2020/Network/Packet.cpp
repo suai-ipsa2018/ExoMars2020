@@ -44,6 +44,11 @@ sc_uint<16>& Packet::operator[](size_t index)
 }
 
 
+size_t Packet::size()
+{
+	return data.size();
+}
+
 void Packet::reset() { i = 0; }
 
 ostream& operator<<(ostream &flux, Packet &p)

@@ -1,0 +1,7 @@
+Node nu.RLS with logic address 42:
+0s Sending packet of size 25 to 32
+2us 875ns 11ps Received packet of size 2 from 32
+102us 875ns 11ps Sending packet of size 25 to 32
+104us 354ns 184ps Received packet of size 2 from 32
+204us 354ns 184ps Sending packet of size 25 to 32
+205us 833ns 357ps Received packet of size 2 from 32
