@@ -2,8 +2,8 @@
 
 
 SC_HAS_PROCESS(RLS);
-RLS::RLS(size_t logical_address, size_t psize, sc_time delay_between_bytes, bool verbose_, sc_module_name mn) :
-	Node(mn, logical_address, psize, delay_between_bytes), verbose(verbose_)
+RLS::RLS(size_t logical_address, size_t psize, size_t bit, sc_time delay_between_bytes, bool verbose_, sc_module_name mn) :
+	Node(mn, logical_address, psize, delay_between_bytes, bit), verbose(verbose_)
 {
 	SC_THREAD(gen_thread);
 }
