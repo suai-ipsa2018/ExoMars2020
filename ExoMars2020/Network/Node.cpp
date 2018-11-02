@@ -22,6 +22,18 @@ void Node::send(Packet & p)
 	}
 }
 
+void Node::send_with_ack(Packet &p, bool verbose)
+{
+	Packet ack;
+	do
+	{
+		send(p);
+
+		recv(ack);
+		if (verbose) std::cout << "ack received: " << std::endl << ack << std::endl;
+	} while (!ack[0]);
+}
+
 Packet Node::recv()
 {
 	sc_uint<16> tmp(0);

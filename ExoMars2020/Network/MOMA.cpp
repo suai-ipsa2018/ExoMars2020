@@ -20,15 +20,8 @@ void MOMA::gen_thread()
 		for (size_t i = 0; i < psize; i++)
 			p << rand();
 
+		send_with_ack(p, verbose);
 
-		Packet ack;
-		do
-		{
-			send(p);
-
-			recv(ack);
-			if (verbose) std::cout << "ack received: " << std::endl << ack << std::endl;
-		} while (!ack[0]);
 		wait(100, SC_US);
 	}
 }

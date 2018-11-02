@@ -45,10 +45,10 @@
     <ClCompile Include="printunit.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="CLUPI.cpp">
+    <ClCompile Include="Adron.cpp">
       <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
-    <ClCompile Include="Adron.cpp">
+    <ClCompile Include="CLUPI.cpp">
       <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
     <ClCompile Include="Drill.cpp">
