@@ -21,6 +21,7 @@ public:
 	sc_uint<16>& get_logical_address();
 protected:
 	void send(Packet &p);
+	void send_ack(size_t address, bool state);
 	void send_with_ack(Packet &p, bool verbose = false);
 	Packet recv();
 	sc_time recv(Packet &p);

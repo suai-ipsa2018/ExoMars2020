@@ -22,6 +22,15 @@ void Node::send(Packet & p)
 	}
 }
 
+void Node::send_ack(size_t dest, bool state) // Function spawned to send an ack packet (avoids blocking the PrintUnit for this)
+{
+	Packet p;
+	p << dest;
+	p << logical_address;
+	p << state;
+	send(p);
+}
+
 void Node::send_with_ack(Packet &p, bool verbose)
 {
 	Packet ack;

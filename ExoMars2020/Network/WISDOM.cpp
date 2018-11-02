@@ -15,7 +15,7 @@ void WISDOM::gen_thread()
 	{
 		Packet p;
 
-		p << 32 << logical_address;
+		p << 38 << logical_address;
 		if (verbose) std::cout << "psize_" << name() << " = " << psize << std::endl;
 
 		for (size_t i = 0; i < psize; i++)

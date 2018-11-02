@@ -30,15 +30,15 @@ void PrintUnit::printing_thread()
         }
     }
 }
-
-void PrintUnit::send_ack(size_t dest, bool state) // Function spawned to send an ack packet (avoids blocking the PrintUnit for this)
-{
-	Packet p;
-	p << dest;
-	p << logical_address;
-	p << state;
-	send(p);
-}
+//
+//void PrintUnit::send_ack(size_t dest, bool state) // Function spawned to send an ack packet (avoids blocking the PrintUnit for this)
+//{
+//	Packet p;
+//	p << dest;
+//	p << logical_address;
+//	p << state;
+//	send(p);
+//}
 
 std::string PrintUnit::name()
 {
