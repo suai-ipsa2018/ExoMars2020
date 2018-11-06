@@ -78,6 +78,9 @@
     <ClCompile Include="WISDOM.cpp">
       <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
+    <ClCompile Include="helperlib.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="io_port.h">
@@ -134,5 +137,16 @@
     <ClInclude Include="WISDOM.h">
       <Filter>Fichiers d%27en-tête\Instruments</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="helperlib.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Network.rc">
+      <Filter>Fichiers de ressources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

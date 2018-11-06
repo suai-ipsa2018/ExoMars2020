@@ -1,0 +1,7 @@
+Node nu.Adron with logic address 38:
+0s Sending packet of size 25 to 32
+9us 625ns 53ps Received packet of size 2 from 32
+109us 625ns 53ps Sending packet of size 25 to 32
+111us 104ns 226ps Received packet of size 2 from 32
+211us 104ns 226ps Sending packet of size 25 to 32
+212us 583ns 399ps Received packet of size 2 from 32

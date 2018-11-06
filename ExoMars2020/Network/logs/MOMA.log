@@ -1,0 +1,7 @@
+Node nu.MOMA with logic address 43:
+0s Sending packet of size 25 to 32
+10us 750ns 60ps Received packet of size 2 from 32
+110us 750ns 60ps Sending packet of size 25 to 32
+112us 229ns 233ps Received packet of size 2 from 32
+212us 229ns 233ps Sending packet of size 25 to 32
+213us 708ns 406ps Received packet of size 2 from 32

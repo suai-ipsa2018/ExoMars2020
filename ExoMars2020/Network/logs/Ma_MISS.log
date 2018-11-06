@@ -1,0 +1,7 @@
+Node nu.Ma_MISS with logic address 40:
+0s Sending packet of size 25 to 32
+1us 479ns 173ps Received packet of size 2 from 32
+101us 479ns 173ps Sending packet of size 25 to 32
+102us 958ns 346ps Received packet of size 2 from 32
+202us 958ns 346ps Sending packet of size 25 to 32
+204us 437ns 519ps Received packet of size 2 from 32

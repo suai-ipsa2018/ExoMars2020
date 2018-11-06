@@ -1,0 +1,7 @@
+Node nu.NavCam with logic address 34:
+0s Sending packet of size 25 to 32
+6us 250ns 32ps Received packet of size 2 from 32
+106us 250ns 32ps Sending packet of size 25 to 32
+107us 729ns 205ps Received packet of size 2 from 32
+207us 729ns 205ps Sending packet of size 25 to 32
+209us 208ns 378ps Received packet of size 2 from 32

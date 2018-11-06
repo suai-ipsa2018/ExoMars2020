@@ -1,0 +1,7 @@
+Node nu.Drill with logic address 37:
+0s Sending packet of size 25 to 32
+8us 500ns 46ps Received packet of size 2 from 32
+108us 500ns 46ps Sending packet of size 25 to 32
+109us 979ns 219ps Received packet of size 2 from 32
+209us 979ns 219ps Sending packet of size 25 to 32
+211us 458ns 392ps Received packet of size 2 from 32
