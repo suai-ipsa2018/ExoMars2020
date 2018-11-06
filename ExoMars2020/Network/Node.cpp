@@ -1,8 +1,8 @@
 #include "Node.h"
 
 SC_HAS_PROCESS(Node);
-Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t & _psize, sc_time _delay_between_bytes, size_t _bit) 
-	: sc_module(mn), logical_address(_logical_address), psize(_psize), delay_between_bytes(_delay_between_bytes), bit(_bit)
+Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t & _psize, sc_time _delay_between_bytes, size_t _bit, bool _verbose)
+	: sc_module(mn), logical_address(_logical_address), psize(_psize), delay_between_bytes(_delay_between_bytes), bit(_bit), verbose(_verbose),
 	port((std::string((const char*)mn) + "_port").c_str()),
 	logfile("logs/" + (std::string((const char*)mn) + ".log"))
 {
@@ -30,9 +30,10 @@ void Node::send(Packet & p)
 		port.write(tmp);
 		wait(delay_between_bytes);
 	}
+	if (verbose) logfile << "Packet sent:" << std::endl << p << std::endl;
 }
 
-void Node::send_with_ack(Packet &p, bool verbose)
+void Node::send_with_ack(Packet &p)
 {
 	Packet ack;
 	do
@@ -42,19 +43,6 @@ void Node::send_with_ack(Packet &p, bool verbose)
 		recv(ack);
 		if (verbose) std::cout << "ack received: " << std::endl << ack << std::endl;
 	} while (!ack[0]);
-}
-
-Packet Node::recv()
-{
-	sc_uint<16> tmp(0);
-	Packet p;
-	while (!tmp.and_reduce())
-	{
-		tmp = port.read();
-		p << tmp;
-	}
-	logfile << formatted_time_stamp() << "Received packet of size " << p.size() << " from " << p.get_sender_address() << std::endl;
-	return p;
 }
 
 sc_time Node::recv(Packet & p)
@@ -68,6 +56,7 @@ sc_time Node::recv(Packet & p)
 		p << tmp;
 	}
 	logfile << formatted_time_stamp() << "Received packet of size " << p.size() << " from " << p.get_sender_address() << std::endl;
+	if (verbose) logfile << "Packet received:" << std::endl << p << std::endl;
 	return sc_time_stamp()-t0;
 }
 

@@ -21,15 +21,15 @@ protected:
 	ofstream logfile;
 
 public:
-	Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t &_psize, sc_time _delay_between_bytes, size_t _bit = 8);
+	Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t &_psize, sc_time _delay_between_bytes, size_t _bit = 8, bool _verbose = false);
 	virtual ~Node();
   
 	sc_uint<16>& get_logical_address();
 protected:
 	void send(Packet &p);
-	void send_with_ack(Packet &p, bool verbose = false);
-	Packet recv();
+	void send_with_ack(Packet &p);
 	sc_time recv(Packet &p);
 	unsigned rand();
+	bool verbose;
 };
 

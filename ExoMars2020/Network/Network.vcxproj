@@ -198,9 +198,6 @@
     <ClInclude Include="switchunit.h" />
     <ClInclude Include="WISDOM.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Network.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -16,6 +16,8 @@ Packet& Packet::operator<<(const sc_uint<16> & f)
 			data.push_back(f);
 			checksum = crc<16>(checksum, f);
 		}
+		else
+			data.pop_back();
 	}
 	i++;
 	return *this;
