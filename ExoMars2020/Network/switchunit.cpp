@@ -121,6 +121,7 @@ void SwitchUnit::connections_done()
 	}
 
 	SC_THREAD(init_thread);
+	SC_THREAD(debug);
 }
 SwitchUnit::~SwitchUnit()
 {
@@ -174,7 +175,7 @@ void SwitchUnit::port_processing(size_t in_port_number)
         }
         if (!n_ports_at_address) // If there is no port (line address is full of zeros
         {
-            std::cout << sc_time_stamp() << " " << name() << "'s in_port " << in_port_number << "\33[1m" << " didn't find any out_port for address " << address << " packet will be discarded..." << "\33[0m" << std::endl;
+            std::cout << sc_time_stamp() << ' ' << name() << "'s in_port " << in_port_number << "\33[1m" << " didn't find any out_port for address " << address << " packet will be discarded..." << "\33[0m" << std::endl;
             while (!ports[in_port_number].read().and_reduce()); // Discards the packet
         }
 
@@ -199,6 +200,7 @@ void SwitchUnit::port_processing(size_t in_port_number)
         {
             byte = ports[in_port_number].read();
             ports[out_port_number].write(byte);
+			//std::cout << address << ' ' << sender_address << ' ' << "From switchunit: " << byte << std::endl;
             wait(SC_ZERO_TIME);
         }
         out_ports_access[out_port_number].unlock();

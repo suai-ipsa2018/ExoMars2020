@@ -1,4 +1,5 @@
 #pragma once
+#include <iomanip>
 #include "systemc.h"
 #include "crc.h"
 

@@ -110,4 +110,13 @@ private:
 	size_t i_port{ 0 };
 	io_channel unused_channel{ "unused_channel" };
 	bool verbose;
+
+	void debug()
+	{
+		while (true)
+		{
+			wait(ports[1]->data_written_event());
+			std::cout << sc_time_stamp() << " data written event notified, cur_wid: " << ports[1]->get_wid() << ", locked: " << ports[1]->access_locked << std::endl;
+		}
+	}
 };

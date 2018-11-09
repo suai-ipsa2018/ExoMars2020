@@ -1,67 +1,35 @@
 Node nu.PrintUnit with logic address 32:
-1us 208ns 342ps Received packet of size 25 from 40
-1us 208ns 342ps Sending packet of size 1 to 40
-1us 479ns 173ps Received packet of size 4 from 33
-1us 479ns 173ps Sending packet of size 1 to 33
-2us 604ns 180ps Received packet of size 25 from 42
-2us 604ns 180ps Sending packet of size 1 to 42
-3us 729ns 187ps Received packet of size 25 from 39
-3us 729ns 187ps Sending packet of size 1 to 39
-4us 854ns 194ps Received packet of size 25 from 35
-4us 854ns 194ps Sending packet of size 1 to 35
-5us 979ns 201ps Received packet of size 25 from 34
-5us 979ns 201ps Sending packet of size 1 to 34
-7us 104ns 208ps Received packet of size 25 from 36
-7us 104ns 208ps Sending packet of size 1 to 36
-8us 229ns 215ps Received packet of size 25 from 37
-8us 229ns 215ps Sending packet of size 1 to 37
-9us 354ns 222ps Received packet of size 25 from 38
-9us 354ns 222ps Sending packet of size 1 to 38
-10us 479ns 229ps Received packet of size 25 from 43
-10us 479ns 229ps Sending packet of size 1 to 43
-11us 604ns 236ps Received packet of size 25 from 41
-11us 604ns 236ps Sending packet of size 1 to 41
-102us 687ns 515ps Received packet of size 25 from 40
-102us 687ns 515ps Sending packet of size 1 to 40
-102us 958ns 346ps Received packet of size 4 from 33
-102us 958ns 346ps Sending packet of size 1 to 33
-104us 83ns 353ps Received packet of size 25 from 42
-104us 83ns 353ps Sending packet of size 1 to 42
-105us 208ns 360ps Received packet of size 25 from 39
-105us 208ns 360ps Sending packet of size 1 to 39
-106us 333ns 367ps Received packet of size 25 from 35
-106us 333ns 367ps Sending packet of size 1 to 35
-107us 458ns 374ps Received packet of size 25 from 34
-107us 458ns 374ps Sending packet of size 1 to 34
-108us 583ns 381ps Received packet of size 25 from 36
-108us 583ns 381ps Sending packet of size 1 to 36
-109us 708ns 388ps Received packet of size 25 from 37
-109us 708ns 388ps Sending packet of size 1 to 37
-110us 833ns 395ps Received packet of size 25 from 38
-110us 833ns 395ps Sending packet of size 1 to 38
-111us 958ns 402ps Received packet of size 25 from 43
-111us 958ns 402ps Sending packet of size 1 to 43
-113us 83ns 409ps Received packet of size 25 from 41
-113us 83ns 409ps Sending packet of size 1 to 41
-204us 166ns 688ps Received packet of size 25 from 40
-204us 166ns 688ps Sending packet of size 1 to 40
-204us 437ns 519ps Received packet of size 4 from 33
-204us 437ns 519ps Sending packet of size 1 to 33
-205us 562ns 526ps Received packet of size 25 from 42
-205us 562ns 526ps Sending packet of size 1 to 42
-206us 687ns 533ps Received packet of size 25 from 39
-206us 687ns 533ps Sending packet of size 1 to 39
-207us 812ns 540ps Received packet of size 25 from 35
-207us 812ns 540ps Sending packet of size 1 to 35
-208us 937ns 547ps Received packet of size 25 from 34
-208us 937ns 547ps Sending packet of size 1 to 34
-210us 62ns 554ps Received packet of size 25 from 36
-210us 62ns 554ps Sending packet of size 1 to 36
-211us 187ns 561ps Received packet of size 25 from 37
-211us 187ns 561ps Sending packet of size 1 to 37
-212us 312ns 568ps Received packet of size 25 from 38
-212us 312ns 568ps Sending packet of size 1 to 38
-213us 437ns 575ps Received packet of size 25 from 43
-213us 437ns 575ps Sending packet of size 1 to 43
-214us 562ns 582ps Received packet of size 25 from 41
-214us 562ns 582ps Sending packet of size 1 to 41
+1us 229ns 174ps  nu.PrintUnit received packet of size 25 from 38 in 1.14584e-06s
+receiver address: 32
+sender address: 38
+  355	0bus0000000101100011
+  501	0bus0000000111110101
+  462	0bus0000000111001110
+  427	0bus0000000110101011
+  422	0bus0000000110100110
+  270	0bus0000000100001110
+  132	0bus0000000010000100
+  417	0bus0000000110100001
+  277	0bus0000000100010101
+   21	0bus0000000000010101
+  323	0bus0000000101000011
+  439	0bus0000000110110111
+   69	0bus0000000001000101
+  168	0bus0000000010101000
+  483	0bus0000000111100011
+  387	0bus0000000110000011
+  282	0bus0000000100011010
+  112	0bus0000000001110000
+  419	0bus0000000110100011
+  463	0bus0000000111001111
+  304	0bus0000000100110000
+  124	0bus0000000001111100
+  406	0bus0000000110010110
+  471	0bus0000000111010111
+  478	0bus0000000111011110
+
+1us 229ns 174ps  nu.PrintUnit sending packet of size 1 to 38
+receiver address: 38
+sender address: 32
+    1	0bus0000000000000001
+
