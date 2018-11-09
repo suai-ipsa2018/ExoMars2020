@@ -16,7 +16,7 @@ public:
     virtual const sc_event& data_written_event() const = 0; //!< Returns a reference to an event triggered when data is written
     virtual const sc_event& data_read_event() const = 0; //!< Returns a reference to an event triggered when data is read
 
-    bool access_locked{false}; //!< Boolean to check if a channel inheriting this interface can be accessed
+	bool can_read{ false }, can_write{ true };
 };
 
 

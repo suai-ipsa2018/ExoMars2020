@@ -44,6 +44,7 @@ void io_channel::update()
     if (cur_d != new_d) cur_d = new_d;
 
     e_write.notify(transmission_time);
+	can_read = true;
 }
 
 
@@ -60,26 +61,24 @@ io_port::io_port(sc_module_name mn) : sc_port<io_if, 1, SC_ONE_OR_MORE_BOUND>(mn
 
 sc_uint<16> io_port::read()
 {
-	if (std::string(name()) == "nu.router.port_1") std::cout << sc_time_stamp() << " call to read " << std::endl;
-    while (!(*this)->access_locked || (*this)->get_wid() == port_id) // Waits if the channel bound is not locked for writing (no write since the last read), or if this port was the last to write something in the channel
+    while (!(*this)->can_read || (*this)->get_wid() == port_id) // Waits if the channel bound is not locked for writing (no write since the last read), or if this port was the last to write something in the channel
         wait((*this)->data_written_event());
 
     byte_in = (*this)->read(); // Reads from the channel
-	if (std::string(name()) == "nu.router.port_1") std::cout << sc_time_stamp() << ' ' << "read " << byte_in << std::endl;
-    (*this)->access_locked = false; // Unlocks the channel so that a new write can occur
+    (*this)->can_read = false; // Unlocks the channel so that a new write can occur
+	(*this)->can_write = true;
 
     return byte_in;
 }
 
 void io_port::write(const sc_uint<16>& n)
 {
-    while ((*this)->access_locked) // Waits if the channel bound is locked (no read since the last write)
+    while (!(*this)->can_write) // Waits if the channel bound is locked (no read since the last write)
         wait((*this)->data_read_event());
 
+	(*this)->can_write = false;
     byte_out = n;
-    (*this)->access_locked = true; // Locks the channel so that a read can occur
     (*this)->write(byte_out, port_id); // Writes to the channel
-	//if (std::string(basename()) == "Adron_port") std::cout << "From adron port: " << byte << std::endl;
 }
 
 void sc_trace(sc_trace_file *_f, const io_channel& object, std::string name_file)

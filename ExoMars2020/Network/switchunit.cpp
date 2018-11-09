@@ -121,7 +121,6 @@ void SwitchUnit::connections_done()
 	}
 
 	SC_THREAD(init_thread);
-	SC_THREAD(debug);
 }
 SwitchUnit::~SwitchUnit()
 {
@@ -200,7 +199,6 @@ void SwitchUnit::port_processing(size_t in_port_number)
         {
             byte = ports[in_port_number].read();
             ports[out_port_number].write(byte);
-			//std::cout << address << ' ' << sender_address << ' ' << "From switchunit: " << byte << std::endl;
             wait(SC_ZERO_TIME);
         }
         out_ports_access[out_port_number].unlock();
