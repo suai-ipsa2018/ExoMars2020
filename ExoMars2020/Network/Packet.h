@@ -24,8 +24,10 @@ public:
 	explicit operator bool();
 	sc_uint<16>& operator[](size_t index);
 
-	sc_uint<16>& get_receiver_address() { return receiver_address; }
-	sc_uint<16>& get_sender_address() { return sender_address; }
+	const sc_uint<16>& get_receiver_address() const { return receiver_address; }
+	void set_receiver_address(const sc_uint<16>& addr);
+	const sc_uint<16>& get_sender_address() const { return sender_address; }
+	void set_sender_address(const sc_uint<16>& addr);
 	sc_uint<16>& get_crc() { return checksum; }
 
 	size_t size();

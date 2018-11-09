@@ -50,7 +50,7 @@ void Node::send_with_ack(Packet &p)
 		send(p);
 
 		recv(ack);
-		if (verbose) std::cout << "ack received: " << std::endl << ack << std::endl;
+		if (verbose) std::cout << "ack received by " << name() << ": " << std::endl << ack << std::endl;
 		logfile << "ack received: " << std::endl << ack << std::endl;
 	} while (!ack[0]);
 }
