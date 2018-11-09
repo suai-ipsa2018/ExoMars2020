@@ -8,6 +8,7 @@ io_channel::io_channel(sc_module_name mn, sc_time transmission_time_, int error_
 void io_channel::write(const sc_uint<16>& n, size_t id)
 {
 	new_d = n; // New data written
+	//if (std::string(basename()) == "Adron_channel") std::cout << "From adron channel: " << n << std::endl;
 	if (error_frequency > 0)
 	{
 		int rn = rand();
@@ -43,6 +44,7 @@ void io_channel::update()
     if (cur_d != new_d) cur_d = new_d;
 
     e_write.notify(transmission_time);
+	can_read = true;
 }
 
 
@@ -59,31 +61,34 @@ io_port::io_port(sc_module_name mn) : sc_port<io_if, 1, SC_ONE_OR_MORE_BOUND>(mn
 
 sc_uint<16> io_port::read()
 {
-    while (!(*this)->access_locked || (*this)->get_wid() == port_id) // Waits if the channel bound is not locked for writing (no write since the last read), or if this port was the last to write something in the channel
+    while (!(*this)->can_read || (*this)->get_wid() == port_id) // Waits if the channel bound is not locked for writing (no write since the last read), or if this port was the last to write something in the channel
         wait((*this)->data_written_event());
 
-    byte = (*this)->read(); // Reads from the channel
-    (*this)->access_locked = false; // Unlocks the channel so that a new write can occur
+    byte_in = (*this)->read(); // Reads from the channel
+    (*this)->can_read = false; // Unlocks the channel so that a new write can occur
+	(*this)->can_write = true;
 
-    return byte;
+    return byte_in;
 }
 
 void io_port::write(const sc_uint<16>& n)
 {
-    while ((*this)->access_locked) // Waits if the channel bound is locked (no read since the last write)
+    while (!(*this)->can_write) // Waits if the channel bound is locked (no read since the last write)
         wait((*this)->data_read_event());
 
-    byte = n;
-    (*this)->access_locked = true; // Locks the channel so that a read can occur
-    (*this)->write(byte, port_id); // Writes to the channel
+	(*this)->can_write = false;
+    byte_out = n;
+    (*this)->write(byte_out, port_id); // Writes to the channel
 }
 
 void sc_trace(sc_trace_file *_f, const io_channel& object, std::string name_file)
 {
-    sc_trace(_f, object.cur_d, name_file);
+    sc_trace(_f, object.cur_d, name_file+"_data");
+    sc_trace(_f, object.cur_wid, name_file+"_wid");
 }
 
 void sc_trace(sc_trace_file *_f, const io_port& object, std::string name_file)
 {
-    sc_trace(_f, object.byte, name_file);
+    sc_trace(_f, object.byte_in, name_file+"_in");
+	sc_trace(_f, object.byte_out, name_file + "_out");
 }

@@ -16,7 +16,7 @@ public:
     virtual const sc_event& data_written_event() const = 0; //!< Returns a reference to an event triggered when data is written
     virtual const sc_event& data_read_event() const = 0; //!< Returns a reference to an event triggered when data is read
 
-    bool access_locked{false}; //!< Boolean to check if a channel inheriting this interface can be accessed
+	bool can_read{ false }, can_write{ true };
 };
 
 
@@ -108,7 +108,8 @@ public:
 private:
     static size_t n_ports; //!< Static natural integer, keeping track of the number of ports of this kind created
     size_t port_id; //!< Id of an instance of this class. Used to distinguish one port from another and thus ensure transmission safety
-    sc_uint<16> byte; //!< Used to access the value contained in the channel from NetworkUnit to trace it in a VCD file, through friend function sc_trace
+    sc_uint<16> byte_in; //!< Used to access the value contained in the channel from NetworkUnit to trace it in a VCD file, through friend function sc_trace
+    sc_uint<16> byte_out; //!< Used to access the value contained in the channel from NetworkUnit to trace it in a VCD file, through friend function sc_trace
 };
 
 #endif // IO_PORT_H

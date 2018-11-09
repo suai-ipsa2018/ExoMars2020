@@ -16,6 +16,8 @@ Packet& Packet::operator<<(const sc_uint<16> & f)
 			data.push_back(f);
 			checksum = crc<16>(checksum, f);
 		}
+		else
+			data.pop_back();
 	}
 	i++;
 	return *this;
@@ -44,14 +46,18 @@ sc_uint<16>& Packet::operator[](size_t index)
 }
 
 
+size_t Packet::size()
+{
+	return data.size();
+}
+
 void Packet::reset() { i = 0; }
 
 ostream& operator<<(ostream &flux, Packet &p)
 {
-	p.reset();
 	flux << "receiver address: " << p.receiver_address << std::endl;
 	flux << "sender address: " << p.sender_address << std::endl;
 	for (const sc_uint<16>& byte : p.data)
-		flux << byte << "\t" << byte.to_string(SC_BIN_US) << std::endl;
+		flux << std::setw(5) << byte << "\t" << byte.to_string(SC_BIN_US) << std::endl;
 	return flux;
 }

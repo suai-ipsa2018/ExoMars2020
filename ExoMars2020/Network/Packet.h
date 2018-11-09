@@ -1,4 +1,5 @@
 #pragma once
+#include <iomanip>
 #include "systemc.h"
 #include "crc.h"
 
@@ -26,6 +27,8 @@ public:
 	sc_uint<16>& get_receiver_address() { return receiver_address; }
 	sc_uint<16>& get_sender_address() { return sender_address; }
 	sc_uint<16>& get_crc() { return checksum; }
+
+	size_t size();
 
 	friend ostream& operator<<(ostream& flux, Packet &p);
 

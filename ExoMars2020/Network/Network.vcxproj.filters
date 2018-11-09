@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Fichiers de ressources">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Fichiers d%27en-tête\Instruments">
       <UniqueIdentifier>{70035862-0071-48fd-a4de-ec46d62b50eb}</UniqueIdentifier>
     </Filter>
@@ -78,6 +74,9 @@
     <ClCompile Include="WISDOM.cpp">
       <Filter>Fichiers sources\Instruments</Filter>
     </ClCompile>
+    <ClCompile Include="helperlib.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="io_port.h">
@@ -133,6 +132,12 @@
     </ClInclude>
     <ClInclude Include="WISDOM.h">
       <Filter>Fichiers d%27en-tête\Instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="helperlib.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

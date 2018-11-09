@@ -159,6 +159,7 @@
     <ClCompile Include="CLUPI.cpp" />
     <ClCompile Include="crc.cpp" />
     <ClCompile Include="Drill.cpp" />
+    <ClCompile Include="helperlib.cpp" />
     <ClCompile Include="io_port.cpp" />
     <ClCompile Include="ISEM.cpp" />
     <ClCompile Include="main.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="CLUPI.h" />
     <ClInclude Include="crc.h" />
     <ClInclude Include="Drill.h" />
+    <ClInclude Include="helperlib.h" />
     <ClInclude Include="io_port.h" />
     <ClInclude Include="ISEM.h" />
     <ClInclude Include="Ma_MISS.h" />
@@ -191,6 +193,7 @@
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PanCam.h" />
     <ClInclude Include="printunit.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RLS.h" />
     <ClInclude Include="switchunit.h" />
     <ClInclude Include="WISDOM.h" />
