@@ -21,7 +21,7 @@ void WISDOM::gen_thread()
 		for (size_t i = 0; i < psize; i++)
 			p << rand();
 
-		send_with_ack(p);		
+		send(p);		
 		
 		wait(100, SC_US);
 	}
@@ -34,6 +34,6 @@ void WISDOM::printing_thread()
 		wait(port->data_written_event()); // idles when no data enters
 		std::cout << sc_time_stamp() << " " << name() << " printing_thread receiving packet :" << std::endl;
 		Packet p;
-		recv(p);
+		get_packet(p);
 	}
 }

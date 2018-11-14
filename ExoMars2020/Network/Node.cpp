@@ -8,6 +8,8 @@ Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t 
 {
 	rng.seed(std::random_device()());
 	logfile << "Node " << name() << " with logic address " << logical_address << ":" << std::endl;
+
+	SC_THREAD(daemon);
 }
 
 Node::~Node()
@@ -20,7 +22,7 @@ sc_uint<16>& Node::get_logical_address()
 	return logical_address;
 }
 
-void Node::send(Packet & p)
+void Node::send_raw(Packet & p)
 {
 	send_mutex.lock();
 	logfile << formatted_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
@@ -39,25 +41,44 @@ void Node::send_ack(size_t dest, bool state) // Function spawned to send an ack 
 {
 	Packet p;
 	p << dest << logical_address << state;
-	send(p);
+	send_raw(p);
 }
 
-void Node::send_with_ack(Packet &p)
+void Node::send(Packet &p)
 {
-	Packet ack;
-	do
+	bool confirmed(false), ack_received(false);
+	while (!confirmed)
 	{
-		send(p);
+		send_raw(p); // Send the packet
 
-		recv(ack);
-		if (verbose) std::cout << "ack received by " << name() << ": " << std::endl << ack << std::endl;
-		logfile << "ack received: " << std::endl << ack << std::endl;
-	} while (!ack[0]);
+		// Wait for confirmation
+		while (!ack_received)
+		{
+			for (size_t i = 0; i < ack_queue.size(); i++)
+			{
+				if (ack_queue[i].get_sender_address() == p.get_receiver_address())
+				{
+					if (ack_queue[i][0])
+					{
+						std::cout << formatted_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
+						confirmed = true;
+					}
+					else
+					{
+						std::cout << formatted_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
+					}
+					ack_queue.erase(ack_queue.begin() + i);
+					ack_received = true;
+					break;
+				}
+			}
+			if (!confirmed) wait(ack_reception);
+		}
+	}
 }
 
-sc_time Node::recv(Packet & p)
+sc_time Node::recv_raw(Packet & p)
 {
-	recv_mutex.lock();
 	p.reset();
 	sc_uint<16> tmp(0);
 	sc_time t0(sc_time_stamp());
@@ -67,31 +88,56 @@ sc_time Node::recv(Packet & p)
 		p << tmp;
 	}
 	sc_time t1(sc_time_stamp());
+	return t1-t0;
+}
 
-
-	if (p.size() > 1)
+void Node::daemon()
+{
+	sc_time t;
+	while (true)
 	{
-		logfile << formatted_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << (t1 - t0).to_seconds() << "s" << std::endl;
-		if (verbose) logfile << p << std::endl;
-		std::cout << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << (t1 - t0).to_seconds() << "s" << std::endl;
-		if (verbose) std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
+		Packet p;
+		t = recv_raw(p);
 
-		if (p.get_crc())
+		if (p.size() > 1)
 		{
-			std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
-			sc_spawn(sc_bind(&Node::send_ack, this, p.get_sender_address(), 0)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
+			logfile << formatted_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << t.to_seconds() << "s" << std::endl;
+			if (verbose) logfile << p << std::endl;
+			std::cout << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << t.to_seconds() << "s" << std::endl;
+			if (verbose) std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
+
+			if (p.get_crc())
+			{
+				std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
+				sc_spawn(sc_bind(&Node::send_ack, this, p.get_sender_address(), 0)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
+			}
+			else
+			{
+				std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC" << "\33[0m" << std::endl;
+				sc_spawn(sc_bind(&Node::send_ack, this, p.get_sender_address(), 1)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
+			}
+			packet_queue.push_back(p);
+			packet_reception.notify(SC_ZERO_TIME);
 		}
-		else
+		else // In case of ack reception
 		{
-			std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC" << "\33[0m" << std::endl;
-			sc_spawn(sc_bind(&Node::send_ack, this, p.get_sender_address(), 1)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
+			if (verbose) std::cout << "ack received by " << name() << ": " << std::endl << p << std::endl;
+			logfile << "ack received: " << std::endl << p << std::endl;
+			ack_queue.push_back(p);
+			ack_reception.notify(SC_ZERO_TIME);
 		}
 	}
-	recv_mutex.unlock();
-	return t1-t0;
 }
 
 unsigned Node::rand()
 {
 	return dist(rng);
+}
+
+void Node::get_packet(Packet &p)
+{
+	while (!packet_queue.size())
+		wait(packet_reception);
+	p = packet_queue[0];
+	packet_queue.erase(packet_queue.begin());
 }

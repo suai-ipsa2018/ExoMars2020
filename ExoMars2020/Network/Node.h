@@ -24,7 +24,9 @@ protected:
 	bool verbose;
 private:
 	sc_mutex send_mutex, recv_mutex;
+	sc_event packet_reception, ack_reception;
 
+	std::vector<Packet> packet_queue, ack_queue;
 public:
 	Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t &_psize, sc_time _delay_between_bytes, size_t _bit = 8, bool _verbose = false);
 	virtual ~Node();
@@ -32,9 +34,11 @@ public:
 	sc_uint<16>& get_logical_address();
 protected:
 	void send(Packet &p);
-	void send_ack(size_t dest, bool state);
-	void send_with_ack(Packet &p);
-	sc_time recv(Packet &p);
 	unsigned rand();
+	void get_packet(Packet &p);
+private:
+	void send_raw(Packet &p);
+	void send_ack(size_t dest, bool state);
+	sc_time recv_raw(Packet &p);
+	void daemon();
 };
-
