@@ -1,0 +1,40 @@
+Node nu.PanCam with logic address 33:
+0s  nu.PanCam sending packet of size 4 to 39
+receiver address: 39
+sender address: 33
+  406	0bus0000000110010110
+  365	0bus0000000101101101
+  103	0bus0000000001100111
+  959	0bus0000001110111111
+
+ack received: 
+receiver address: 33
+sender address: 39
+    1	0bus0000000000000001
+
+101us 812ns 505ps  nu.PanCam sending packet of size 4 to 39
+receiver address: 39
+sender address: 33
+  830	0bus0000001100111110
+  635	0bus0000001001111011
+  946	0bus0000001110110010
+  856	0bus0000001101011000
+
+ack received: 
+receiver address: 33
+sender address: 39
+    1	0bus0000000000000001
+
+203us 437ns 508ps  nu.PanCam sending packet of size 4 to 39
+receiver address: 39
+sender address: 33
+  709	0bus0000001011000101
+  130	0bus0000000010000010
+  819	0bus0000001100110011
+  191	0bus0000000010111111
+
+ack received: 
+receiver address: 33
+sender address: 39
+    1	0bus0000000000000001
+

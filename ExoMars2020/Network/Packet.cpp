@@ -45,6 +45,28 @@ sc_uint<16>& Packet::operator[](size_t index)
 	return data[index];
 }
 
+void Packet::set_receiver_address(const sc_uint<16>& addr)
+{
+	if (32 <= addr && addr < 256)
+		receiver_address = addr;
+	else
+	{
+		std::cerr << "Address must be between 32 and 255, got " << addr << std::endl;
+		exit(1);
+	}
+}
+
+void Packet::set_sender_address(const sc_uint<16>& addr)
+{
+	if (32 <= addr && addr < 256)
+		sender_address = addr;
+	else
+	{
+		std::cerr << "Address must be between 32 and 255, got " << addr << std::endl;
+		exit(1);
+	}
+}
+
 
 size_t Packet::size()
 {

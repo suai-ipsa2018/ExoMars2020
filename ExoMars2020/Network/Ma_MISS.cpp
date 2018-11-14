@@ -13,13 +13,13 @@ void Ma_MISS::gen_thread()
 	while (true)
 	{
 		Packet p;
-		p << 32 << logical_address;
+		p << 39 << logical_address;
 		if (verbose) std::cout << "psize_" << name() << " = " << psize << std::endl;
 
 		for (size_t i = 0; i < psize; i++)
 			p << rand();
 
-		send_with_ack(p);
+		send(p);
 
 		wait(100, SC_US);
 	}

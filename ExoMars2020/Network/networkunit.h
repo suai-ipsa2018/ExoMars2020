@@ -35,18 +35,18 @@ public:
 private:
 	sc_time delay_between_bytes;
     
-	/*PanCam m_PanCam;
-	NavCam m_NavCam;*/
+	PanCam m_PanCam;
+	//NavCam m_NavCam;
 	//ISEM m_ISEM;
 
 	//CLUPI m_CLUPI;
 	//Drill m_Drill;
 	Adron m_Adron;
 	WISDOM m_WISDOM;
-	/*Ma_MISS m_Ma_MISS;
-	MicrOmega m_MicrOmega;
-	RLS m_RLS;
-	MOMA m_MOMA;*/
+	Ma_MISS m_Ma_MISS;
+	//MicrOmega m_MicrOmega;
+	//RLS m_RLS;
+	//MOMA m_MOMA;
 
 	PrintUnit pu;
 

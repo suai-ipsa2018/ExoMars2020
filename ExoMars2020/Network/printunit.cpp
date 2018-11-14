@@ -14,7 +14,7 @@ void PrintUnit::printing_thread()
         wait(port->data_written_event()); // idles when no data enters
         std::cout << sc_time_stamp() << " " << name() << " printing_thread receiving packet :" << std::endl;
 		Packet p;
-		recv(p);
+		get_packet(p);
     }
 }
 
