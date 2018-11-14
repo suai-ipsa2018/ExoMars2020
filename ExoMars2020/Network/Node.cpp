@@ -46,34 +46,32 @@ void Node::send_ack(size_t dest, bool state) // Function spawned to send an ack 
 
 void Node::send(Packet &p)
 {
-	bool confirmed(false), ack_received(false);
-	while (!confirmed)
-	{
-		send_raw(p); // Send the packet
+	bool ack_received(false);
+	send_raw(p); // Send the packet
 
-		// Wait for confirmation
-		while (!ack_received)
+	// Wait for confirmation
+	while (!ack_received)
+	{
+		for (size_t i = 0; i < ack_queue.size(); i++)
 		{
-			for (size_t i = 0; i < ack_queue.size(); i++)
+			if (ack_queue[i].get_sender_address() == p.get_receiver_address())
 			{
-				if (ack_queue[i].get_sender_address() == p.get_receiver_address())
+				if (ack_queue[i][0])
 				{
-					if (ack_queue[i][0])
-					{
-						std::cout << formatted_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
-						confirmed = true;
-					}
-					else
-					{
-						std::cout << formatted_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
-					}
-					ack_queue.erase(ack_queue.begin() + i);
-					ack_received = true;
-					break;
+					std::cout << formatted_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
 				}
+				else
+				{
+					std::cout << formatted_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
+					send(p);
+				}
+				ack_queue.erase(ack_queue.begin() + i);
+				ack_received = true;
+				break;
+				//std::cout << "confirmed = " << confirmed << std::endl;
 			}
-			if (!confirmed) wait(ack_reception);
 		}
+		if(!ack_received) wait(ack_reception);
 	}
 }
 

@@ -1,0 +1,18 @@
+Node nu.Drill with logic address 37:
+0s  nu.Drill sending packet of size 8 to 32
+receiver address: 32
+sender address: 37
+   26	0bus0000000000011010
+    6	0bus0000000000000110
+  146	0bus0000000010010010
+  148	0bus0000000010010100
+  215	0bus0000000011010111
+  147	0bus0000000010010011
+  182	0bus0000000010110110
+    6	0bus0000000000000110
+
+ack received: 
+receiver address: 37
+sender address: 32
+    0	0bus0000000000000000
+

@@ -1,0 +1,18 @@
+Node nu.NavCam with logic address 34:
+0s  nu.NavCam sending packet of size 8 to 33
+receiver address: 33
+sender address: 34
+  106	0bus0000000001101010
+   80	0bus0000000001010000
+  164	0bus0000000010100100
+   93	0bus0000000001011101
+  200	0bus0000000011001000
+  125	0bus0000000001111101
+  124	0bus0000000001111100
+   23	0bus0000000000010111
+
+ack received: 
+receiver address: 34
+sender address: 33
+    0	0bus0000000000000000
+

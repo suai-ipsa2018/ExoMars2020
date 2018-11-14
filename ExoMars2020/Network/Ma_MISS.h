@@ -7,5 +7,6 @@ public:
 
 private:
 	void gen_thread();
+	void printing_thread();
 };
 

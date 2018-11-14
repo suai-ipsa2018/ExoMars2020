@@ -1,0 +1,18 @@
+Node nu.RLS with logic address 42:
+0s  nu.RLS sending packet of size 8 to 40
+receiver address: 40
+sender address: 42
+  109	0bus0000000001101101
+  161	0bus0000000010100001
+  208	0bus0000000011010000
+   94	0bus0000000001011110
+   31	0bus0000000000011111
+  205	0bus0000000011001101
+  224	0bus0000000011100000
+  216	0bus0000000011011000
+
+ack received: 
+receiver address: 42
+sender address: 40
+    0	0bus0000000000000000
+

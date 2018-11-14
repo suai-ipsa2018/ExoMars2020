@@ -1,0 +1,18 @@
+Node nu.MicrOmega with logic address 41:
+0s  nu.MicrOmega sending packet of size 8 to 40
+receiver address: 40
+sender address: 41
+   54	0bus0000000000110110
+   30	0bus0000000000011110
+  221	0bus0000000011011101
+   81	0bus0000000001010001
+  132	0bus0000000010000100
+   27	0bus0000000000011011
+  192	0bus0000000011000000
+    8	0bus0000000000001000
+
+ack received: 
+receiver address: 41
+sender address: 40
+    0	0bus0000000000000000
+
