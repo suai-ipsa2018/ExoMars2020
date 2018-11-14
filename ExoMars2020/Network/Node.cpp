@@ -72,7 +72,6 @@ void Node::send(Packet &p)
 					break;
 				}
 			}
-			wait(ack_reception);
 			if (!confirmed) wait(ack_reception);
 		}
 	}
