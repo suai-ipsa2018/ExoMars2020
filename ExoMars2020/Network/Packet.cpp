@@ -28,7 +28,7 @@ Packet& Packet::operator>>(sc_uint<16> &f)
 	if (i == 0) f = receiver_address;
 	else if (i == 1) f = sender_address;
 	else if (header_size <= i && i < header_size + data.size()) f = data[i - header_size];
-	else if (i == header_size + data.size()) { checksum = crc<16>(checksum, 0); f = checksum; }
+	else if (i == header_size + data.size()) { f = crc<16>(checksum, 0); }
 	else if (i == header_size + data.size() + 1) { f = EOP; }
 
 	i++;
@@ -81,5 +81,6 @@ ostream& operator<<(ostream &flux, Packet &p)
 	flux << "sender address: " << p.sender_address << std::endl;
 	for (const sc_uint<16>& byte : p.data)
 		flux << std::setw(5) << byte << "\t" << byte.to_string(SC_BIN_US) << std::endl;
+	flux << std::setw(5) << p.checksum << '\t' << p.checksum.to_string(SC_BIN_US) << " <- CRC" << std::endl;
 	return flux;
 }

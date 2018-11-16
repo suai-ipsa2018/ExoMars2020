@@ -3,19 +3,19 @@
 
 io_channel::io_channel(sc_module_name mn, sc_time transmission_time_, int error_frequency_) : sc_prim_channel((const char*)mn), transmission_time(transmission_time_), error_frequency(error_frequency_)
 {
+	rng.seed(std::random_device()());
 }
 
 void io_channel::write(const sc_uint<16>& n, size_t id)
 {
 	new_d = n; // New data written
 	//if (std::string(basename()) == "Adron_channel") std::cout << "From adron channel: " << n << std::endl;
-	if (error_frequency > 0)
+	if (error_frequency > 0 && new_d > 256 && new_d < sc_uint<16>(-1))
 	{
-		int rn = rand();
-		if (!(rn % 1024/error_frequency))
+		if (!dist(rng))
 		{
 			std::cout << sc_time_stamp() << " " << name() << " simulated transmission error ! Byte changed from  " << new_d << " to ";
-			new_d ^= rn;
+			new_d = value_dist(rng);
 			std::cout << new_d << std::endl;
 		}
 	}
