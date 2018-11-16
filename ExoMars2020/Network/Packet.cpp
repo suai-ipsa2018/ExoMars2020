@@ -1,4 +1,4 @@
-#include "Packet.h"
+﻿#include "Packet.h"
 
 const sc_uint<16> Packet::EOP(-1);
 const size_t Packet::header_size(2);
@@ -77,10 +77,24 @@ void Packet::reset() { i = 0; }
 
 ostream& operator<<(ostream &flux, Packet &p)
 {
-	flux << "receiver address: " << p.receiver_address << std::endl;
-	flux << "sender address: " << p.sender_address << std::endl;
-	for (const sc_uint<16>& byte : p.data)
-		flux << std::setw(5) << byte << "\t" << byte.to_string(SC_BIN_US) << std::endl;
+	flux << std::setw(5) << p.receiver_address << '\t' << p.receiver_address.to_string(SC_BIN_US) << " <- receiver address" << std::endl;
+	flux << std::setw(5) << p.sender_address << '\t' << p.sender_address.to_string(SC_BIN_US) << " <- sender address" << std::endl;
+	for (size_t i = 0; i < p.data.size(); i++)
+	{
+		flux << std::setw(5) << p.data[i] << '\t' << p.data[i].to_string(SC_BIN_US) << std::flush;
+		if (i == 0)
+			std::cout << ' ' << (char)-65 << std::endl;
+		else if (i == p.data.size() - 1)
+			std::cout << ' ' << (char)-39 << std::endl;
+		else
+		{
+			std::cout << ' ' << (char)-77 << std::flush;
+			if (i == p.data.size() / 2)
+				std::cout << " data" << std::endl;
+			else
+				std::cout << std::endl;
+		}
+	}
 	flux << std::setw(5) << p.checksum << '\t' << p.checksum.to_string(SC_BIN_US) << " <- CRC" << std::endl;
 	return flux;
 }
