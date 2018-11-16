@@ -1,8 +1,8 @@
 .vs/
 Debug/
 Release/
-logs/
 traces/
+logs/
 
 *.tlog
 *.lastbuildstate
