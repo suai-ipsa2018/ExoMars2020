@@ -82,19 +82,22 @@ ostream& operator<<(ostream &flux, Packet &p)
 	for (size_t i = 0; i < p.data.size(); i++)
 	{
 		flux << std::setw(5) << p.data[i] << '\t' << p.data[i].to_string(SC_BIN_US) << std::flush;
-		if (i == 0)
-			std::cout << ' ' << (char)-65 << std::endl;
-		else if (i == p.data.size() - 1)
-			std::cout << ' ' << (char)-39 << std::endl;
-		else
-		{
-			std::cout << ' ' << (char)-77 << std::flush;
-			if (i == p.data.size() / 2)
-				std::cout << " data" << std::endl;
+		if (p.data.size() > 1)
+			if (i == 0)
+				flux << ' ' << (char)-65 << "      " << std::endl;
+			else if (i == p.data.size() - 1)
+				flux << ' ' << (char)-39 << "      " << std::endl;
 			else
-				std::cout << std::endl;
-		}
+			{
+				flux << ' ' << (char)-77 << std::flush;
+				if (i == p.data.size() / 2)
+					flux << " data " << std::endl;
+				else
+					flux << "      " << std::endl;
+			}
+		else
+			flux << " <- ack state" << std::endl;
 	}
-	flux << std::setw(5) << p.checksum << '\t' << p.checksum.to_string(SC_BIN_US) << " <- CRC" << std::endl;
+	flux << std::setw(5) << p.checksum << '\t' << p.checksum.to_string(SC_BIN_US) << " <- CRC " << std::endl;
 	return flux;
 }
