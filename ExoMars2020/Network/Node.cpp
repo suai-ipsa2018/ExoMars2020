@@ -59,16 +59,16 @@ void Node::send(Packet &p)
 				if (ack_queue[i][0])
 				{
 					std::cout << formatted_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
+					ack_queue.erase(ack_queue.begin() + i);
 				}
 				else
 				{
 					std::cout << formatted_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
+					ack_queue.erase(ack_queue.begin() + i);
 					send(p);
 				}
-				ack_queue.erase(ack_queue.begin() + i);
 				ack_received = true;
 				break;
-				//std::cout << "confirmed = " << confirmed << std::endl;
 			}
 		}
 		if(!ack_received) wait(ack_reception);

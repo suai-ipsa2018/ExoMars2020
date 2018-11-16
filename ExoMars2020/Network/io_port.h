@@ -1,6 +1,6 @@
-#ifndef IO_PORT_H
-#define IO_PORT_H
+#pragma once
 
+#include <random>
 #include "systemc.h"
 
 /** @file io_port.h
@@ -34,6 +34,9 @@ private:
              e_write; //!< Event triggered when data is written
 	sc_time transmission_time;
 	int error_frequency;
+
+	std::mt19937 rng;
+	std::uniform_int_distribution<std::mt19937::result_type> value_dist{ 256, 65534 }, dist{ 0, error_frequency };
 
     /**
      * @brief write Writes new data to the channel
@@ -111,5 +114,3 @@ private:
     sc_uint<16> byte_in; //!< Used to access the value contained in the channel from NetworkUnit to trace it in a VCD file, through friend function sc_trace
     sc_uint<16> byte_out; //!< Used to access the value contained in the channel from NetworkUnit to trace it in a VCD file, through friend function sc_trace
 };
-
-#endif // IO_PORT_H
