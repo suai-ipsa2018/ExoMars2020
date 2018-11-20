@@ -58,4 +58,13 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 	router.connect(pu, PrintUnit_channel);
 	router.connections_done();
 	sc_trace(tf, router.ports[1], "router_port_adron");
+
+	sqlite3_open("logs/Network.db", &db);
+	m_Adron.init_db(db);
+	pu.init_db(db);
+}
+
+NetworkUnit::~NetworkUnit()
+{
+	sqlite3_close(db);
 }

@@ -31,6 +31,7 @@ public:
      * @param speed Speed of the network, in bit/s
      */
     NetworkUnit(sc_module_name mn, double speed=24e6, bool verbose=true);
+	~NetworkUnit();
 
 private:
 	sc_time delay_between_bytes;
@@ -68,4 +69,5 @@ private:
     double network_speed; //!< Keeps track of the network's speed
 
 	sc_trace_file* tf;
+	sqlite3* db;
 };

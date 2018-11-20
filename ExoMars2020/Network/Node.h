@@ -1,5 +1,7 @@
 #pragma once
 #include <random>
+#include <sstream>
+#include <sqlite3.h>
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 #include "systemc.h"
@@ -21,6 +23,7 @@ protected:
 	size_t psize;
 
 	ofstream logfile;
+	sqlite3* db;
 	bool verbose;
 private:
 	sc_mutex send_mutex, recv_mutex;
@@ -32,6 +35,7 @@ public:
 	virtual ~Node();
   
 	sc_uint<16>& get_logical_address();
+	void init_db(sqlite3* _db);
 protected:
 	void send(Packet &p);
 	unsigned rand();

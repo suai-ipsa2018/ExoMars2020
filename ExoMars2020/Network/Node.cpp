@@ -22,11 +22,75 @@ sc_uint<16>& Node::get_logical_address()
 	return logical_address;
 }
 
+void Node::init_db(sqlite3 * _db)
+{
+	db = _db;
+	std::ostringstream db_init_stmt;
+	db_init_stmt << "DROP TABLE IF EXISTS " << basename() << "_send;" << std::endl <<
+		"CREATE TABLE " << basename() << "_send(" <<
+		R"sql(
+TIME               INT   PRIMARY KEY   NOT NULL,
+RECEIVER_ADDRESS   INT                 NOT NULL,
+SENDER_ADDRESS     INT                 NOT NULL,)sql" << std::endl;
+	if (verbose) db_init_stmt << "DATA TEXT NOT NULL," << std::endl;
+	db_init_stmt << R"sql(
+CRC                INT                 NOT NULL,
+SIZE               INT                 NOT NULL
+);
+)sql" << std::endl;
+
+
+	db_init_stmt << "DROP TABLE IF EXISTS " << basename() << "_recv;" << std::endl <<
+		"CREATE TABLE " << basename() << "_recv(" <<
+		R"sql(
+TIME               INT   PRIMARY KEY   NOT NULL,
+RECEIVER_ADDRESS   INT                 NOT NULL,
+SENDER_ADDRESS     INT                 NOT NULL,)sql" << std::endl;
+	if (verbose) db_init_stmt << "DATA TEXT NOT NULL," << std::endl;
+	db_init_stmt << R"sql(
+CRC                INT                 NOT NULL,
+SIZE               INT                 NOT NULL,
+RECEPTION_TIME     REAL                NOT NULL
+);
+)sql" << std::endl;
+
+	char* zErrMsg;
+	int rc = sqlite3_exec(db, db_init_stmt.str().c_str(), [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; }, nullptr, &zErrMsg);
+	if (rc != SQLITE_OK) {
+		std::cerr << "SQL error: " << zErrMsg << std::endl;
+		sqlite3_free(zErrMsg);
+		exit(2);
+	}
+}
+
 void Node::send_raw(Packet & p)
 {
 	send_mutex.lock();
 	logfile << formatted_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
 	if (verbose) logfile << p << std::endl;
+	
+	if (db)
+	{
+		std::ostringstream new_packet_stmt;
+		new_packet_stmt << "INSERT INTO " << basename() << "_send VALUES(" << sc_time_stamp().value() << ',' << p.get_receiver_address() << ',' << p.get_sender_address() << ',';
+		if (verbose)
+		{
+			new_packet_stmt << '\"';
+			for (size_t i = 0 ; i < p.size()-1 ; i++)
+				new_packet_stmt << p[i] << ',';
+			new_packet_stmt << p[p.size()-1] << "\",";
+		}
+		new_packet_stmt << p.get_crc() << ',' << p.size() << ");" << std::endl;
+		std::cout << new_packet_stmt.str() << std::endl;
+		char* zErrMsg;
+		int rc = sqlite3_exec(db, new_packet_stmt.str().c_str(), [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; }, nullptr, &zErrMsg);
+		if (rc != SQLITE_OK) {
+			std::cerr << "SQL error: " << zErrMsg << std::endl;
+			sqlite3_free(zErrMsg);
+			exit(3);
+		}
+	}
+
 	p.reset();
 	sc_uint<16> tmp;
 	while (p >> tmp)
@@ -86,6 +150,28 @@ sc_time Node::recv_raw(Packet & p)
 		p << tmp;
 	}
 	sc_time t1(sc_time_stamp());
+
+	if (db)
+	{
+		std::ostringstream new_packet_stmt;
+		new_packet_stmt << "INSERT INTO " << basename() << "_recv VALUES(" << sc_time_stamp().value() << ',' << p.get_receiver_address() << ',' << p.get_sender_address() << ',';
+		if (verbose)
+		{
+			new_packet_stmt << '\"';
+			for (size_t i = 0; i < p.size() - 1; i++)
+				new_packet_stmt << p[i] << ',';
+			new_packet_stmt << p[p.size() - 1] << "\",";
+		}
+		new_packet_stmt << p.get_crc() << ',' << p.size() << ',' << (t1 - t0).to_seconds() << ");" << std::endl;
+
+		char* zErrMsg;
+		int rc = sqlite3_exec(db, new_packet_stmt.str().c_str(), [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; }, nullptr, &zErrMsg);
+		if (rc != SQLITE_OK) {
+			std::cerr << "SQL error: " << zErrMsg << std::endl;
+			sqlite3_free(zErrMsg);
+			exit(3);
+		}
+	}
 	return t1-t0;
 }
 
