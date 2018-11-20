@@ -13,3 +13,4 @@ logs/
 *.ilk
 *.exe
 *.idb
+*.db
