@@ -16,6 +16,7 @@ public:
 protected:
 	sc_uint<16> logical_address;
 	sc_time delay_between_bytes;
+	std::vector<sc_uint<16>> destinations;
 
 	size_t bit;
 	std::mt19937 rng;
@@ -35,6 +36,7 @@ public:
 	virtual ~Node();
   
 	sc_uint<16>& get_logical_address();
+	void add_destination(const sc_uint<16>& d);
 	void init_db(sqlite3* _db);
 protected:
 	void send(Packet &p);
@@ -44,5 +46,6 @@ private:
 	void send_raw(Packet &p);
 	void send_ack(size_t dest, bool state);
 	sc_time recv_raw(Packet &p);
-	void daemon();
+	void receiver_daemon();
+	void sending_daemon(const sc_uint<16> to);
 };

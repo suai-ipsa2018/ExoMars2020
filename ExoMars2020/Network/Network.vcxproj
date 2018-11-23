@@ -155,48 +155,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Adron.cpp" />
-    <ClCompile Include="CLUPI.cpp" />
     <ClCompile Include="crc.cpp" />
-    <ClCompile Include="Drill.cpp" />
     <ClCompile Include="helperlib.cpp" />
     <ClCompile Include="io_port.cpp" />
-    <ClCompile Include="ISEM.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Ma_MISS.cpp" />
-    <ClCompile Include="MicrOmega.cpp" />
-    <ClCompile Include="MOMA.cpp" />
-    <ClCompile Include="NavCam.cpp" />
     <ClCompile Include="networkunit.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Packet.cpp" />
-    <ClCompile Include="PanCam.cpp" />
     <ClCompile Include="printunit.cpp" />
-    <ClCompile Include="RLS.cpp" />
     <ClCompile Include="switchunit.cpp" />
-    <ClCompile Include="WISDOM.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adron.h" />
-    <ClInclude Include="CLUPI.h" />
     <ClInclude Include="crc.h" />
-    <ClInclude Include="Drill.h" />
     <ClInclude Include="helperlib.h" />
     <ClInclude Include="io_port.h" />
-    <ClInclude Include="ISEM.h" />
-    <ClInclude Include="Ma_MISS.h" />
-    <ClInclude Include="MicrOmega.h" />
-    <ClInclude Include="MOMA.h" />
-    <ClInclude Include="NavCam.h" />
     <ClInclude Include="networkunit.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Packet.h" />
-    <ClInclude Include="PanCam.h" />
     <ClInclude Include="printunit.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="RLS.h" />
     <ClInclude Include="switchunit.h" />
-    <ClInclude Include="WISDOM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

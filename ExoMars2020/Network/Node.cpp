@@ -9,7 +9,7 @@ Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t 
 	rng.seed(std::random_device()());
 	logfile << "Node " << name() << " with logic address " << logical_address << ":" << std::endl;
 
-	SC_THREAD(daemon);
+	SC_THREAD(receiver_daemon);
 }
 
 Node::~Node()
@@ -20,6 +20,11 @@ Node::~Node()
 sc_uint<16>& Node::get_logical_address()
 {
 	return logical_address;
+}
+
+void Node::add_destination(const sc_uint<16>& d)
+{
+	destinations.push_back(d);
 }
 
 void Node::init_db(sqlite3 * _db)
@@ -81,7 +86,6 @@ void Node::send_raw(Packet & p)
 			new_packet_stmt << p[p.size()-1] << "\",";
 		}
 		new_packet_stmt << p.get_crc() << ',' << p.size() << ");" << std::endl;
-		std::cout << new_packet_stmt.str() << std::endl;
 		char* zErrMsg;
 		int rc = sqlite3_exec(db, new_packet_stmt.str().c_str(), [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; }, nullptr, &zErrMsg);
 		if (rc != SQLITE_OK) {
@@ -175,8 +179,11 @@ sc_time Node::recv_raw(Packet & p)
 	return t1-t0;
 }
 
-void Node::daemon()
+void Node::receiver_daemon()
 {
+	for (const sc_uint<16>& to : destinations)
+		sc_spawn(sc_bind(&Node::sending_daemon, this, to));
+
 	sc_time t;
 	while (true)
 	{
@@ -210,6 +217,21 @@ void Node::daemon()
 			ack_queue.push_back(p);
 			ack_reception.notify(SC_ZERO_TIME);
 		}
+	}
+}
+
+void Node::sending_daemon(const sc_uint<16> to)
+{
+	while (true)
+	{
+		Packet p;
+		p << to << logical_address;
+		for (size_t i = 0; i < psize; i++)
+			p << rand();
+
+		send(p);
+
+		wait(100, SC_US);
 	}
 }
 
