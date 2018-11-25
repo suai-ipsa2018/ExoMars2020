@@ -14,5 +14,8 @@ int sc_main(int argc, char *argv[])
     sc_start(300, SC_US); // Starts simulation for 300 us
 
     return 0;
+
+	// set CL = /DNETWORK_PART#2
+	// msbuild Network.vcxproj /p:Configuration=Release;Platform=x86;TargetName=xxxxxxxxx
 }
 
