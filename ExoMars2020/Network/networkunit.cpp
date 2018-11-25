@@ -31,8 +31,8 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 	channels.reserve(addresses.size());
 	for (auto me : addresses)
 	{
-		instruments.push_back(std::unique_ptr<Node>(new Node(me.first.c_str(), me.second, 16, delay_between_bytes, 8, verbose)));
-		channels.push_back(std::unique_ptr<io_channel>(new io_channel((me.first + "_channel").c_str())));
+		instruments.push_back(std::make_unique<Node>(me.first.c_str(), me.second, 16, delay_between_bytes, 8, verbose));
+		channels.push_back(std::make_unique<io_channel>((me.first + "_channel").c_str()));
 		router.connect(*instruments.back(), *channels.back());
 
 		sc_trace(tf, *channels.back(), channels.back()->basename());
