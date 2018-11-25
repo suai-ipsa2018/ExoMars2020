@@ -27,17 +27,19 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 	tf = sc_create_vcd_trace_file("traces/network");
 	sqlite3_open("logs/Network.db", &db);
 
+	instruments.reserve(addresses.size());
+	channels.reserve(addresses.size());
 	for (auto me : addresses)
 	{
-		instruments.push_back(new Node(me.first.c_str(), me.second, 16, delay_between_bytes, 8, verbose));
-		channels.push_back(new io_channel((me.first + "_channel").c_str()));
+		instruments.push_back(std::unique_ptr<Node>(new Node(me.first.c_str(), me.second, 16, delay_between_bytes, 8, verbose)));
+		channels.push_back(std::unique_ptr<io_channel>(new io_channel((me.first + "_channel").c_str())));
 		router.connect(*instruments.back(), *channels.back());
 
 		sc_trace(tf, *channels.back(), channels.back()->basename());
 		instruments.back()->init_db(db);
 	}
 	router.connections_done();
-	for (Node* i : instruments)
+	for (std::unique_ptr<Node> &i : instruments)
 	{
 		for (auto pair : traffic_map)
 			if (pair[0] == i->get_logical_address())
@@ -48,7 +50,4 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 NetworkUnit::~NetworkUnit()
 {
 	sqlite3_close(db);
-
-	for (Node* ptr : instruments)
-		delete ptr;
 }

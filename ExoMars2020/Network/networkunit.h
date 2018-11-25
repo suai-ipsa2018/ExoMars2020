@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <systemc.h>
 
 #include "io_port.h"
@@ -29,8 +30,8 @@ public:
 private:
 	sc_time delay_between_bytes;
     
-	std::vector<Node*> instruments;
-	std::vector<io_channel*> channels;
+	std::vector<std::unique_ptr<Node>> instruments;
+	std::vector<std::unique_ptr<io_channel>> channels;
 
 	SwitchUnit router;
 
