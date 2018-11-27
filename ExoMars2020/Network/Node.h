@@ -4,7 +4,7 @@
 #include <sqlite3.h>
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES
-#include "systemc.h"
+#include <systemc.h>
 #include "io_port.h"
 #include "Packet.h"
 #include "helperlib.h"
@@ -16,6 +16,7 @@ public:
 protected:
 	sc_uint<16> logical_address;
 	sc_time delay_between_bytes;
+	sc_time delay_between_packets;
 	std::vector<sc_uint<16>> destinations;
 
 	size_t bit;
@@ -32,7 +33,8 @@ private:
 
 	std::vector<Packet> packet_queue, ack_queue;
 public:
-	Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t &_psize, sc_time _delay_between_bytes, size_t _bit = 8, bool _verbose = false);
+	Node(sc_module_name mn, const sc_uint<16> &_logical_address,
+		size_t _bit, size_t _psize, sc_time _delay_between_bytes, sc_time delay_between_packets, bool _verbose = false);
 	virtual ~Node();
   
 	sc_uint<16>& get_logical_address();

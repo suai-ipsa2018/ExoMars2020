@@ -25,67 +25,88 @@ std::string formatted_time_stamp()
 	return tstr;
 }
 
+std::array<int, 4> ConfigLoader::defaults{ 8, 16, 24000000, 100 };
+
 ConfigLoader::ConfigLoader(std::string path) : file(path)
 {
-	std::string tmp, id, target;
-	int n, addr;
+	std::string line, tmp, node, target, property;
+	int n(-1), addr, val;
 	if (file)
 	{
-		while (file >> tmp)
+		while (std::getline(file, line))
 		{
-			if (tmp == "--")
+			std::stringstream stream(line);
+			if (line.find("--") != line.npos)
 			{
-				file >> tmp;
-				if (tmp == "Part")
-				{
-					file >> n;
-					file >> tmp >> id;
-					while (id != "--" && !file.eof())
-					{
-						file >> tmp;
-						if (tmp == ":")
-						{
-							file >> addr;
-							if (!la[n-1][id])
-								la[n-1][id] = addr;
-							else
-							{
-								if (la[n-1][id] != addr)
-									std::cerr << "Logical address mismatch for " << id << ", keeping old one: " << la[n-1][id] << std::endl;
-							}
-						}
-						else if (tmp == "->")
-						{
-							file >> target;
-							if (!la[n-1][id])
-							{
-								std::cerr << "Logical address for " << id << " not set in network part " << n << std::endl;
-								exit(-1);
-							}
-							else if (!la[n-1][target])
-							{
-								std::cerr << "Logical address for " << target << " not set in network part " << n << std::endl;
-								exit(-1);
-							}
-							else
-							{
-								parts[n-1].push_back(std::array<int, 2>{la[n-1][id],la[n-1][target]});
-							}
-						}
-						file >> id;
-					}
-					file.seekg(-2, file.cur);
-				}
-				else
+				stream >> tmp >> tmp;
+				if (tmp != "Part")
 				{
 					std::cerr << "'Part n' expected after '--', found " << tmp << std::endl;
 					exit(-1);
 				}
+				stream >> n;
+				if (n < 1)
+				{
+					std::cerr << "Parts of network must be positive integers, found " << n << std::endl;
+					exit(-1);
+				}
+				else
+					n--; // Convert network part to array index
 			}
-			else
+			else if (line.find(':') != line.npos)
 			{
-				std::cerr << "Config file should begin with '-- Part n --', found " << tmp << std::endl;
-				exit(-1);
+				stream >> node;
+				stream >> tmp >> addr;
+				if (!la[n][node][0])
+					la[n][node][0] = addr;
+				else
+				{
+					if (la[n][node][0] != addr)
+						std::cerr << "Logical address mismatch for " << node << ", keeping old one: " << la[n][node][0] << std::endl;
+				}
+
+				for (int i = 0; i < 4; i++)
+					la[n][node][i + 1] = defaults[i];
+
+				while (stream >> tmp)
+				{
+					stream >> property;
+					stream >> tmp;
+					if (tmp != "=")
+					{
+						std::cerr << property << " found after property, was waiting for '='" << std::endl;
+						exit(-1);
+					}
+					stream >> val;
+					if (property == "fsize") la[n][node][1] = val;
+					else if (property == "psize") la[n][node][2] = val;
+					else if (property == "speed") la[n][node][3] = val;
+					else if (property == "delay_between_packets") la[n][node][4] = val;
+					else
+					{
+						std::cerr << "Unknown property " << tmp << std::endl;
+						exit(-1);
+					}
+				}
+			}
+			else if (line.find("->") != line.npos)
+			{
+				stream >> node;
+				stream >> target >> target;
+				if (!la[n][node][0])
+				{
+					std::cerr << "Logical address for " << node << " not set in network part " << n + 1 << std::endl;
+					exit(-1);
+				}
+				else if (!la[n][target][0])
+				{
+					std::cerr << "Logical address for " << target << " not set in network part " << n + 1 << std::endl;
+					exit(-1);
+				}
+				else
+				{
+					parts[n].push_back({ la[n][node][0],la[n][target][0] });
+				}
 			}
 		}
 	}
@@ -98,22 +119,31 @@ ConfigLoader::~ConfigLoader()
 	file.close();
 }
 
-const std::vector<std::array<int, 2>>& ConfigLoader::get_first_part() const
+const std::vector<std::array<int, 2>>& ConfigLoader::get_map(size_t part)
 {
-	return parts[0];
+	if (part == 1)
+		return parts[0];
+	else if (part == 2)
+		return parts[1];
+	else
+	{
+		flatten_parts.reserve(parts[0].size() + parts[1].size());
+		flatten_parts.insert(flatten_parts.end(), parts[0].begin(), parts[0].end());
+		flatten_parts.insert(flatten_parts.end(), parts[1].begin(), parts[1].end());
+		return flatten_parts;
+	}
 }
 
-const std::vector<std::array<int, 2>>& ConfigLoader::get_second_part() const
+const std::map<std::string, std::array<int, 5>>& ConfigLoader::get_la(size_t part)
 {
-	return parts[1];
-}
-
-const std::map<std::string, int>& ConfigLoader::get_first_part_la() const
-{
-	return la[0];
-}
-
-const std::map<std::string, int>& ConfigLoader::get_second_part_la() const
-{
-	return la[1];
+	if (part == 1)
+		return la[0];
+	else if (part == 2)
+		return la[1];
+	else
+	{
+		flatten_la.insert(la[0].begin(), la[0].end());
+		flatten_la.insert(la[1].begin(), la[1].end());
+		return flatten_la;
+	}
 }

@@ -2,7 +2,7 @@
 
 #include <iomanip>
 #define SC_INCLUDE_DYNAMIC_PROCESSES
-#include "systemc.h"
+#include <systemc.h>
 #include "io_port.h"
 #include "Node.h"
 
@@ -62,7 +62,7 @@ public:
     friend std::ostream& operator<<(std::ostream& flux, const SwitchMatrix& M);
 
 private:
-    std::vector<bool> M; //!< Bidimensional array of booleans, stores the data of the matrix
+    std::vector<bool> M; //!< Array of booleans, stores the data of the matrix
     size_t n, //!< Number of rows
            m; //!< Number of columns
 };
@@ -91,7 +91,7 @@ public:
 
 	void connect(Node &n, io_channel &c);
 
-    std::vector<io_port> ports; //!< Pointer to an array of ports, as much as required in the routing_matrix
+    std::vector<io_port> ports; //!< Vector of ports, as much as required in the routing_matrix
 
 private:
     void init_thread(); //!< First thread launched, spawns all the port_processing threads

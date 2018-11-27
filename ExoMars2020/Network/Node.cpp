@@ -1,7 +1,8 @@
 #include "Node.h"
 
 SC_HAS_PROCESS(Node);
-Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address, const size_t & _psize, sc_time _delay_between_bytes, size_t _bit, bool _verbose)
+Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address,
+	size_t _bit, size_t _psize, sc_time _delay_between_bytes, sc_time delay_between_packets, bool _verbose)
 	: sc_module(mn), logical_address(_logical_address), psize(_psize), delay_between_bytes(_delay_between_bytes), bit(_bit), verbose(_verbose),
 	port((std::string((const char*)mn) + "_port").c_str()),
 	logfile("logs/" + (std::string((const char*)mn) + ".log"))
@@ -71,7 +72,7 @@ RECEPTION_TIME     REAL                NOT NULL
 void Node::send_raw(Packet & p)
 {
 	send_mutex.lock();
-	logfile << formatted_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
+	logfile << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
 	if (verbose) logfile << p << std::endl;
 	
 	if (db)
@@ -126,12 +127,12 @@ void Node::send(Packet &p)
 			{
 				if (ack_queue[i][0])
 				{
-					std::cout << formatted_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
+					std::cout << sc_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
 					ack_queue.erase(ack_queue.begin() + i);
 				}
 				else
 				{
-					std::cout << formatted_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
+					std::cout << sc_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
 					ack_queue.erase(ack_queue.begin() + i);
 					send(p);
 				}
@@ -192,7 +193,7 @@ void Node::receiver_daemon()
 
 		if (p.size() > 1)
 		{
-			logfile << formatted_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << t.to_seconds() << "s" << std::endl;
+			logfile << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << t.to_seconds() << "s" << std::endl;
 			if (verbose) logfile << p << std::endl;
 			std::cout << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << t.to_seconds() << "s" << std::endl;
 			if (verbose) std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
@@ -222,16 +223,19 @@ void Node::receiver_daemon()
 
 void Node::sending_daemon(const sc_uint<16> to)
 {
+	sc_time t0, t1;
 	while (true)
 	{
+		t0 = sc_time_stamp();
 		Packet p;
 		p << to << logical_address;
 		for (size_t i = 0; i < psize; i++)
 			p << rand();
 
 		send(p);
+		t1 = sc_time_stamp();
 
-		wait(100, SC_US);
+		wait(delay_between_packets - t1 + t0);
 	}
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <random>
-#include "systemc.h"
+#include <systemc.h>
 
 /** @file io_port.h
  * @brief Declares the custom bidirectional port io_port, as well as the io_channel and the io_if associated

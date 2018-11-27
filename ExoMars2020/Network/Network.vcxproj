@@ -162,7 +162,6 @@
     <ClCompile Include="networkunit.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Packet.cpp" />
-    <ClCompile Include="printunit.cpp" />
     <ClCompile Include="switchunit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +171,6 @@
     <ClInclude Include="networkunit.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Packet.h" />
-    <ClInclude Include="printunit.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="switchunit.h" />
   </ItemGroup>

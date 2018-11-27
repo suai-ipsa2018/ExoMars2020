@@ -1,5 +1,5 @@
 #pragma once
-#include "systemc.h"
+#include <systemc.h>
 
 /*! @file crc_8.h
  * @brief Implementation of the CRC algorithm using a 8-th order polynomial (9-bits), and thus producing an 8-bit checksum.

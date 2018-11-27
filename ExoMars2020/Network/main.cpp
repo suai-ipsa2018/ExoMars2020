@@ -16,6 +16,6 @@ int sc_main(int argc, char *argv[])
     return 0;
 
 	// set CL = /DNETWORK_PART#2
-	// msbuild Network.vcxproj /p:Configuration=Release;Platform=x86;TargetName=xxxxxxxxx
+	// msbuild Network.vcxproj /p:Configuration=Release;Platform=x86;TargetName=../Release/part1
 }
 
