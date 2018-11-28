@@ -31,23 +31,25 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 {
 	std::string line, tmp, node, target, property;
 	int n(-1), addr, val;
+	size_t l(0);
 	if (file)
 	{
 		while (std::getline(file, line))
 		{
+			l++;
 			std::stringstream stream(line);
 			if (line.find("--") != line.npos)
 			{
 				stream >> tmp >> tmp;
 				if (tmp != "Part")
 				{
-					std::cerr << "'Part n' expected after '--', found " << tmp << std::endl;
+					std::cerr << "line " << l << ' ' << "'Part n' expected after '--', found " << tmp << std::endl;
 					exit(-1);
 				}
 				stream >> n;
 				if (n < 1)
 				{
-					std::cerr << "Parts of network must be positive integers, found " << n << std::endl;
+					std::cerr << "line " << l << ' ' << "Parts of network must be positive integers, found " << n << std::endl;
 					exit(-1);
 				}
 				else
@@ -55,57 +57,73 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 			}
 			else if (line.find(':') != line.npos)
 			{
-				stream >> node;
-				stream >> tmp >> addr;
-				if (!la[n][node][0])
-					la[n][node][0] = addr;
-				else
+				if (n >= 0)
 				{
-					if (la[n][node][0] != addr)
-						std::cerr << "Logical address mismatch for " << node << ", keeping old one: " << la[n][node][0] << std::endl;
-				}
-
-				for (int i = 0; i < 4; i++)
-					la[n][node][i + 1] = defaults[i];
-
-				while (stream >> tmp)
-				{
-					stream >> property;
-					stream >> tmp;
-					if (tmp != "=")
-					{
-						std::cerr << property << " found after property, was waiting for '='" << std::endl;
-						exit(-1);
-					}
-					stream >> val;
-					if (property == "fsize") la[n][node][1] = val;
-					else if (property == "psize") la[n][node][2] = val;
-					else if (property == "speed") la[n][node][3] = val;
-					else if (property == "delay_between_packets") la[n][node][4] = val;
+					stream >> node;
+					stream >> tmp >> addr;
+					if (!la[n][node][0])
+						la[n][node][0] = addr;
 					else
 					{
-						std::cerr << "Unknown property " << tmp << std::endl;
-						exit(-1);
+						if (la[n][node][0] != addr)
+							std::cerr << "line " << l << ' ' << "Logical address mismatch for " << node << ", keeping old one: " << la[n][node][0] << std::endl;
 					}
+
+					for (int i = 0; i < 4; i++)
+						la[n][node][i + 1] = defaults[i];
+
+					while (stream >> tmp)
+					{
+						stream >> property;
+						stream >> tmp;
+						if (tmp != "=")
+						{
+							std::cerr << "line " << l << ' ' << property << " found after property, was waiting for '='" << std::endl;
+							exit(-1);
+						}
+						stream >> val;
+						if (property == "fsize") la[n][node][1] = val;
+						else if (property == "psize") la[n][node][2] = val;
+						else if (property == "speed") la[n][node][3] = val;
+						else if (property == "delay_between_packets") la[n][node][4] = val;
+						else
+						{
+							std::cerr << "line " << l << ' ' << "Unknown property " << tmp << std::endl;
+							exit(-1);
+						}
+					}
+				}
+				else
+				{
+					std::cerr << "line " << l << ' ' << "Network part not specified before instrument declaration" << std::endl;
+					exit(-1);
 				}
 			}
 			else if (line.find("->") != line.npos)
 			{
-				stream >> node;
-				stream >> target >> target;
-				if (!la[n][node][0])
+				if (n >= 0)
 				{
-					std::cerr << "Logical address for " << node << " not set in network part " << n + 1 << std::endl;
-					exit(-1);
-				}
-				else if (!la[n][target][0])
-				{
-					std::cerr << "Logical address for " << target << " not set in network part " << n + 1 << std::endl;
-					exit(-1);
+					stream >> node;
+					stream >> target >> target;
+					if (!la[n][node][0])
+					{
+						std::cerr << "line " << l << ' ' << "Logical address for " << node << " not set in network part " << n + 1 << std::endl;
+						exit(-1);
+					}
+					else if (!la[n][target][0])
+					{
+						std::cerr << "line " << l << ' ' << "Logical address for " << target << " not set in network part " << n + 1 << std::endl;
+						exit(-1);
+					}
+					else
+					{
+						parts[n].push_back({ la[n][node][0],la[n][target][0] });
+					}
 				}
 				else
 				{
-					parts[n].push_back({ la[n][node][0],la[n][target][0] });
+					std::cerr << "line " << l << ' ' << "Network part not specified before communication declaration" << std::endl;
+					exit(-1);
 				}
 			}
 		}
