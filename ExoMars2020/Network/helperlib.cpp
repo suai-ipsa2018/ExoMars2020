@@ -37,7 +37,8 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 		while (std::getline(file, line))
 		{
 			l++;
-			line = line.substr(line.find_first_not_of(' '), line.find_first_of('#') - line.find_first_not_of(' '));
+			if (!line.empty())
+				line = line.substr(line.find_first_not_of(' '), line.find_first_of('#') - line.find_first_not_of(' '));
 			std::stringstream stream(line);
 			if (line.find("--") != line.npos)
 			{
