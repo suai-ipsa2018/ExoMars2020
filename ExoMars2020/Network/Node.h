@@ -46,7 +46,7 @@ protected:
 	void get_packet(Packet &p);
 private:
 	void send_raw(Packet &p);
-	void send_ack(size_t dest, bool state);
+	void send_ack(sc_uint<16> dest, bool state);
 	sc_time recv_raw(Packet &p);
 	void receiver_daemon();
 	void sending_daemon(const sc_uint<16> to);

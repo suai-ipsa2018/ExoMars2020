@@ -128,7 +128,7 @@ SwitchUnit::~SwitchUnit()
 
 void SwitchUnit::connect(Node & n, io_channel &c)
 {
-	sm.set_logical_route(n.get_logical_address(), i_port);
+	sm.set_logical_route((size_t)n.get_logical_address(), i_port);
 
 	n.port(c);
 	ports[i_port](c); i_port++;
@@ -166,7 +166,7 @@ void SwitchUnit::port_processing(size_t in_port_number)
         // List all ports usuable to reach the logical address given
         for (out_port_number=0 ; out_port_number < n_ports ; out_port_number++) // Goes through the line 'address' of the switch matrix
         {
-            if (sm(address, out_port_number)) // If the port is valid for the address
+            if (sm((size_t)address, out_port_number)) // If the port is valid for the address
             {
                 compound_event = compound_event | out_ports_access[out_port_number].unlock_event(); // Add the unlock event of the current port's corresponding mutex
                 n_ports_at_address++; // Counts the number of usable ports
@@ -179,7 +179,7 @@ void SwitchUnit::port_processing(size_t in_port_number)
         }
 
         // Actual selection of port
-        for (out_port_number=0 ; !sm(address, out_port_number) || out_ports_access[out_port_number].trylock() ; out_port_number++) // Cycle through all ports, while looking if the port can be used to reach address, and if the port can be locked
+        for (out_port_number=0 ; !sm((size_t)address, out_port_number) || out_ports_access[out_port_number].trylock() ; out_port_number++) // Cycle through all ports, while looking if the port can be used to reach address, and if the port can be locked
         {
             if (out_port_number==n_ports) // If all ports have been examined, we need to wait for an unlock
             {

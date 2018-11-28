@@ -106,7 +106,7 @@ void Node::send_raw(Packet & p)
 	send_mutex.unlock();
 }
 
-void Node::send_ack(size_t dest, bool state) // Function spawned to send an ack packet (avoids blocking the PrintUnit for this)
+void Node::send_ack(sc_uint<16> dest, bool state) // Function spawned to send an ack packet (avoids blocking the PrintUnit for this)
 {
 	Packet p;
 	p << dest << logical_address << state;

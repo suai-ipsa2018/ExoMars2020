@@ -3,7 +3,7 @@
 std::string formatted_time_stamp()
 {
 	unsigned short fs(0), ps(0), ns(0), us(0), ms(0), s(0), m(0), h(0);
-	uint64 val = sc_time_stamp().value()*(1e-12 / sc_get_time_resolution().to_seconds());
+	uint64 val = (uint64)(sc_time_stamp().value()*(1e-12 / sc_get_time_resolution().to_seconds()));
 	ps = val % 1000; val /= 1000;
 	ns = val % 1000; val /= 1000;
 	us = val % 1000; val /= 1000;
