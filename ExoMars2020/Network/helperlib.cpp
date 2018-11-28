@@ -25,7 +25,7 @@ std::string formatted_time_stamp()
 	return tstr;
 }
 
-std::array<int, 4> ConfigLoader::defaults{ 8, 16, 24000000, 100 };
+std::array<int, 4> ConfigLoader::defaults{ 8, 24000000, 16, 100 };
 
 ConfigLoader::ConfigLoader(std::string path) : file(path)
 {
@@ -85,8 +85,8 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 							}
 							stream >> val;
 							if (property == "fsize") la[n][node][1] = val;
-							else if (property == "psize") la[n][node][2] = val;
-							else if (property == "speed") la[n][node][3] = val;
+							else if (property == "speed") la[n][node][2] = val;
+							else if (property == "psize") la[n][node][3] = val;
 							else if (property == "delay_between_packets") la[n][node][4] = val;
 							else
 							{

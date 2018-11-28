@@ -2,7 +2,7 @@
 
 SC_HAS_PROCESS(Node);
 Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address,
-	size_t _bit, size_t _psize, sc_time _delay_between_bytes, sc_time _delay_between_packets, bool _verbose)
+	size_t _bit, sc_time _delay_between_bytes, size_t _psize, sc_time _delay_between_packets, bool _verbose)
 	: sc_module(mn), logical_address(_logical_address), bit(_bit), psize(_psize), delay_between_bytes(_delay_between_bytes), delay_between_packets(_delay_between_packets), verbose(_verbose),
 	port((std::string((const char*)mn) + "_port").c_str()),
 	logfile("logs/" + (std::string((const char*)mn) + ".log"))

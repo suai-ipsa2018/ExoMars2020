@@ -21,7 +21,7 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 	for (auto me : addresses)
 	{
 		instruments.push_back(std::make_unique<Node>(me.first.c_str(),me.second[0],
-			me.second[1], me.second[2], sc_time(1./me.second[3], SC_SEC), sc_time(me.second[4], SC_US), verbose));
+			me.second[1], sc_time(1. / me.second[2], SC_SEC), me.second[3], sc_time(me.second[4], SC_US), verbose));
 
 		channels.push_back(std::make_unique<io_channel>((me.first + "_channel").c_str()));
 		router.connect(*instruments.back(), *channels.back());

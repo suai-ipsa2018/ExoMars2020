@@ -34,7 +34,7 @@ private:
 	std::vector<Packet> packet_queue, ack_queue;
 public:
 	Node(sc_module_name mn, const sc_uint<16> &_logical_address,
-		size_t _bit, size_t _psize, sc_time _delay_between_bytes, sc_time delay_between_packets, bool _verbose = false);
+		size_t _bit, sc_time _delay_between_bytes, size_t _psize, sc_time delay_between_packets, bool _verbose = false);
 	virtual ~Node();
   
 	sc_uint<16>& get_logical_address();
