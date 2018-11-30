@@ -10,11 +10,12 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 {
 	ConfigLoader cfg("config/Network.cfg");
 
+	std::cout << NETWORK_PART << std::endl;
 	std::map<std::string, NodeConfig> addresses = cfg.get_la(NETWORK_PART);
 	std::vector<TransmissionConfig> traffic_desc = cfg.get_desc(NETWORK_PART);
 
-	tf = sc_create_vcd_trace_file("traces/network");
-	sqlite3_open("logs/Network.db", &db);
+	tf = sc_create_vcd_trace_file(("traces/network_" + std::to_string(NETWORK_PART)).c_str());
+	sqlite3_open(("logs/Network_" + std::to_string(NETWORK_PART) + ".db").c_str(), &db);
 
 	instruments.reserve(addresses.size());
 	channels.reserve(addresses.size());
