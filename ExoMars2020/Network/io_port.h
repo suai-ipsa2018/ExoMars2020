@@ -23,7 +23,7 @@ public:
 class io_channel : public io_if, public sc_prim_channel /// channel using io_if
 {
 public:
-	io_channel(sc_module_name mn, sc_time transmission_time_=sc_time(1./48e6, SC_SEC), int	error_frequency_=40);
+	io_channel(sc_module_name mn, sc_time transmission_time_=sc_time(1./48e6, SC_SEC), int	error_period_=40);
     friend void sc_trace(sc_trace_file *_f, const io_channel& object, std::string name_file);
 private:
     sc_uint<16> cur_d, //!< Current data
@@ -33,10 +33,10 @@ private:
     sc_event e_read, //!< Event triggered when data is read
              e_write; //!< Event triggered when data is written
 	sc_time transmission_time;
-	int error_frequency;
+	int error_period;
 
 	std::mt19937 rng;
-	std::uniform_int_distribution<std::mt19937::result_type> value_dist{ 256, 65534 }, dist{ 0, error_frequency };
+	std::uniform_int_distribution<std::mt19937::result_type> value_dist{ 256, 65534 }, dist{ 0, error_period };
 
     /**
      * @brief write Writes new data to the channel

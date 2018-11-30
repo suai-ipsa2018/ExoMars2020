@@ -25,8 +25,9 @@ std::string formatted_time_stamp()
 	return tstr;
 }
 
-const NodeConfig ConfigLoader::node_defaults{0, 8, sc_time(1./24e6, SC_SEC), 16};
-const TransmissionConfig ConfigLoader::transmission_defaults{ 0, 0, sc_time(100, SC_US), sc_time(0, SC_SEC), sc_time(-1, SC_SEC), SIZE_MAX };
+NodeConfig ConfigLoader::node_defaults{0, 8, sc_time(1./24e6, SC_SEC), 16};
+ChannelConfig ConfigLoader::channel_defaults{sc_time(1./48e6, SC_SEC), 0};
+TransmissionConfig ConfigLoader::transmission_defaults{ 0, 0, sc_time(100, SC_US), sc_time(0, SC_SEC), sc_time(-1, SC_SEC), SIZE_MAX };
 
 ConfigLoader::ConfigLoader(std::string path) : file(path)
 {

@@ -5,6 +5,7 @@
 
 int sc_main(int argc, char *argv[])
 {
+	std::cout << NETWORK_PART << std::endl;
 	bool verbose(false);
 	for (int i = 1; i < argc; i++)
 		if (std::string(argv[i]) == "-v") verbose = true;

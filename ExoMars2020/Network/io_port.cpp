@@ -1,7 +1,7 @@
 #include "io_port.h"
 
 
-io_channel::io_channel(sc_module_name mn, sc_time transmission_time_, int error_frequency_) : sc_prim_channel((const char*)mn), transmission_time(transmission_time_), error_frequency(error_frequency_)
+io_channel::io_channel(sc_module_name mn, sc_time transmission_time_, int error_period_) : sc_prim_channel((const char*)mn), transmission_time(transmission_time_), error_period(error_period_)
 {
 	rng.seed(std::random_device()());
 }
@@ -10,7 +10,7 @@ void io_channel::write(const sc_uint<16>& n, size_t id)
 {
 	new_d = n; // New data written
 	//if (std::string(basename()) == "Adron_channel") std::cout << "From adron channel: " << n << std::endl;
-	if (error_frequency > 0 && new_d > 256 && new_d < sc_uint<16>(-1))
+	if (error_period > 0 && new_d > 256 && new_d < sc_uint<16>(-1))
 	{
 		if (!dist(rng))
 		{
