@@ -226,7 +226,7 @@ void Node::sending_daemon(const TransmissionConfig& c)
 	sc_time t0, t1;
 	size_t n_packets_sent(0);
 	wait(c.t_start);
-	while (n_packets_sent <= c.n_packets && sc_time_stamp() < c.t_end)
+	while (n_packets_sent < c.n_packets && sc_time_stamp() < c.t_end)
 	{
 		t0 = sc_time_stamp();
 		Packet p;
@@ -236,6 +236,7 @@ void Node::sending_daemon(const TransmissionConfig& c)
 
 		send(p);
 		t1 = sc_time_stamp();
+		n_packets_sent++;
 
 		wait(c.delay_between_packets - t1 + t0);
 	}
