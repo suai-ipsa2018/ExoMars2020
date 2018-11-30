@@ -25,11 +25,12 @@ std::string formatted_time_stamp()
 	return tstr;
 }
 
-std::array<int, 4> ConfigLoader::defaults{ 8, 24000000, 16, 100 };
+const NodeConfig ConfigLoader::node_defaults{0, 8, sc_time(1./24e6, SC_SEC), 16};
+const TransmissionConfig ConfigLoader::transmission_defaults{ 0, 0, sc_time(100, SC_US), sc_time(0, SC_SEC), sc_time(-1, SC_SEC), SIZE_MAX };
 
 ConfigLoader::ConfigLoader(std::string path) : file(path)
 {
-	std::string line, tmp, node, target, property;
+	std::string line, tmp, node, target, property_type;
 	int n(-1), addr, val;
 	size_t l(0);
 	if (file)
@@ -37,7 +38,7 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 		while (std::getline(file, line))
 		{
 			l++;
-			if (!line.empty() && !(line = line.substr(line.find_first_not_of(' '), line.find_first_of('#') - line.find_first_not_of(' '))).empty())
+			if (!line.empty() && line.find_first_not_of(' ') != line.npos && !(line = line.substr(line.find_first_not_of(' '), line.find_first_of('#') - line.find_first_not_of(' '))).empty())
 			{
 				std::stringstream stream(line);
 				if (line.find("--") != line.npos)
@@ -63,31 +64,40 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 					{
 						stream >> node;
 						stream >> tmp >> addr;
-						if (!la[n][node][0])
-							la[n][node][0] = addr;
+						la[n][node] = node_defaults;
+						if (!la[n][node].address)
+							la[n][node].address = addr;
 						else
 						{
-							if (la[n][node][0] != addr)
-								std::cerr << "line " << l << ' ' << "Logical address mismatch for " << node << ", keeping old one: " << la[n][node][0] << std::endl;
+							if (la[n][node].address != addr)
+								std::cerr << "line " << l << ' ' << "Logical address mismatch for " << node << ", keeping old one: " << la[n][node].address << std::endl;
 						}
+						stream >> tmp;
 
-						for (int i = 0; i < 4; i++)
-							la[n][node][i + 1] = defaults[i];
-
-						while (stream >> tmp)
+						while (stream >> property_type)
 						{
-							stream >> property;
 							stream >> tmp;
 							if (tmp != "=")
 							{
-								std::cerr << "line " << l << ' ' << property << " found after property, was waiting for '='" << std::endl;
+								std::cerr << "line " << l << ' ' << tmp << " found after property, was waiting for '='" << std::endl;
 								exit(-1);
 							}
 							stream >> val;
-							if (property == "fsize") la[n][node][1] = val;
-							else if (property == "speed") la[n][node][2] = val;
-							else if (property == "psize") la[n][node][3] = val;
-							else if (property == "delay_between_packets") la[n][node][4] = val;
+							if (property_type == "fsize")
+							{
+								la[n][node].fsize = val;
+								stream >> tmp;
+							}
+							else if (property_type == "speed")
+							{
+								la[n][node].delay_between_bytes = sc_time(1. / val, SC_SEC);
+								stream >> tmp;
+							}
+							else if (property_type == "psize")
+							{
+								la[n][node].psize = val;
+								stream >> tmp;
+							}
 							else
 							{
 								std::cerr << "line " << l << ' ' << "Unknown property " << tmp << std::endl;
@@ -105,22 +115,64 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 				{
 					if (n >= 0)
 					{
+						TransmissionConfig cfg(transmission_defaults);
 						stream >> node;
 						stream >> target >> target;
-						if (!la[n][node][0])
+						if (target[target.size() - 1] == ',') target = target.substr(0, target.length() - 1);
+						if (!la[n][node].address)
 						{
 							std::cerr << "line " << l << ' ' << "Logical address for " << node << " not set in network part " << n + 1 << std::endl;
 							exit(-1);
 						}
-						else if (!la[n][target][0])
+						else if (!la[n][target].address)
 						{
 							std::cerr << "line " << l << ' ' << "Logical address for " << target << " not set in network part " << n + 1 << std::endl;
 							exit(-1);
 						}
 						else
 						{
-							parts[n].push_back({ la[n][node][0],la[n][target][0] });
+							cfg.sender_address = la[n][node].address;
+							cfg.receiver_address = la[n][target].address;
 						}
+
+						while (stream >> property_type)
+						{
+							stream >> tmp;
+							if (tmp != "=")
+							{
+								std::cerr << "line " << l << ' ' << tmp << " found after property, was waiting for '='" << std::endl;
+								exit(-1);
+							}
+							stream >> val;
+
+							if (property_type == "delay_between_packets")
+							{
+								std::string unit;
+								stream >> unit;
+								if (unit[unit.length() - 1] == ',') unit = unit.substr(0, unit.length() - 1);
+								cfg.delay_between_packets = sc_time(val, unit.c_str());
+							}
+							else if (property_type == "t_start")
+							{
+								std::string unit;
+								stream >> unit;
+								if (unit[unit.length() - 1] == ',') unit = unit.substr(0, unit.length() - 1);
+								cfg.t_start = sc_time(val, unit.c_str());
+							}
+							else if (property_type == "t_end")
+							{
+								std::string unit;
+								stream >> unit;
+								if (unit[unit.length() - 1] == ',') unit = unit.substr(0, unit.length() - 1);
+								cfg.t_end = sc_time(val, unit.c_str());
+							}
+							else if (property_type == "n_packets")
+							{
+								cfg.n_packets = val;
+								stream >> tmp;
+							}
+						}
+						parts[n].push_back(cfg);
 					}
 					else
 					{
@@ -145,7 +197,7 @@ ConfigLoader::~ConfigLoader()
 	file.close();
 }
 
-const std::vector<std::array<int, 2>>& ConfigLoader::get_map(size_t part)
+const std::vector<TransmissionConfig>& ConfigLoader::get_desc(size_t part)
 {
 	if (part == 1)
 		return parts[0];
@@ -160,7 +212,7 @@ const std::vector<std::array<int, 2>>& ConfigLoader::get_map(size_t part)
 	}
 }
 
-const std::map<std::string, std::array<int, 5>>& ConfigLoader::get_la(size_t part)
+const std::map<std::string, NodeConfig>& ConfigLoader::get_la(size_t part)
 {
 	if (part == 1)
 		return la[0];

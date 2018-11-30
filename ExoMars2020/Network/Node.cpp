@@ -1,14 +1,14 @@
 #include "Node.h"
 
 SC_HAS_PROCESS(Node);
-Node::Node(sc_module_name mn, const sc_uint<16> &_logical_address,
-	size_t _bit, sc_time _delay_between_bytes, size_t _psize, sc_time _delay_between_packets, bool _verbose)
-	: sc_module(mn), logical_address(_logical_address), bit(_bit), psize(_psize), delay_between_bytes(_delay_between_bytes), delay_between_packets(_delay_between_packets), verbose(_verbose),
+Node::Node(sc_module_name mn, const NodeConfig& _cfg, bool _verbose)
+	: sc_module(mn), cfg(_cfg), verbose(_verbose),
+	dist(0, (int)(pow(2,_cfg.fsize) - 1)),
 	port((std::string((const char*)mn) + "_port").c_str()),
 	logfile("logs/" + (std::string((const char*)mn) + ".log"))
 {
 	rng.seed(std::random_device()());
-	logfile << "Node " << name() << " with logic address " << logical_address << ":" << std::endl;
+	logfile << "Node " << name() << " with logic address " << cfg.address << ":" << std::endl;
 
 	SC_THREAD(receiver_daemon);
 }
@@ -20,12 +20,12 @@ Node::~Node()
 
 sc_uint<16>& Node::get_logical_address()
 {
-	return logical_address;
+	return cfg.address;
 }
 
-void Node::add_destination(const sc_uint<16>& d)
+void Node::add_transmission(const TransmissionConfig & c)
 {
-	destinations.push_back(d);
+	transmissions.push_back(c);
 }
 
 void Node::init_db(sqlite3 * _db)
@@ -101,7 +101,7 @@ void Node::send_raw(Packet & p)
 	while (p >> tmp)
 	{
 		port.write(tmp);
-		wait(delay_between_bytes);
+		wait(cfg.delay_between_bytes);
 	}
 	send_mutex.unlock();
 }
@@ -109,7 +109,7 @@ void Node::send_raw(Packet & p)
 void Node::send_ack(sc_uint<16> dest, bool state) // Function spawned to send an ack packet (avoids blocking the PrintUnit for this)
 {
 	Packet p;
-	p << dest << logical_address << state;
+	p << dest << cfg.address << state;
 	send_raw(p);
 }
 
@@ -182,8 +182,8 @@ sc_time Node::recv_raw(Packet & p)
 
 void Node::receiver_daemon()
 {
-	for (const sc_uint<16>& to : destinations)
-		sc_spawn(sc_bind(&Node::sending_daemon, this, to));
+	for (const TransmissionConfig& c : transmissions)
+		sc_spawn(sc_bind(&Node::sending_daemon, this, c));
 
 	sc_time t;
 	while (true)
@@ -221,21 +221,23 @@ void Node::receiver_daemon()
 	}
 }
 
-void Node::sending_daemon(const sc_uint<16> to)
+void Node::sending_daemon(const TransmissionConfig& c)
 {
 	sc_time t0, t1;
-	while (true)
+	size_t n_packets_sent(0);
+	wait(c.t_start);
+	while (n_packets_sent <= c.n_packets && sc_time_stamp() < c.t_end)
 	{
 		t0 = sc_time_stamp();
 		Packet p;
-		p << to << logical_address;
-		for (size_t i = 0; i < psize; i++)
+		p << c.receiver_address << cfg.address;
+		for (size_t i = 0; i < cfg.psize; i++)
 			p << rand();
 
 		send(p);
 		t1 = sc_time_stamp();
 
-		wait(delay_between_packets - t1 + t0);
+		wait(c.delay_between_packets - t1 + t0);
 	}
 }
 

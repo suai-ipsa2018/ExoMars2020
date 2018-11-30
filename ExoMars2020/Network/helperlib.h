@@ -11,21 +11,40 @@
 std::string formatted_time_stamp();
 
 
+struct NodeConfig
+{
+	sc_uint<16> address;
+	size_t fsize;
+	sc_time delay_between_bytes;
+	size_t psize;
+};
+
+struct TransmissionConfig
+{
+	sc_uint<16> sender_address;
+	sc_uint<16> receiver_address;
+	sc_time delay_between_packets;
+	sc_time t_start;
+	sc_time t_end;
+	size_t n_packets;
+};
+
 class ConfigLoader
 {
 public:
 	ConfigLoader(std::string path);
 	~ConfigLoader();
 
-	const std::vector<std::array<int, 2>>& get_map(size_t part);
-	const std::map<std::string, std::array<int, 5>>& get_la(size_t part);
+	const std::vector<TransmissionConfig>& get_desc(size_t part);
+	const std::map<std::string, NodeConfig>& get_la(size_t part);
 
-	static std::array<int, 4> defaults;
+	static const NodeConfig node_defaults;
+	static const TransmissionConfig transmission_defaults;
 private:
 	std::ifstream file;
-	std::array<std::vector<std::array<int, 2>>, 2> parts;
-	std::array<std::map<std::string, std::array<int, 5>>, 2> la;
+	std::array<std::vector<TransmissionConfig>, 2> parts;
+	std::array<std::map<std::string, NodeConfig>, 2> la;
 
-	std::vector<std::array<int, 2>> flatten_parts;
-	std::map<std::string, std::array<int, 5>> flatten_la;
+	std::vector<TransmissionConfig> flatten_parts;
+	std::map<std::string, NodeConfig> flatten_la;
 };
