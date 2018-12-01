@@ -10,7 +10,6 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 {
 	ConfigLoader cfg("config/Network.cfg");
 
-	std::cout << NETWORK_PART << std::endl;
 	std::map<std::string, NodeConfig> addresses = cfg.get_la(NETWORK_PART);
 	std::vector<TransmissionConfig> traffic_desc = cfg.get_desc(NETWORK_PART);
 

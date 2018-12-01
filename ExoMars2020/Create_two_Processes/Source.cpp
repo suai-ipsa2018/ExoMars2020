@@ -6,11 +6,13 @@
 
 int main(int argc, char** argv)
 {
-	//system(R"cmd()cmd");
-	system(R"cmd(set CL = /DNETWORK_PART#1 & "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe" ..\Network\Network.vcxproj /t:Build /p:OutputPath=..\custom_build\;TargetName=..\custom_build\mast_part;Configuration=Debug;Platform=x86)cmd");
-	system("set CL = /DNETWORK_PART#2");
-	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe" ..\Network\Network.vcxproj /t:Build /p:OutputPath=..\custom_build\;TargetName=..\custom_build\rover_part;Configuration=Debug;Platform=x86)cmd");
-	
+#ifdef _DEBUG
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=1;TargetName=..\custom_build\mast_part;Configuration=Debug;Platform=x86)cmd");
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=2;TargetName=..\custom_build\rover_part;Configuration=Debug;Platform=x86)cmd");
+#else
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=1;TargetName=..\custom_build\mast_part;Configuration=Release;Platform=x86)cmd");
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=2;TargetName=..\custom_build\rover_part;Configuration=Release;Platform=x86)cmd");
+#endif
 	
 	unsigned num_cpus = std::thread::hardware_concurrency();
 	std::cout << "Launching " << num_cpus << " threads\n";
@@ -64,7 +66,7 @@ int main(int argc, char** argv)
 			std::cout << "Thread ID    ---> " << pi.dwThreadId << std::endl;
 			std::cout << "GetProcessID ---> " << GetProcessId(pi.hProcess) << std::endl;
 			std::cout << "GetThreadID  ---> " << GetThreadId(pi.hThread) << std::endl;
-
+			
 			WaitForSingleObject(pi.hProcess, INFINITE);
 
 			CloseHandle(pi.hThread);

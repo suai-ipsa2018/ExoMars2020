@@ -3,6 +3,8 @@ Debug/
 Release/
 traces/
 logs/
+Tests/
+custom_build/
 
 *.tlog
 *.lastbuildstate

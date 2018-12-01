@@ -89,6 +89,7 @@
       <AdditionalIncludeDirectories>C:\Program Files\sqlite3\include;C:\Program Files\SystemC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>$(DEFINES);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Program Files\sqlite3\lib;C:\Program Files\SystemC\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -125,6 +126,7 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <PreprocessorDefinitions>$(DEFINES);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
