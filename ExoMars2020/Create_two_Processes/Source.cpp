@@ -7,11 +7,11 @@
 int main(int argc, char** argv)
 {
 #ifdef _DEBUG
-	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=1;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=mast_part;Configuration=Debug;Platform=x86)cmd");
-	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=2;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=rover_part;Configuration=Debug;Platform=x86)cmd");
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Build /p:DEFINES=NETWORK_PART=1;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=mast_part;Configuration=Debug;Platform=x86)cmd");
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Build /p:DEFINES=NETWORK_PART=2;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=rover_part;Configuration=Debug;Platform=x86)cmd");
 #else
-	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=1;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=mast_part;Configuration=Release;Platform=x86)cmd");
-	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Rebuild /p:DEFINES=NETWORK_PART=2;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=rover_part;Configuration=Release;Platform=x86)cmd");
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Build /p:DEFINES=NETWORK_PART=1;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=mast_part;Configuration=Release;Platform=x86)cmd");
+	system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Build /p:DEFINES=NETWORK_PART=2;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=rover_part;Configuration=Release;Platform=x86)cmd");
 #endif
 	
 	unsigned num_cpus = std::thread::hardware_concurrency();
@@ -43,16 +43,22 @@ int main(int argc, char** argv)
 			ZeroMemory(&pi, sizeof(pi));
 
 			BOOL bCreateProcess_1 = NULL;
+			
+			std::string dir("../Network/custom_build/");
+			std::string mast_path(dir + "mast_part.exe");
+			std::string rover_path(dir + "rover_part.exe");
+			std::string clo("-v");
+
 
 			if (i == 0)
 			{
-				bCreateProcess_1 = CreateProcess("..\\Network\\custom_build\\mast_part.exe",
-					NULL, NULL, NULL, FALSE, 0, NULL, "../Network", &si, &pi);
+				bCreateProcess_1 = CreateProcess(mast_path.c_str(),
+					const_cast<char*>((mast_path + ' ' + clo).c_str()), NULL, NULL, FALSE, 0, NULL, "../Network", &si, &pi);
 			}
 			else if (i == 1)
 			{
-				bCreateProcess_1 = CreateProcess("..\\Network\\custom_build\\rover_part.exe",
-					NULL, NULL, NULL, FALSE, 0, NULL, "../Network", &si, &pi);
+				bCreateProcess_1 = CreateProcess(rover_path.c_str(),
+					const_cast<char*>((rover_path + ' ' + clo).c_str()), NULL, NULL, FALSE, 0, NULL, "../Network", &si, &pi);
 			}
 			else
 				std::cout << "No process to create " << std::endl;
