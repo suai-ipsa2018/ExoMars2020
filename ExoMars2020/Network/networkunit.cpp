@@ -26,7 +26,7 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 		router.connect(*instruments.back(), *channels.back());
 
 		sc_trace(tf, *channels.back(), channels.back()->basename());
-		instruments.back()->init_db(db);
+		// instruments.back()->init_db(db);
 	}
 	router.connections_done();
 	for (std::unique_ptr<Node> &i : instruments)

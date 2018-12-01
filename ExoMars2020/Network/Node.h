@@ -9,6 +9,10 @@
 #include "Packet.h"
 #include "helperlib.h"
 
+#ifndef NETWORK_PART
+#define NETWORK_PART 0
+#endif
+
 class Node : public sc_module
 {
 public:
@@ -20,7 +24,7 @@ protected:
 	std::uniform_int_distribution<std::mt19937::result_type> dist;
 
 	ofstream logfile;
-	sqlite3* db;
+	sqlite3* db{ NULL };
 	bool verbose;
 private:
 	sc_mutex send_mutex, recv_mutex;

@@ -5,7 +5,7 @@ Node::Node(sc_module_name mn, const NodeConfig& _cfg, bool _verbose)
 	: sc_module(mn), cfg(_cfg), verbose(_verbose),
 	dist(0, (int)(pow(2,_cfg.fsize) - 1)),
 	port((std::string((const char*)mn) + "_port").c_str()),
-	logfile("logs/" + (std::string((const char*)mn) + ".log"))
+	logfile("logs/" + (std::string((const char*)mn)+ '_' + std::to_string(NETWORK_PART) + ".log"))
 {
 	rng.seed(std::random_device()());
 	logfile << "Node " << name() << " with logic address " << cfg.address << ":" << std::endl;

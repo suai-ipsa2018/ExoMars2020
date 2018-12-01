@@ -12,7 +12,7 @@ int sc_main(int argc, char *argv[])
 
     NetworkUnit nu("nu", 24e6, verbose);
     sc_start(300, SC_US); // Starts simulation for 300 us
-
+	std::cout << "\33[38;5;208m -- End of simulation of part " << NETWORK_PART << " --\33[0m" << std::endl;
     return 0;
 
 	// set CL = /DNETWORK_PART#2
