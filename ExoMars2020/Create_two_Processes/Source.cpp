@@ -91,7 +91,7 @@ int main(int argc, char** argv)
 
 int main(int argc, char* argv[])
 {
-	const bool compile(false);
+	const bool compile(true);
 	if (compile)
 	{
 #ifdef _DEBUG

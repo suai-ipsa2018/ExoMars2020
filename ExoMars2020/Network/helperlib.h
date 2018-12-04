@@ -29,6 +29,12 @@ struct TransmissionConfig
 	size_t n_packets;
 };
 
+struct ChannelConfig
+{
+	sc_time transmission_time;
+	size_t error_period;
+};
+
 class ConfigLoader
 {
 public:
@@ -37,9 +43,11 @@ public:
 
 	const std::vector<TransmissionConfig>& get_desc(size_t part);
 	const std::map<std::string, NodeConfig>& get_la(size_t part);
+	const ChannelConfig& get_channels();
 
 	static const NodeConfig node_defaults;
 	static const TransmissionConfig transmission_defaults;
+	static const ChannelConfig channels_defaults;
 private:
 	std::ifstream file;
 	std::array<std::vector<TransmissionConfig>, 2> parts;
@@ -47,4 +55,6 @@ private:
 
 	std::vector<TransmissionConfig> flatten_parts;
 	std::map<std::string, NodeConfig> flatten_la;
+
+	ChannelConfig channels;
 };

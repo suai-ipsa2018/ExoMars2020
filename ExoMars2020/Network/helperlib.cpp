@@ -27,6 +27,7 @@ std::string formatted_time_stamp()
 
 const NodeConfig ConfigLoader::node_defaults{0, 8, sc_time(1./24e6, SC_SEC), 16};
 const TransmissionConfig ConfigLoader::transmission_defaults{ 0, 0, sc_time(100, SC_US), sc_time(0, SC_SEC), sc_time(-1, SC_SEC), SIZE_MAX };
+const ChannelConfig ConfigLoader::channels_defaults{ sc_time(1. / 48e6, SC_SEC), 0 };
 
 ConfigLoader::ConfigLoader(std::string path) : file(path)
 {
@@ -44,19 +45,27 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 				if (line.find("--") != line.npos)
 				{
 					stream >> tmp >> tmp;
-					if (tmp != "Part")
+					if (tmp == "Channels")
+					{
+						stream >> n;
+						n = -1; // Code for channel description
+					}
+					else if (tmp == "Part")
+					{
+						stream >> n;
+						if (n < 1)
+						{
+							std::cerr << "line " << l << ' ' << "Parts of network must be positive integers, found " << n << std::endl;
+							exit(-1);
+						}
+						else
+							n--; // Convert network part to array index
+					}
+					else
 					{
 						std::cerr << "line " << l << ' ' << "'Part n' expected after '--', found " << tmp << std::endl;
 						exit(-1);
 					}
-					stream >> n;
-					if (n < 1)
-					{
-						std::cerr << "line " << l << ' ' << "Parts of network must be positive integers, found " << n << std::endl;
-						exit(-1);
-					}
-					else
-						n--; // Convert network part to array index
 				}
 				else if (line.find(':') != line.npos)
 				{
@@ -100,7 +109,7 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 							}
 							else
 							{
-								std::cerr << "line " << l << ' ' << "Unknown property " << tmp << std::endl;
+								std::cerr << "line " << l << ' ' << "Unknown property in instrument declaration" << tmp << std::endl;
 								exit(-1);
 							}
 						}
@@ -176,8 +185,35 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 					}
 					else
 					{
-						std::cerr << "line " << l << ' ' << "Network part not specified before communication declaration" << std::endl;
-						exit(-1);
+						std::cerr << "line " << l << " Unknown declaration: " << line << std::endl;
+					}
+				}
+				else if (n == -1)
+				{
+					while (stream >> property_type)
+					{
+						stream >> tmp;
+						if (tmp != "=")
+						{
+							std::cerr << "line " << l << ' ' << tmp << " found after property, was waiting for '='" << std::endl;
+							exit(-1);
+						}
+						stream >> val;
+						if (property_type == "speed")
+						{
+							channels.transmission_time = sc_time(1. / val, SC_SEC);
+							stream >> tmp;
+						}
+						else if (property_type == "error_period")
+						{
+							channels.error_period = val;
+							stream >> tmp;
+						}
+						else
+						{
+							std::cerr << "line " << l << ' ' << "Unknown channel argument" << tmp << std::endl;
+							exit(-1);
+						}
 					}
 				}
 				else
@@ -224,4 +260,9 @@ const std::map<std::string, NodeConfig>& ConfigLoader::get_la(size_t part)
 		flatten_la.insert(la[1].begin(), la[1].end());
 		return flatten_la;
 	}
+}
+
+const ChannelConfig & ConfigLoader::get_channels()
+{
+	return channels;
 }
