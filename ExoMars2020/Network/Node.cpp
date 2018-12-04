@@ -63,7 +63,7 @@ RECEPTION_TIME     REAL                NOT NULL
 	char* zErrMsg;
 	int rc = sqlite3_exec(db, db_init_stmt.str().c_str(), [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; }, nullptr, &zErrMsg);
 	if (rc != SQLITE_OK) {
-		std::cerr << "SQL error: " << zErrMsg << std::endl;
+		std::cerr << "Creation of tables about '" << basename() << "' failed: " << zErrMsg << std::endl;
 		sqlite3_free(zErrMsg);
 		exit(2);
 	}
@@ -90,7 +90,7 @@ void Node::send_raw(Packet & p)
 		char* zErrMsg;
 		int rc = sqlite3_exec(db, new_packet_stmt.str().c_str(), [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; }, nullptr, &zErrMsg);
 		if (rc != SQLITE_OK) {
-			std::cerr << "SQL error: " << zErrMsg << std::endl;
+			std::cerr << "Insertion in " << basename() << "_send failed: " << zErrMsg << std::endl;
 			sqlite3_free(zErrMsg);
 			exit(3);
 		}
@@ -172,7 +172,7 @@ sc_time Node::recv_raw(Packet & p)
 		char* zErrMsg;
 		int rc = sqlite3_exec(db, new_packet_stmt.str().c_str(), [](void *NotUsed, int argc, char **argv, char **azColName)->int { return 0; }, nullptr, &zErrMsg);
 		if (rc != SQLITE_OK) {
-			std::cerr << "SQL error: " << zErrMsg << std::endl;
+			std::cerr << "Insertion in " << basename() << "_recv failed: " << zErrMsg << std::endl;
 			sqlite3_free(zErrMsg);
 			exit(3);
 		}
