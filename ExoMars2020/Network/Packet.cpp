@@ -81,7 +81,7 @@ ostream& operator<<(ostream &flux, Packet &p)
 	flux << std::setw(5) << p.sender_address << '\t' << p.sender_address.to_string(SC_BIN_US) << " <- sender address" << std::endl;
 	for (size_t i = 0; i < p.data.size(); i++)
 	{
-		flux << std::setw(5) << p.data[i] << '\t' << p.data[i].to_string(SC_BIN_US) << std::flush;
+		flux << std::setw(5) << p.data[i] << '\t' << sc_uint<16>(p.data[i]).to_string(SC_BIN_US) << std::flush;
 		if (p.data.size() > 1)
 			if (i == 0)
 				flux << ' ' << (char)-65 << "      " << std::endl;

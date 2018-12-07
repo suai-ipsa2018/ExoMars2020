@@ -26,9 +26,9 @@ std::string formatted_time_stamp()
 }
 
 
-const NodeConfig ConfigLoader::node_defaults{0, 8, sc_time(1./24e6, SC_SEC), 16};
-const TransmissionConfig ConfigLoader::transmission_defaults{ 0, 0, sc_time(100, SC_US), sc_time(0, SC_SEC), sc_time(-1, SC_SEC), SIZE_MAX };
-const ChannelConfig ConfigLoader::channels_defaults{ sc_time(1. / 48e6, SC_SEC), 0 };
+NodeConfig ConfigLoader::node_defaults{0, 8, sc_time(1./24e6, SC_SEC)};
+TransmissionConfig ConfigLoader::transmission_defaults{ 0, 0, 16, sc_time(100, SC_US), sc_time(0, SC_SEC), sc_time(-1, SC_SEC), SIZE_MAX };
+ChannelConfig ConfigLoader::channels_defaults{ sc_time(1. / 48e6, SC_SEC), 0 };
 
 ConfigLoader::ConfigLoader(std::string path) : file(path)
 {
@@ -103,11 +103,6 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 								la[n][node].delay_between_bytes = sc_time(1. / val, SC_SEC);
 								stream >> tmp;
 							}
-							else if (property_type == "psize")
-							{
-								la[n][node].psize = val;
-								stream >> tmp;
-							}
 							else
 							{
 								std::cerr << "line " << l << ' ' << "Unknown property in instrument declaration" << tmp << std::endl;
@@ -155,7 +150,13 @@ ConfigLoader::ConfigLoader(std::string path) : file(path)
 							}
 							stream >> val;
 
-							if (property_type == "delay_between_packets")
+
+							if (property_type == "psize")
+							{
+								cfg.psize = val;
+								stream >> tmp;
+							}
+							else if (property_type == "delay_between_packets")
 							{
 								std::string unit;
 								stream >> unit;

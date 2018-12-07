@@ -16,13 +16,13 @@ struct NodeConfig
 	sc_uint<16> address;
 	size_t fsize;
 	sc_time delay_between_bytes;
-	size_t psize;
 };
 
 struct TransmissionConfig
 {
 	sc_uint<16> sender_address;
 	sc_uint<16> receiver_address;
+	size_t psize;
 	sc_time delay_between_packets;
 	sc_time t_start;
 	sc_time t_end;
@@ -45,9 +45,9 @@ public:
 	const std::map<std::string, NodeConfig>& get_la(size_t part);
 	const ChannelConfig& get_channels();
 
-	static const NodeConfig node_defaults;
-	static const TransmissionConfig transmission_defaults;
-	static const ChannelConfig channels_defaults;
+	static NodeConfig node_defaults;
+	static TransmissionConfig transmission_defaults;
+	static ChannelConfig channels_defaults;
 private:
 	std::ifstream file;
 	std::array<std::vector<TransmissionConfig>, 2> parts;

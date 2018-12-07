@@ -3,7 +3,7 @@
 SC_HAS_PROCESS(Node);
 Node::Node(sc_module_name mn, const NodeConfig& _cfg, bool _verbose)
 	: sc_module(mn), cfg(_cfg), verbose(_verbose),
-	dist(0, (int)(pow(2,_cfg.fsize) - 1)),
+	dist(0, (unsigned int)(pow(2,_cfg.fsize) - 2)),
 	port((std::string((const char*)mn) + "_port").c_str()),
 	logfile("logs/" + (std::string((const char*)mn)+ '_' + std::to_string(NETWORK_PART) + ".log"))
 {
@@ -80,6 +80,7 @@ void Node::send_raw(Packet & p)
 	int rc(0);
 	char* zErrMsg;
 	send_mutex.lock();
+	std::cout << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
 	logfile << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
 	if (verbose) logfile << p << std::endl;
 	
@@ -237,8 +238,9 @@ void Node::sending_daemon(const TransmissionConfig& c)
 	{
 		t0 = sc_time_stamp();
 		Packet p;
+		p.data.reserve(c.psize);
 		p << c.receiver_address << cfg.address;
-		for (size_t i = 0; i < cfg.psize; i++)
+		for (size_t i = 0; i < c.psize; i++)
 			p << rand();
 
 		send(p);

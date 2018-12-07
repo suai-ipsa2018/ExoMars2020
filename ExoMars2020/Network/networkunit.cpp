@@ -8,6 +8,8 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool use_database, boo
 	router("router", 32, verbose),
 	network_speed(speed)
 {
+	ConfigLoader::transmission_defaults.psize = (size_t)1e5; // 1e6 max, too long for my computer with more
+	ConfigLoader::transmission_defaults.n_packets = 1;
 	ConfigLoader cfg("config/Network.cfg");
 
 	std::map<std::string, NodeConfig> addresses = cfg.get_la(NETWORK_PART);
