@@ -1,5 +1,6 @@
 #pragma once
 #include <systemc.h>
+#include <sqlite3.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -9,7 +10,6 @@
 #include <vector>
 
 std::string formatted_time_stamp();
-
 
 struct NodeConfig
 {

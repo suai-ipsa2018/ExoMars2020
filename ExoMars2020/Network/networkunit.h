@@ -24,7 +24,7 @@ public:
      * @param psize Packet size
      * @param speed Speed of the network, in bit/s
      */
-    NetworkUnit(sc_module_name mn, double speed=24e6, bool verbose=true);
+    NetworkUnit(sc_module_name mn, double speed=24e6, bool use_databases=true, bool verbose=true);
 	~NetworkUnit();
 
 private:

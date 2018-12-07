@@ -1,7 +1,7 @@
 #include "networkunit.h"
 
 
-NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
+NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool use_database, bool verbose) :
 	sc_module(mn),
 	delay_between_bytes(sc_time(1. / speed, SC_SEC)),
 
@@ -15,7 +15,7 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 	ChannelConfig channels_cfg = cfg.get_channels();
 
 	tf = sc_create_vcd_trace_file(("traces/network_" + std::to_string(NETWORK_PART)).c_str());
-	//sqlite3_open(("logs/Network_" + std::to_string(NETWORK_PART) + ".db").c_str(), &db);
+	if (use_database) sqlite3_open(("logs/Network_" + std::to_string(NETWORK_PART) + ".db").c_str(), &db);
 
 	instruments.reserve(addresses.size());
 	channels.reserve(addresses.size());
@@ -27,7 +27,7 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool verbose) :
 		router.connect(*instruments.back(), *channels.back());
 
 		sc_trace(tf, *channels.back(), channels.back()->basename());
-		//instruments.back()->init_db(db);
+		if (use_database) instruments.back()->init_db(db);
 	}
 	router.connections_done();
 	for (std::unique_ptr<Node> &i : instruments)
