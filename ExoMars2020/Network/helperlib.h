@@ -8,6 +8,8 @@
 #include <map>
 #include <array>
 #include <vector>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/document.h>
 
 std::string formatted_time_stamp();
 
@@ -35,26 +37,22 @@ struct ChannelConfig
 	size_t error_period;
 };
 
-class ConfigLoader
+
+class JsonConfigLoader
 {
 public:
-	ConfigLoader(std::string path);
-	~ConfigLoader();
+	JsonConfigLoader(std::string path);
 
 	const std::vector<TransmissionConfig>& get_desc(size_t part);
-	const std::map<std::string, NodeConfig>& get_la(size_t part);
+	const std::map<std::string, NodeConfig>& get_nodes(size_t part);
 	const ChannelConfig& get_channels();
 
-	static NodeConfig node_defaults;
-	static TransmissionConfig transmission_defaults;
-	static ChannelConfig channels_defaults;
 private:
-	std::ifstream file;
-	std::array<std::vector<TransmissionConfig>, 2> parts;
-	std::array<std::map<std::string, NodeConfig>, 2> la;
+	std::map<int, std::vector<TransmissionConfig>> descriptions;
+	std::map<int, std::map<std::string, NodeConfig>> declarations;
 
-	std::vector<TransmissionConfig> flatten_parts;
-	std::map<std::string, NodeConfig> flatten_la;
+	std::vector<TransmissionConfig> flattenned_descs;
+	std::map<std::string, NodeConfig> flattenned_nodes;
 
 	ChannelConfig channels;
 };

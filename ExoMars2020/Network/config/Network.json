@@ -1,0 +1,186 @@
+{
+  "Channels": {
+    "speed": 48e6,
+    "error_period": 0
+  },
+
+  "Parts": {
+    "1": {
+      "Declaration": {
+        "Antenna": {
+          "logical_address": 32,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "PanCam": {
+          "logical_address": 33,
+          "fsize": 10,
+          "speed": 24e6
+        },
+        "NavCam": {
+          "logical_address": 34,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "ISEM": {
+          "logical_address": 35,
+          "fsize": 16,
+          "speed": 24e6
+        }
+      },
+      "Description": [
+        {
+          "sender": "ISEM",
+          "receiver": "PanCam",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "NavCam",
+          "receiver": "PanCam",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "PanCam",
+          "receiver": "Antenna",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        }
+      ]
+    },
+
+    "2": {
+      "Declaration": {
+        "Antenna": {
+          "logical_address": 32,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "CLUPI": {
+          "logical_address": 36,
+          "fsize": 14,
+          "speed": 24e6
+        },
+        "Drill": {
+          "logical_address": 37,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Adron": {
+          "logical_address": 38,
+          "fsize": 9,
+          "speed": 24e6
+        },
+        "WISDOM": {
+          "logical_address": 39,
+          "fsize": 16,
+          "speed": 24e6
+        },
+        "Ma_MISS": {
+          "logical_address": 40,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "MicrOmega": {
+          "logical_address": 41,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "RLS": {
+          "logical_address": 42,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "MOMA": {
+          "logical_address": 43,
+          "fsize": 8,
+          "speed": 24e6
+        }
+      },
+      "Description": [
+        {
+          "sender": "CLUPI",
+          "receiver": "Antenna",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Drill",
+          "receiver": "Antenna",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Adron",
+          "receiver": "Antenna",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "WISDOM",
+          "receiver": "Adron",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Ma_MISS",
+          "receiver": "WISDOM",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "MicrOmega",
+          "receiver": "Ma_MISS",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "RLS",
+          "receiver": "Ma_MISS",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "MOMA",
+          "receiver": "Ma_MISS",
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        }
+      ]
+    }
+  }
+}

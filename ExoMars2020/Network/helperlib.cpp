@@ -26,245 +26,134 @@ std::string formatted_time_stamp()
 }
 
 
-NodeConfig ConfigLoader::node_defaults{0, 8, sc_time(1./24e6, SC_SEC)};
-TransmissionConfig ConfigLoader::transmission_defaults{ 0, 0, 16, sc_time(100, SC_US), sc_time(0, SC_SEC), sc_time(-1, SC_SEC), SIZE_MAX };
-ChannelConfig ConfigLoader::channels_defaults{ sc_time(1. / 48e6, SC_SEC), 0 };
-
-ConfigLoader::ConfigLoader(std::string path) : file(path)
+JsonConfigLoader::JsonConfigLoader(std::string path)
 {
-	std::string line, tmp, node, target, property_type;
-	int n(-1), addr, val;
-	size_t l(0);
-	if (file)
+	std::ifstream file(path);
+	rapidjson::IStreamWrapper isw(file);
+
+	rapidjson::Document d;
+	d.ParseStream(isw);
+	if (d.HasMember("Channels"))
 	{
-		while (std::getline(file, line))
+		channels = { sc_time(1. / d["Channels"]["speed"].GetDouble(), SC_SEC), (size_t)d["Channels"]["error_period"].GetInt() };
+	}
+	if (d.HasMember("Parts"))
+	{
+		for (rapidjson::Value::MemberIterator part = d["Parts"].MemberBegin(); part != d["Parts"].MemberEnd(); part++)
 		{
-			l++;
-			if (!line.empty() && line.find_first_not_of(' ') != line.npos && !(line = line.substr(line.find_first_not_of(' '), line.find_first_of('#') - line.find_first_not_of(' '))).empty())
+			int n = atoi(part->name.GetString());
+			if (n > 0)
 			{
-				std::stringstream stream(line);
-				if (line.find("--") != line.npos)
+				if (part->value.HasMember("Declaration"))
 				{
-					stream >> tmp >> tmp;
-					if (tmp == "Channels")
+					for (rapidjson::Value::MemberIterator node = part->value["Declaration"].MemberBegin();
+						node != part->value["Declaration"].MemberEnd();
+						node++)
 					{
-						stream >> n;
-						n = -1; // Code for channel description
-					}
-					else if (tmp == "Part")
-					{
-						stream >> n;
-						if (n < 1)
-						{
-							std::cerr << "line " << l << ' ' << "Parts of network must be positive integers, found " << n << std::endl;
-							exit(-1);
-						}
-						else
-							n--; // Convert network part to array index
-					}
-					else
-					{
-						std::cerr << "line " << l << ' ' << "'Part n' expected after '--', found " << tmp << std::endl;
-						exit(-1);
+						declarations[n][node->name.GetString()] = {
+							node->value["logical_address"].GetInt(),
+							(size_t)node->value["fsize"].GetInt(),
+							sc_time(1. / node->value["speed"].GetDouble(), SC_SEC)
+						};
 					}
 				}
-				else if (line.find(':') != line.npos)
+				if (part->value.HasMember("Description"))
 				{
-					if (n >= 0)
+					descriptions[n].reserve(part->value["Description"].GetArray().Size());
+					for (auto &desc : part->value["Description"].GetArray())
 					{
-						stream >> node;
-						stream >> tmp >> addr;
-						la[n][node] = node_defaults;
-						if (!la[n][node].address)
-							la[n][node].address = addr;
-						else
+						if (!declarations[n][desc["sender"].GetString()].address)
 						{
-							if (la[n][node].address != addr)
-								std::cerr << "line " << l << ' ' << "Logical address mismatch for " << node << ", keeping old one: " << la[n][node].address << std::endl;
-						}
-						stream >> tmp;
-
-						while (stream >> property_type)
-						{
-							stream >> tmp;
-							if (tmp != "=")
-							{
-								std::cerr << "line " << l << ' ' << tmp << " found after property, was waiting for '='" << std::endl;
-								exit(-1);
-							}
-							stream >> val;
-							if (property_type == "fsize")
-							{
-								la[n][node].fsize = val;
-								stream >> tmp;
-							}
-							else if (property_type == "speed")
-							{
-								la[n][node].delay_between_bytes = sc_time(1. / val, SC_SEC);
-								stream >> tmp;
-							}
-							else
-							{
-								std::cerr << "line " << l << ' ' << "Unknown property in instrument declaration" << tmp << std::endl;
-								exit(-1);
-							}
-						}
-					}
-					else
-					{
-						std::cerr << "line " << l << ' ' << "Network part not specified before instrument declaration" << std::endl;
-						exit(-1);
-					}
-				}
-				else if (line.find("->") != line.npos)
-				{
-					if (n >= 0)
-					{
-						TransmissionConfig cfg(transmission_defaults);
-						stream >> node;
-						stream >> target >> target;
-						if (target[target.size() - 1] == ',') target = target.substr(0, target.length() - 1);
-						if (!la[n][node].address)
-						{
-							std::cerr << "line " << l << ' ' << "Logical address for " << node << " not set in network part " << n + 1 << std::endl;
+							std::cerr << "JsonConfigLoader: No address found for node " << desc["sender"].GetString() << std::endl;
 							exit(-1);
 						}
-						else if (!la[n][target].address)
+						else if (!declarations[n][desc["sender"].GetString()].address)
 						{
-							std::cerr << "line " << l << ' ' << "Logical address for " << target << " not set in network part " << n + 1 << std::endl;
+							std::cerr << "JsonConfigLoader: No address found for node " << desc["sender"].GetString() << std::endl;
 							exit(-1);
 						}
 						else
 						{
-							cfg.sender_address = la[n][node].address;
-							cfg.receiver_address = la[n][target].address;
-						}
-
-						while (stream >> property_type)
-						{
-							stream >> tmp;
-							if (tmp != "=")
-							{
-								std::cerr << "line " << l << ' ' << tmp << " found after property, was waiting for '='" << std::endl;
-								exit(-1);
-							}
-							stream >> val;
-
-
-							if (property_type == "psize")
-							{
-								cfg.psize = val;
-								stream >> tmp;
-							}
-							else if (property_type == "delay_between_packets")
-							{
+							auto to_time = [](const char* s) -> sc_time {
+								std::istringstream iss(s);
+								double val;
 								std::string unit;
-								stream >> unit;
-								if (unit[unit.length() - 1] == ',') unit = unit.substr(0, unit.length() - 1);
-								cfg.delay_between_packets = sc_time(val, unit.c_str());
-							}
-							else if (property_type == "t_start")
-							{
-								std::string unit;
-								stream >> unit;
-								if (unit[unit.length() - 1] == ',') unit = unit.substr(0, unit.length() - 1);
-								cfg.t_start = sc_time(val, unit.c_str());
-							}
-							else if (property_type == "t_end")
-							{
-								std::string unit;
-								stream >> unit;
-								if (unit[unit.length() - 1] == ',') unit = unit.substr(0, unit.length() - 1);
-								cfg.t_end = sc_time(val, unit.c_str());
-							}
-							else if (property_type == "n_packets")
-							{
-								cfg.n_packets = val;
-								stream >> tmp;
-							}
-						}
-						parts[n].push_back(cfg);
-					}
-					else
-					{
-						std::cerr << "line " << l << " Unknown declaration: " << line << std::endl;
-					}
-				}
-				else if (n == -1)
-				{
-					while (stream >> property_type)
-					{
-						stream >> tmp;
-						if (tmp != "=")
-						{
-							std::cerr << "line " << l << ' ' << tmp << " found after property, was waiting for '='" << std::endl;
-							exit(-1);
-						}
-						stream >> val;
-						if (property_type == "speed")
-						{
-							channels.transmission_time = sc_time(1. / val, SC_SEC);
-							stream >> tmp;
-						}
-						else if (property_type == "error_period")
-						{
-							channels.error_period = val;
-							stream >> tmp;
-						}
-						else
-						{
-							std::cerr << "line " << l << ' ' << "Unknown channel argument" << tmp << std::endl;
-							exit(-1);
+								iss >> val >> unit;
+								return sc_time(val, unit.c_str());
+							};
+							
+							descriptions[n].push_back(
+								TransmissionConfig({
+								declarations[n][desc["sender"].GetString()].address,
+								declarations[n][desc["receiver"].GetString()].address,
+								(size_t)desc["psize"].GetInt(),
+								to_time(desc["delay_between_packets"].GetString()),
+								to_time(desc["t_start"].GetString()),
+								to_time(desc["t_end"].GetString()),
+								(size_t)desc["n_packets"].GetInt()
+								})
+							);
 						}
 					}
 				}
-				else
-				{
-					std::cerr << "line " << l << ' ' << "Unknown declaration : " << line << std::endl;
-					exit(-1);
-				}
+			}
+			else
+			{
+				std::cerr << "JsonConfigLoader: found " << part->name.GetString() << " for network part" << std::endl;
+				exit(-1);
 			}
 		}
 	}
 	else
-		std::cerr << "File not found at " << path << std::endl;
-}
+	{
+		std::cerr << "JsonConfigLoader: No network part declared" << std::endl;
+		exit(-1);
+	}
 
-ConfigLoader::~ConfigLoader()
-{
 	file.close();
 }
 
-const std::vector<TransmissionConfig>& ConfigLoader::get_desc(size_t part)
+const std::vector<TransmissionConfig>& JsonConfigLoader::get_desc(size_t part)
 {
-	if (part == 1)
-		return parts[0];
-	else if (part == 2)
-		return parts[1];
+	if (part == 0)
+	{
+		if (!flattenned_descs.size())
+		{
+			flattenned_descs.reserve(descriptions.size());
+			for (auto &description : descriptions)
+			{
+				flattenned_descs.insert(flattenned_descs.end(), description.second.begin(), description.second.end());
+			}
+		}
+		return flattenned_descs;
+	}
 	else
 	{
-		flatten_parts.reserve(parts[0].size() + parts[1].size());
-		flatten_parts.insert(flatten_parts.end(), parts[0].begin(), parts[0].end());
-		flatten_parts.insert(flatten_parts.end(), parts[1].begin(), parts[1].end());
-		return flatten_parts;
+		return descriptions[part];
 	}
 }
 
-const std::map<std::string, NodeConfig>& ConfigLoader::get_la(size_t part)
+const std::map<std::string, NodeConfig>& JsonConfigLoader::get_nodes(size_t part)
 {
-	if (part == 1)
-		return la[0];
-	else if (part == 2)
-		return la[1];
+	if (part == 0)
+	{
+		if (!flattenned_nodes.size())
+		{
+			flattenned_descs.reserve(descriptions.size());
+			for (auto &declaration : declarations)
+			{
+				flattenned_nodes.insert(declaration.second.begin(), declaration.second.end());
+			}
+		}
+		return flattenned_nodes;
+	}
 	else
 	{
-		flatten_la.insert(la[0].begin(), la[0].end());
-		flatten_la.insert(la[1].begin(), la[1].end());
-		return flatten_la;
+		return declarations[part];
 	}
 }
 
-const ChannelConfig & ConfigLoader::get_channels()
+const ChannelConfig & JsonConfigLoader::get_channels()
 {
 	return channels;
 }

@@ -8,11 +8,9 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool use_database, boo
 	router("router", 32, verbose),
 	network_speed(speed)
 {
-	ConfigLoader::transmission_defaults.psize = (size_t)1e5; // 1e6 max, too long for my computer with more
-	ConfigLoader::transmission_defaults.n_packets = 1;
-	ConfigLoader cfg("config/Network.cfg");
+	JsonConfigLoader cfg("config/Network.json");
 
-	std::map<std::string, NodeConfig> addresses = cfg.get_la(NETWORK_PART);
+	std::map<std::string, NodeConfig> addresses = cfg.get_nodes(NETWORK_PART);
 	std::vector<TransmissionConfig> traffic_desc = cfg.get_desc(NETWORK_PART);
 	ChannelConfig channels_cfg = cfg.get_channels();
 
