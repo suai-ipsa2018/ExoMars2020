@@ -5,6 +5,7 @@ traces/
 logs/
 Tests/
 custom_build/
+custom_build_int/
 
 *.tlog
 *.lastbuildstate
