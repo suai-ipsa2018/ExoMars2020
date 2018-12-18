@@ -26,15 +26,37 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        exomars2020_gui.cpp
+        exomars2020_gui.cpp \
+    dbviewer.cpp \
+    mainwidget.cpp \
+    secondtab.cpp \
+    simucontrol.cpp
 
 HEADERS += \
-        exomars2020_gui.h
+        exomars2020_gui.h \
+    dbviewer.h \
+    mainwidget.h \
+    secondtab.h \
+    simucontrol.h
 
 FORMS += \
-        exomars2020_gui.ui
+        exomars2020_gui.ui \
+    dbviewer.ui \
+    mainwidget.ui \
+    secondtab.ui \
+    simucontrol.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32: LIBS += -L'C:/Program Files/sqlite3/lib/' -lsqlite3
+
+INCLUDEPATH += 'C:/Program Files/sqlite3/include'
+DEPENDPATH += 'C:/Program Files/sqlite3/include'
+
+win32: LIBS += -L'C:/Program Files/SystemC/lib/' -lsystemc
+
+INCLUDEPATH += 'C:/Program Files/SystemC/include'
+DEPENDPATH += 'C:/Program Files/SystemC/include'

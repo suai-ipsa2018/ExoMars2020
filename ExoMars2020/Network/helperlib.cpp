@@ -44,30 +44,30 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 			int n = atoi(part->name.GetString());
 			if (n > 0)
 			{
-				if (part->value.HasMember("Declaration"))
+				if (part->value.HasMember("Nodes"))
 				{
-					for (rapidjson::Value::MemberIterator node = part->value["Declaration"].MemberBegin();
-						node != part->value["Declaration"].MemberEnd();
+					for (rapidjson::Value::MemberIterator node = part->value["Nodes"].MemberBegin();
+						node != part->value["Nodes"].MemberEnd();
 						node++)
 					{
-						declarations[n][node->name.GetString()] = {
+						nodes[n][node->name.GetString()] = {
 							node->value["logical_address"].GetInt(),
 							(size_t)node->value["fsize"].GetInt(),
 							sc_time(1. / node->value["speed"].GetDouble(), SC_SEC)
 						};
 					}
 				}
-				if (part->value.HasMember("Description"))
+				if (part->value.HasMember("Connections"))
 				{
-					descriptions[n].reserve(part->value["Description"].GetArray().Size());
-					for (auto &desc : part->value["Description"].GetArray())
+					connections[n].reserve(part->value["Connections"].GetArray().Size());
+					for (auto &desc : part->value["Connections"].GetArray())
 					{
-						if (!declarations[n][desc["sender"].GetString()].address)
+						if (!nodes[n][desc["sender"].GetString()].address)
 						{
 							std::cerr << "JsonConfigLoader: No address found for node " << desc["sender"].GetString() << std::endl;
 							exit(-1);
 						}
-						else if (!declarations[n][desc["sender"].GetString()].address)
+						else if (!nodes[n][desc["sender"].GetString()].address)
 						{
 							std::cerr << "JsonConfigLoader: No address found for node " << desc["sender"].GetString() << std::endl;
 							exit(-1);
@@ -82,10 +82,10 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 								return sc_time(val, unit.c_str());
 							};
 							
-							descriptions[n].push_back(
+							connections[n].push_back(
 								TransmissionConfig({
-								declarations[n][desc["sender"].GetString()].address,
-								declarations[n][desc["receiver"].GetString()].address,
+								nodes[n][desc["sender"].GetString()].address,
+								nodes[n][desc["receiver"].GetString()].address,
 								(size_t)desc["psize"].GetInt(),
 								to_time(desc["delay_between_packets"].GetString()),
 								to_time(desc["t_start"].GetString()),
@@ -119,8 +119,8 @@ const std::vector<TransmissionConfig>& JsonConfigLoader::get_desc(size_t part)
 	{
 		if (!flattenned_descs.size())
 		{
-			flattenned_descs.reserve(descriptions.size());
-			for (auto &description : descriptions)
+			flattenned_descs.reserve(connections.size());
+			for (auto &description : connections)
 			{
 				flattenned_descs.insert(flattenned_descs.end(), description.second.begin(), description.second.end());
 			}
@@ -129,7 +129,7 @@ const std::vector<TransmissionConfig>& JsonConfigLoader::get_desc(size_t part)
 	}
 	else
 	{
-		return descriptions[part];
+		return connections[part];
 	}
 }
 
@@ -139,8 +139,8 @@ const std::map<std::string, NodeConfig>& JsonConfigLoader::get_nodes(size_t part
 	{
 		if (!flattenned_nodes.size())
 		{
-			flattenned_descs.reserve(descriptions.size());
-			for (auto &declaration : declarations)
+			flattenned_descs.reserve(connections.size());
+			for (auto &declaration : nodes)
 			{
 				flattenned_nodes.insert(declaration.second.begin(), declaration.second.end());
 			}
@@ -149,7 +149,7 @@ const std::map<std::string, NodeConfig>& JsonConfigLoader::get_nodes(size_t part
 	}
 	else
 	{
-		return declarations[part];
+		return nodes[part];
 	}
 }
 

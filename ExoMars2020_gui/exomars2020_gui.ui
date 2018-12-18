@@ -1,24 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>ExoMars2020_gui</class>
- <widget class="QMainWindow" name="ExoMars2020_gui" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="ExoMars2020_gui">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>456</width>
+    <height>327</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>ExoMars2020_gui</string>
+  <property name="windowTitle">
+   <string>ExoMars2020</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab_node_carac">
+       <attribute name="title">
+        <string>Node's caracteristics</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_pcarac">
+       <attribute name="title">
+        <string>Packets' caracteristics</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>456</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

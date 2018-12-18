@@ -2,6 +2,14 @@
 #define EXOMARS2020_GUI_H
 
 #include <QMainWindow>
+#include <QWidget>
+#include <iostream>
+#include <QTabWidget>
+
+#include "simucontrol.h"
+#include "mainwidget.h"
+#include "secondtab.h"
+#include "dbviewer.h"
 
 namespace Ui {
 class ExoMars2020_gui;

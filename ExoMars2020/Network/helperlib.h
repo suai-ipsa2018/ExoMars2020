@@ -48,8 +48,8 @@ public:
 	const ChannelConfig& get_channels();
 
 private:
-	std::map<int, std::vector<TransmissionConfig>> descriptions;
-	std::map<int, std::map<std::string, NodeConfig>> declarations;
+	std::map<int, std::vector<TransmissionConfig>> connections;
+	std::map<int, std::map<std::string, NodeConfig>> nodes;
 
 	std::vector<TransmissionConfig> flattenned_descs;
 	std::map<std::string, NodeConfig> flattenned_nodes;
