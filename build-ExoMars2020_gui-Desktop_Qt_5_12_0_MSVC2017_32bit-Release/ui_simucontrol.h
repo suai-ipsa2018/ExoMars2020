@@ -70,6 +70,7 @@ public:
 
         partComboBox = new QComboBox(SimuControl);
         partComboBox->addItem(QString());
+        partComboBox->addItem(QString());
         partComboBox->setObjectName(QString::fromUtf8("partComboBox"));
         QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
@@ -94,6 +95,7 @@ public:
         timeSpinBox->setObjectName(QString::fromUtf8("timeSpinBox"));
         timeSpinBox->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         timeSpinBox->setMaximum(99999999999999995164818811802792197885196090803013355167206819763650035712.000000000000000);
+        timeSpinBox->setValue(300.000000000000000);
 
         horizontalLayout_2->addWidget(timeSpinBox);
 
@@ -105,11 +107,8 @@ public:
         unitComboBox->addItem(QString());
         unitComboBox->addItem(QString());
         unitComboBox->setObjectName(QString::fromUtf8("unitComboBox"));
-        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(unitComboBox->sizePolicy().hasHeightForWidth());
-        unitComboBox->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(unitComboBox->sizePolicy().hasHeightForWidth());
+        unitComboBox->setSizePolicy(sizePolicy);
 
         horizontalLayout_2->addWidget(unitComboBox);
 
@@ -154,7 +153,8 @@ public:
     {
         SimuControl->setWindowTitle(QApplication::translate("SimuControl", "Form", nullptr));
         label_2->setText(QApplication::translate("SimuControl", "Part to simulate :", nullptr));
-        partComboBox->setItemText(0, QApplication::translate("SimuControl", "All", nullptr));
+        partComboBox->setItemText(0, QApplication::translate("SimuControl", "All, sequential", nullptr));
+        partComboBox->setItemText(1, QApplication::translate("SimuControl", "All, parallel", nullptr));
 
         label->setText(QApplication::translate("SimuControl", "Simlulation duration :", nullptr));
         unitComboBox->setItemText(0, QApplication::translate("SimuControl", "s", nullptr));
@@ -164,6 +164,7 @@ public:
         unitComboBox->setItemText(4, QApplication::translate("SimuControl", "ps", nullptr));
         unitComboBox->setItemText(5, QApplication::translate("SimuControl", "fs", nullptr));
 
+        unitComboBox->setCurrentText(QApplication::translate("SimuControl", "us", nullptr));
         compileButton->setText(QApplication::translate("SimuControl", "Compile", nullptr));
         startButton->setText(QApplication::translate("SimuControl", "Start", nullptr));
     } // retranslateUi

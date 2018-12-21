@@ -6,7 +6,7 @@ dbViewer::dbViewer(QWidget *parent) :
     ui(new Ui::dbViewer)
 {
     ui->setupUi(this);
-    int rc = sqlite3_open_v2("../ExoMars2020/Network/logs/Network_0.db", &db, SQLITE_OPEN_READONLY, nullptr);
+    int rc = sqlite3_open("../ExoMars2020/Network/logs/Network_0.db", &db);
     if (rc != SQLITE_OK)
     {
         std::cerr << "Failed to open database: " << sqlite3_errmsg(db) << std::endl;

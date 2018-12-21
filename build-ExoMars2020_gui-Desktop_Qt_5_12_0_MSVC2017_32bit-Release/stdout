@@ -1,0 +1,31 @@
+
+Configuration IP de Windows
+
+
+Carte Ethernet Ethernet :
+
+   Statut du m‚dia. . . . . . . . . . . . : M‚dia d‚connect‚
+   Suffixe DNS propre … la connexion. . . : 
+
+Carte Ethernet Ethernet 3 :
+
+   Statut du m‚dia. . . . . . . . . . . . : M‚dia d‚connect‚
+   Suffixe DNS propre … la connexion. . . : 
+
+Carte r‚seau sans fil Connexion au r‚seau local* 2ÿ:
+
+   Statut du m‚dia. . . . . . . . . . . . : M‚dia d‚connect‚
+   Suffixe DNS propre … la connexion. . . : 
+
+Carte r‚seau sans fil Connexion au r‚seau local* 13ÿ:
+
+   Statut du m‚dia. . . . . . . . . . . . : M‚dia d‚connect‚
+   Suffixe DNS propre … la connexion. . . : 
+
+Carte r‚seau sans fil Wi-Fiÿ:
+
+   Suffixe DNS propre … la connexion. . . : 
+   Adresse IPv6 de liaison locale. . . . .: fe80::694c:3ead:14c5:171d%9
+   Adresse IPv4. . . . . . . . . . . . . .: 192.168.2.106
+   Masque de sous-r‚seau. . . .ÿ. . . . . : 255.255.255.0
+   Passerelle par d‚faut. . . .ÿ. . . . . : 192.168.2.12

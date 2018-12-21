@@ -2,7 +2,8 @@
 #define SIMUCONTROL_H
 
 #include <QWidget>
-#include <Windows.h>
+#include <QProcess>
+#include <QDebug>
 
 namespace Ui {
 class SimuControl;
@@ -18,11 +19,14 @@ public:
 
 private slots:
     void on_compileButton_clicked();
-
     void on_startButton_clicked();
+
+    void readyReadStandardOutput();
+    void readyReadStandardError();
 
 private:
     Ui::SimuControl *ui;
+    QProcess* network_simulation;
 };
 
 #endif // SIMUCONTROL_H

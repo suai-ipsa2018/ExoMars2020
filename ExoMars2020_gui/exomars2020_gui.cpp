@@ -5,10 +5,10 @@ ExoMars2020_gui::ExoMars2020_gui(QWidget *parent) : QMainWindow(parent), ui(new 
 {
     ui->setupUi(this);
 
-    SimuControl* simu_widget = new SimuControl;
-    mainWidget* node_widget = new mainWidget;
-    secondTab* packet_widget = new secondTab;
-    dbViewer* db_widget = new dbViewer;
+    SimuControl* simu_widget = new SimuControl(this);
+    mainWidget* node_widget = new mainWidget(this);
+    secondTab* packet_widget = new secondTab(this);
+    dbViewer* db_widget = new dbViewer(this);
 
 
     ui->tabWidget->removeTab(1);

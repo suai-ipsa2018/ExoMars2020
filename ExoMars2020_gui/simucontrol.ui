@@ -64,7 +64,12 @@
          </property>
          <item>
           <property name="text">
-           <string>All</string>
+           <string>All, sequential</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>All, parallel</string>
           </property>
          </item>
         </widget>
@@ -91,15 +96,21 @@
          <property name="maximum">
           <double>99999999999999995164818811802792197885196090803013355167206819763650035712.000000000000000</double>
          </property>
+         <property name="value">
+          <double>300.000000000000000</double>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QComboBox" name="unitComboBox">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="currentText">
+          <string>us</string>
          </property>
          <item>
           <property name="text">

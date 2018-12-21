@@ -1,5 +1,8 @@
 #include "simucontrol.h"
 #include "ui_simucontrol.h"
+#include <iostream>
+#include <strsafe.h>
+
 
 SimuControl::SimuControl(QWidget *parent) :
     QWidget(parent),
@@ -15,26 +18,40 @@ SimuControl::~SimuControl()
 
 void SimuControl::on_compileButton_clicked()
 {
-    int n =  ui->partComboBox->currentIndex();
+    QString cbt =  ui->partComboBox->currentText();
 #ifdef _DEBUG
         system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\Network\Network.vcxproj /t:Build /p:DEFINES=NETWORK_PART=1;IntDir=custom_build_int\;OutDir=custom_build\;TargetName=mast_part;Configuration=Debug;Platform=x86)cmd");
 #else
-        system((R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\ExoMars2020\Network\Network.vcxproj /t:Build /p:IntDir=custom_build_int\;OutDir=custom_build\;TargetName=Network_)cmd" + std::to_string(n) + R"cmd(;Configuration=Release;Platform=x86;DEFINES=NETWORK_PART=)cmd" + std::to_string(n)).c_str());
+    if (cbt == "All, sequential")
+        system(R"cmd("C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild" ..\ExoMars2020\Network\Network.vcxproj /t:Build /p:IntDir=custom_build_int\;OutDir=custom_build\;TargetName=Network;Configuration=Release;Platform=x86;DEFINES=NETWORK_PART=0)cmd");
+    else if (cbt == "All, parallel")
+    {
+        // iterate through
+    }
 #endif
 }
 
 void SimuControl::on_startButton_clicked()
 {
     int n =  ui->partComboBox->currentIndex();
-    LPSTARTUPINFOA si;
-    PROCESS_INFORMATION pi;
+    QString cmd(("../ExoMars2020/Network/custom_build/Network_" + std::to_string(n) + ".exe -d -t=\""
+                 + std::to_string(ui->timeSpinBox->value()) + ' ' + ui->unitComboBox->currentText().toStdString() + "\"").c_str());
 
-    std::string path("../ExoMars2020/Network/custom_build/Network_" + std::to_string(n));
-    std::string cla("-d -t=\"300 us\"");
+    network_simulation = new QProcess();
+    network_simulation->setWorkingDirectory("../ExoMars2020/Network/");
 
-    ZeroMemory(&si, sizeof(si));
-    ZeroMemory(&pi, sizeof(pi));
+    connect(network_simulation, SIGNAL(readyReadStandardOutput()), this, SLOT(readyReadStandardOutput()));
+    connect(network_simulation, SIGNAL(readyReadStandardError()), this, SLOT(readyReadStandardError()));
 
-    CreateProcessA(path.c_str(),
-        const_cast<char*>((path + ' ' + cla).c_str()), nullptr, nullptr, FALSE, 0, nullptr, "../Network", si, &pi);
+    network_simulation->start(cmd);
+}
+
+void SimuControl::readyReadStandardOutput()
+{
+    qDebug(network_simulation->readAllStandardOutput());
+}
+
+void SimuControl::readyReadStandardError()
+{
+    qDebug(network_simulation->readAllStandardOutput());
 }
