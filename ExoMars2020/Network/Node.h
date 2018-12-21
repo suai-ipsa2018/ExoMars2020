@@ -32,6 +32,7 @@ private:
 
 	std::vector<Packet> packet_queue, ack_queue;
 	std::vector<TransmissionConfig> transmissions;
+	std::map<sc_uint<16>, std::vector<sc_uint<16>>> mem;
 public:
 	Node(sc_module_name mn, const NodeConfig& _cfg, bool _verbose = false);
 	virtual ~Node();

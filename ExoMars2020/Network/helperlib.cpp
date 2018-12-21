@@ -86,6 +86,9 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 								TransmissionConfig({
 								nodes[n][desc["sender"].GetString()].address,
 								nodes[n][desc["receiver"].GetString()].address,
+								desc["id"].GetInt(),
+								desc["mode"].GetString() == "write",
+								desc["mem_address"].GetInt(),
 								(size_t)desc["psize"].GetInt(),
 								to_time(desc["delay_between_packets"].GetString()),
 								to_time(desc["t_start"].GetString()),

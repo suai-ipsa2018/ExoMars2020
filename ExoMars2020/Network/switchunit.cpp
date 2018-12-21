@@ -190,11 +190,7 @@ void SwitchUnit::port_processing(size_t in_port_number)
 
         std::cout << sc_time_stamp() << " " << name() << "'s in_port " << in_port_number << "\33[1m" << " locked out_port " << out_port_number << "\33[0m" << ", ready to send packet" << std::endl;
 
-        // route header
-        ports[out_port_number].write(address);
-        ports[out_port_number].write(sender_address);
-
-        // route data
+        // route packet
         while (!byte.and_reduce())
         {
             byte = ports[in_port_number].read();

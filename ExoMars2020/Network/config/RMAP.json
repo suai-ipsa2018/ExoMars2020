@@ -1,0 +1,53 @@
+{
+  "Channels": {
+    "speed": 48e6,
+    "error_period": 0
+  },
+
+  "Parts": {
+    "1": {
+      "Nodes": {
+        "Antenna": {
+          "logical_address": 32,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "PanCam": {
+          "logical_address": 33,
+          "fsize": 10,
+          "speed": 24e6
+        },
+        "NavCam": {
+          "logical_address": 34,
+          "fsize": 8,
+          "speed": 24e6
+      },
+      "Connections": [
+        {
+          "sender": "ISEM",
+          "receiver": "PanCam",
+          "id": 0,
+          "mode": "write",
+          "mem_address": 10,
+          "psize": 25,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "NavCam",
+          "receiver": "PanCam",
+          "mode": "read",
+          "id": 1,
+          "mem_address": 10,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        }
+      ]
+    }
+  }
+}

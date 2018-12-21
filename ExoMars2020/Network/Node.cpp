@@ -80,14 +80,14 @@ void Node::send_raw(Packet & p)
 	int rc(0);
 	char* zErrMsg;
 	send_mutex.lock();
-	std::cout << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
-	logfile << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.get_receiver_address() << std::endl;
+	std::cout << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.destination_address() << std::endl;
+	logfile << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.destination_address() << std::endl;
 	if (verbose) logfile << p << std::endl;
 	
 	if (db)
 	{
 		std::ostringstream db_insert_stream;
-		db_insert_stream << "INSERT INTO " << basename() << "_send VALUES(" << sc_time_stamp().value() << ',' << p.get_receiver_address() << ',' << p.get_sender_address() << ',';
+		db_insert_stream << "INSERT INTO " << basename() << "_send VALUES(" << sc_time_stamp().value() << ',' << p.destination_address() << ',' << p.source_address() << ',';
 		if (verbose)
 		{
 			db_insert_stream << '\"';
@@ -131,7 +131,7 @@ void Node::send(Packet &p)
 	{
 		for (size_t i = 0; i < ack_queue.size(); i++)
 		{
-			if (ack_queue[i].get_sender_address() == p.get_receiver_address())
+			if (ack_queue[i].source_address() == p.destination_address())
 			{
 				if (ack_queue[i][0])
 				{
@@ -169,7 +169,7 @@ sc_time Node::recv_raw(Packet & p)
 	if (db)
 	{
 		std::ostringstream db_insert_stream;
-		db_insert_stream << "INSERT INTO " << basename() << "_recv VALUES(" << sc_time_stamp().value() << ',' << p.get_receiver_address() << ',' << p.get_sender_address() << ',';
+		db_insert_stream << "INSERT INTO " << basename() << "_recv VALUES(" << sc_time_stamp().value() << ',' << p.destination_address() << ',' << p.source_address() << ',';
 		if (verbose)
 		{
 			db_insert_stream << '\"';
@@ -201,20 +201,20 @@ void Node::receiver_daemon()
 
 		if (p.size() > 1)
 		{
-			logfile << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << t.to_seconds() << "s" << std::endl;
+			logfile << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.source_address() << " in " << t.to_seconds() << "s" << std::endl;
 			if (verbose) logfile << p << std::endl;
-			std::cout << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.get_sender_address() << " in " << t.to_seconds() << "s" << std::endl;
+			std::cout << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.source_address() << " in " << t.to_seconds() << "s" << std::endl;
 			if (verbose) std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
 
 			if (p.get_crc())
 			{
 				std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
-				sc_spawn(sc_bind(&Node::send_ack, this, p.get_sender_address(), 0)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
+				sc_spawn(sc_bind(&Node::send_ack, this, p.source_address(), 0)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
 			}
 			else
 			{
 				std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC" << "\33[0m" << std::endl;
-				sc_spawn(sc_bind(&Node::send_ack, this, p.get_sender_address(), 1)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
+				sc_spawn(sc_bind(&Node::send_ack, this, p.source_address(), 1)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
 			}
 			packet_queue.push_back(p);
 			packet_reception.notify(SC_ZERO_TIME);
@@ -239,7 +239,7 @@ void Node::sending_daemon(const TransmissionConfig& c)
 		t0 = sc_time_stamp();
 		Packet p;
 		p.data.reserve(c.psize);
-		p << c.receiver_address << cfg.address;
+		p << c.receiver_address << 0x01 << 0x01111001 << 0 << cfg.address << 0 << c.id << 0 << 0 << 0 << 0 << c.mem_address << 0 << 0 << c.psize;
 		for (size_t i = 0; i < c.psize; i++)
 			p << rand();
 

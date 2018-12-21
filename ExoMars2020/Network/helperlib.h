@@ -24,6 +24,9 @@ struct TransmissionConfig
 {
 	sc_uint<16> sender_address;
 	sc_uint<16> receiver_address;
+	sc_uint<16> id;
+	sc_uint<16> mode;
+	sc_uint<16> mem_address;
 	size_t psize;
 	sc_time delay_between_packets;
 	sc_time t_start;
