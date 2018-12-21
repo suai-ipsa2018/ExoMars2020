@@ -114,12 +114,6 @@ void Node::send_raw(Packet & p)
 	send_mutex.unlock();
 }
 
-void Node::send_ack(sc_uint<16> dest, bool state) // Function spawned to send an ack packet (avoids blocking the PrintUnit for this)
-{
-	Packet p;
-	p << dest << cfg.address << state;
-	send_raw(p);
-}
 
 void Node::send(Packet &p)
 {
@@ -159,10 +153,32 @@ sc_time Node::recv_raw(Packet & p)
 	p.reset();
 	sc_uint<16> tmp(0);
 	sc_time t0(sc_time_stamp());
+	int i(0);
+	bool command;
+	bool mode;
 	while (!tmp.and_reduce())
 	{
 		tmp = port.read();
-		p << tmp;
+		if (i == 2)
+		{
+			command = tmp[6]; // 0 = reply, 1 = command
+			mode = tmp[5]; // 0 = read, 1 = write
+		}
+		else if (!command && mode && i == 7)
+		{
+			p.receive_header_crc(tmp);
+		}
+		else if (!command && !mode && i == 11)
+		{
+			p.receive_header_crc(tmp);
+		}
+		else if (command && i == 15)
+		{
+			p.receive_header_crc(tmp);
+		}
+		else
+			p << tmp;
+		i++;
 	}
 	sc_time t1(sc_time_stamp());
 
@@ -199,32 +215,91 @@ void Node::receiver_daemon()
 		Packet p;
 		t = recv_raw(p);
 
-		if (p.size() > 1)
+		if (p.header[1]==0x01) //Type RMAP
 		{
-			logfile << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.source_address() << " in " << t.to_seconds() << "s" << std::endl;
-			if (verbose) logfile << p << std::endl;
-			std::cout << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.source_address() << " in " << t.to_seconds() << "s" << std::endl;
-			if (verbose) std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
+			if (p.header[2][5]) // Write
+			{
+				if (p.header[2][6]) // Command
+				{
+					logfile << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.source_address() << " in " << t.to_seconds() << "s" << std::endl;
+					if (verbose) logfile << p << std::endl;
+					std::cout << sc_time_stamp() << ' ' << name() << " received packet of size " << p.size() << " from " << p.source_address() << " in " << t.to_seconds() << "s" << std::endl;
+					if (verbose) std::cout << "\33[48;5;194;38;5;0m" << p << "\33[0m" << std::endl;
 
-			if (p.get_crc())
-			{
-				std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
-				sc_spawn(sc_bind(&Node::send_ack, this, p.source_address(), 0)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
+					if (p.get_header_crc() || p.get_crc())
+					{
+						Packet answer;
+						answer << p.source_address() << p.header[1] << 0b00111001 << 1 << p.destination_address() << p.header[5] << p.header[6];
+						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
+						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
+					}
+					else
+					{
+						Packet answer;
+						answer << p.source_address() << p.header[1] << 0b00111001 << 0 << p.destination_address() << p.header[5] << p.header[6];
+						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC, writing to address " << p.header[11] << "\33[0m" << std::endl;
+						mem[p.header[11]] = p.data;
+						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
+					}
+				}
+				else // Answer
+				{
+					if (verbose) std::cout << "ack received by " << name() << ": " << std::endl << p << std::endl;
+					logfile << "ack received: " << std::endl << p << std::endl;
+					ack_queue.push_back(p);
+					ack_reception.notify(SC_ZERO_TIME);
+				}
 			}
-			else
+			else // Read
 			{
-				std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC" << "\33[0m" << std::endl;
-				sc_spawn(sc_bind(&Node::send_ack, this, p.source_address(), 1)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
+				if (p.header[2][6]) // Command
+				{ 
+					sc_uint<16> mem_address = p.header[11];
+					std::cout << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
+					logfile << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
+
+					std::vector<sc_uint<16>> data = mem[mem_address];
+
+					bool status;
+					if (!data.empty())
+					{
+						if (verbose)
+						{
+							std::cout << sc_time_stamp() << " " << name() << " Read: " << std::endl;
+							for (sc_uint<16>& ve : data)
+								std::cout << ve << ' ' << std::flush;
+							std::cout << std::endl;
+						}
+						status = 1;
+					}
+					else
+					{
+						std::cout << sc_time_stamp() << " " << name() << " No data at " << mem_address << std::endl;
+						status = 0;
+					}
+					Packet answer;
+					answer << p.source_address() << 0x01 << 0b00111001 << status << p.destination_address() << p.header[6];
+					for (sc_uint<16>& ve : data)
+						answer << ve;
+					send(answer);
+				}
+				else // Answer
+				{
+					std::cout << sc_time_stamp() << " " << name() << " Received answer for transaction " << p.header[6] << "(read node " << p.header[4] << ")" << std::endl;
+					if (verbose)
+					{
+						for (sc_uint<16>& ve : p.data)
+							std::cout << ve << ' ' << std::flush;
+						std::cout << std::endl;
+					}
+				}
 			}
-			packet_queue.push_back(p);
-			packet_reception.notify(SC_ZERO_TIME);
 		}
 		else // In case of ack reception
 		{
-			if (verbose) std::cout << "ack received by " << name() << ": " << std::endl << p << std::endl;
-			logfile << "ack received: " << std::endl << p << std::endl;
-			ack_queue.push_back(p);
-			ack_reception.notify(SC_ZERO_TIME);
+			std::cout << "Protocol not known: " << p.header[1] << std::endl;
+			std::cout << p << std::endl;
+			p.reset();
 		}
 	}
 }
@@ -239,10 +314,12 @@ void Node::sending_daemon(const TransmissionConfig& c)
 		t0 = sc_time_stamp();
 		Packet p;
 		p.data.reserve(c.psize);
-		p << c.receiver_address << 0x01 << 0x01111001 << 0 << cfg.address << 0 << c.id << 0 << 0 << 0 << 0 << c.mem_address << 0 << 0 << c.psize;
+		p << c.receiver_address << 0x01 << (0b01011001 | (c.mode << 5)) << 0 << cfg.address << 0 << c.id << 0 << 0 << 0 << 0 << c.mem_address << 0 << 0 << c.psize;
 		for (size_t i = 0; i < c.psize; i++)
 			p << rand();
 
+		std::cout << "sending:" << std::endl;
+		std::cout << p << std::endl;
 		send(p);
 		t1 = sc_time_stamp();
 		n_packets_sent++;
@@ -254,12 +331,4 @@ void Node::sending_daemon(const TransmissionConfig& c)
 unsigned Node::rand()
 {
 	return dist(rng);
-}
-
-void Node::get_packet(Packet &p)
-{
-	while (!packet_queue.size())
-		wait(packet_reception);
-	p = packet_queue[0];
-	packet_queue.erase(packet_queue.begin());
 }

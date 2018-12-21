@@ -81,13 +81,12 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 								iss >> val >> unit;
 								return sc_time(val, unit.c_str());
 							};
-							
 							connections[n].push_back(
 								TransmissionConfig({
 								nodes[n][desc["sender"].GetString()].address,
 								nodes[n][desc["receiver"].GetString()].address,
 								desc["id"].GetInt(),
-								desc["mode"].GetString() == "write",
+								std::string(desc["mode"].GetString()) == "write",
 								desc["mem_address"].GetInt(),
 								(size_t)desc["psize"].GetInt(),
 								to_time(desc["delay_between_packets"].GetString()),

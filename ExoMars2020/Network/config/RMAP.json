@@ -7,7 +7,7 @@
   "Parts": {
     "1": {
       "Nodes": {
-        "Antenna": {
+        "ISEM": {
           "logical_address": 32,
           "fsize": 8,
           "speed": 24e6
@@ -21,6 +21,7 @@
           "logical_address": 34,
           "fsize": 8,
           "speed": 24e6
+        }
       },
       "Connections": [
         {

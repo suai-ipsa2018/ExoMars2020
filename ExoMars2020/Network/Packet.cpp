@@ -2,7 +2,7 @@
 
 const sc_uint<16> Packet::EOP(-1);
 
-Packet::Packet() : header(header_size) {}
+Packet::Packet(size_t _header_size) : header_size(_header_size), header(_header_size) {}
 
 Packet& Packet::operator<<(const sc_uint<16> & f)
 {
@@ -19,7 +19,9 @@ Packet& Packet::operator<<(const sc_uint<16> & f)
 			checksum = crc<16>(checksum, f);
 		}
 		else
+		{
 			data.pop_back();
+		}
 	}
 	i++;
 	return *this;
@@ -29,17 +31,16 @@ Packet& Packet::operator>>(sc_uint<16> &f)
 {
 	if (i < header_size) f = header[i];
 	else if (i == header_size) f = crc<16>(header_checksum, 0);
-	else if (header_size + 1 <= i && i < header_size + data.size()) f = data[i - 1 - header_size];
-	else if (i == header_size + 1 + data.size()) { f = crc<16>(checksum, 0); }
-	else if (i == header_size + data.size() + 2) { f = EOP; }
-
+	else if (header_size + 1 <= i && i < header_size + 1 + data.size()) f = data[i - (header_size + 1)];
+	else if (data.size() && i == header_size + 1 + data.size()) { f = crc<16>(checksum, 0); }
+	else { f = EOP; }
 	i++;
 	return *this;
 }
 
 Packet::operator bool()
 {
-	return (i == header_size + data.size() + 3) ? false : true;
+	return (i == header_size + data.size() + 4 - (data.size() ? 1 : 0)) ? false : true;
 }
 
 sc_uint<16>& Packet::operator[](size_t index)
@@ -57,9 +58,7 @@ void Packet::reset() { i = 0; }
 
 ostream& operator<<(ostream &flux, Packet &p)
 {
-	flux << std::setw(5) << p.destination_address() << '\t' << p.destination_address().to_string(SC_BIN_US) << " <- destination address" << std::endl;
-	flux << std::setw(5) << p.source_address() << '\t' << p.source_address().to_string(SC_BIN_US) << " <- source address" << std::endl;
-	for (size_t i = 2; i < p.header.size(); i++)
+	for (size_t i = 0; i < p.header.size(); i++)
 	{
 		flux << std::setw(5) << p.header[i] << '\t' << sc_uint<16>(p.header[i]).to_string(SC_BIN_US) << std::endl;
 	}

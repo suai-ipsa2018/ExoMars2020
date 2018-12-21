@@ -30,7 +30,7 @@ private:
 	sc_mutex send_mutex, recv_mutex;
 	sc_event packet_reception, ack_reception;
 
-	std::vector<Packet> packet_queue, ack_queue;
+	std::vector<Packet> ack_queue;
 	std::vector<TransmissionConfig> transmissions;
 	std::map<sc_uint<16>, std::vector<sc_uint<16>>> mem;
 public:
@@ -43,10 +43,8 @@ public:
 protected:
 	void send(Packet &p);
 	unsigned rand();
-	void get_packet(Packet &p);
 private:
 	void send_raw(Packet &p);
-	void send_ack(sc_uint<16> dest, bool state);
 	sc_time recv_raw(Packet &p);
 	void receiver_daemon();
 	void sending_daemon(const TransmissionConfig& c);

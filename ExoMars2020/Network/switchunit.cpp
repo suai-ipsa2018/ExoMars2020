@@ -148,7 +148,7 @@ void SwitchUnit::init_thread()
 void SwitchUnit::port_processing(size_t in_port_number)
 {
     std::cout << sc_time_stamp() << " " << name() << " port_processing spawned to handle in_port " << in_port_number << std::endl;
-    sc_uint<16> byte, address, sender_address;
+    sc_uint<16> byte, address;
     size_t out_port_number, n_ports_at_address;
     while (true)
     {
@@ -158,7 +158,6 @@ void SwitchUnit::port_processing(size_t in_port_number)
 
 // Header gathering
         address = ports[in_port_number].read();
-        sender_address = ports[in_port_number].read();
 
 // Select port
         std::cout << sc_time_stamp() << " " << name() << "'s in_port " << in_port_number << " selecting port" << std::endl;
@@ -189,8 +188,8 @@ void SwitchUnit::port_processing(size_t in_port_number)
         }
 
         std::cout << sc_time_stamp() << " " << name() << "'s in_port " << in_port_number << "\33[1m" << " locked out_port " << out_port_number << "\33[0m" << ", ready to send packet" << std::endl;
-
         // route packet
+		ports[out_port_number].write(address);
         while (!byte.and_reduce())
         {
             byte = ports[in_port_number].read();

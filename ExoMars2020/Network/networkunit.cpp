@@ -8,7 +8,7 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool use_database, boo
 	router("router", 32, verbose),
 	network_speed(speed)
 {
-	JsonConfigLoader cfg("config/Network.json");
+	JsonConfigLoader cfg("config/RMAP.json");
 
 	std::map<std::string, NodeConfig> addresses = cfg.get_nodes(NETWORK_PART);
 	std::vector<TransmissionConfig> traffic_desc = cfg.get_desc(NETWORK_PART);

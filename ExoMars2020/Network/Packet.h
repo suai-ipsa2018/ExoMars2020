@@ -7,7 +7,7 @@ class Packet
 {
 	static const sc_uint<16> EOP;
 
-	static const size_t header_size{ 15 };
+	size_t header_size;
 
 	sc_uint<16> header_checksum{ 0 };
 	sc_uint<16> checksum{ 0 };
@@ -17,7 +17,7 @@ public:
 	std::vector<sc_uint<16>> header;
 	std::vector<sc_uint<16>> data;
 
-	Packet();
+	Packet(size_t _header_size = 15);
 
 	Packet& operator<<(const sc_uint<16> &f);
 	Packet& operator>>(sc_uint<16> &f);
@@ -25,9 +25,15 @@ public:
 	sc_uint<16>& operator[](size_t index);
 
 	const sc_uint<16>& destination_address() const { return header[0]; }
-	const sc_uint<16>& source_address() const { return header[1]; }
+	const sc_uint<16>& source_address() const { return header[4]; }
 	sc_uint<16>& get_crc() { return checksum; }
 	sc_uint<16>& get_header_crc() { return header_checksum; }
+
+	void receive_header_crc(sc_uint<16> byte)
+	{
+		header_checksum = crc<16>(header_checksum, byte);
+		i++;
+	}
 
 	size_t size();
 
