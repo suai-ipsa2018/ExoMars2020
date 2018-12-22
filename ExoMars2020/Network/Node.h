@@ -52,4 +52,8 @@ private:
 	void receiver_daemon();
 	void generating_daemon(const GenerationConfig& c);
 	void sending_daemon(const TransmissionConfig& c);
+
+	void create_table(std::string name);
+	void insert_into(std::string name, Packet& p);
 };
+
