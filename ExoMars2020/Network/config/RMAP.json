@@ -44,7 +44,7 @@
           "mem_address": 10,
           "psize": 0,
           "delay_between_packets": "100 us",
-          "t_start": "0 s",
+          "t_start": "100 us",
           "t_end": "-1 s",
           "n_packets": 1
         }

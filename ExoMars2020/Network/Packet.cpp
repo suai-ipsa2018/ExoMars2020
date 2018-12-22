@@ -20,7 +20,7 @@ Packet& Packet::operator<<(const sc_uint<16> & f)
 		}
 		else
 		{
-			data.pop_back();
+			if (data.size()) data.pop_back();
 		}
 	}
 	i++;
@@ -40,7 +40,7 @@ Packet& Packet::operator>>(sc_uint<16> &f)
 
 Packet::operator bool()
 {
-	return (i == header_size + data.size() + 4 - (data.size() ? 1 : 0)) ? false : true;
+	return (i == header_size + data.size() + 4 - (data.size() ? 0 : 1)) ? false : true;
 }
 
 sc_uint<16>& Packet::operator[](size_t index)
@@ -82,6 +82,6 @@ ostream& operator<<(ostream &flux, Packet &p)
 		else
 			flux << " <- ack state" << std::endl;
 	}
-	flux << std::setw(5) << crc<16>(p.checksum, 0) << '\t' << crc<16>(p.checksum, 0).to_string(SC_BIN_US) << " <- CRC " << std::endl;
+	if (!p.data.empty()) flux << std::setw(5) << crc<16>(p.checksum, 0) << '\t' << crc<16>(p.checksum, 0).to_string(SC_BIN_US) << " <- CRC " << std::endl;
 	return flux;
 }

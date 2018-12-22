@@ -28,9 +28,9 @@ protected:
 	bool verbose;
 private:
 	sc_mutex send_mutex, recv_mutex;
-	sc_event packet_reception, ack_reception;
+	sc_event packet_reception, reply_reception;
 
-	std::vector<Packet> ack_queue;
+	std::vector<Packet> reply_queue;
 	std::vector<TransmissionConfig> transmissions;
 	std::map<sc_uint<16>, std::vector<sc_uint<16>>> mem;
 public:

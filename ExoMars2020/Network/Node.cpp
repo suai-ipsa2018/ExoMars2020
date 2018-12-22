@@ -117,32 +117,32 @@ void Node::send_raw(Packet & p)
 
 void Node::send(Packet &p)
 {
-	bool ack_received(false);
+	bool reply_received(false);
 	send_raw(p); // Send the packet
 
 	// Wait for confirmation
-	while (!ack_received)
+	while (!reply_received)
 	{
-		for (size_t i = 0; i < ack_queue.size(); i++)
+		for (size_t i = 0; i < reply_queue.size(); i++)
 		{
-			if (ack_queue[i].source_address() == p.destination_address())
+			if (p.header[2] == reply_queue[i].header[2] && p.header[5] == reply_queue[i].header[5] && p.header[2][5] == reply_queue[i].header[2][5])
 			{
-				if (ack_queue[i][0])
+				if (reply_queue[i].header[3])
 				{
 					std::cout << sc_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
-					ack_queue.erase(ack_queue.begin() + i);
+					reply_queue.erase(reply_queue.begin() + i);
 				}
 				else
 				{
 					std::cout << sc_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
-					ack_queue.erase(ack_queue.begin() + i);
+					reply_queue.erase(reply_queue.begin() + i);
 					send(p);
 				}
-				ack_received = true;
+				reply_received = true;
 				break;
 			}
 		}
-		if(!ack_received) wait(ack_reception);
+		if(!reply_received) wait(reply_reception);
 	}
 }
 
@@ -163,16 +163,17 @@ sc_time Node::recv_raw(Packet & p)
 		{
 			command = tmp[6]; // 0 = reply, 1 = command
 			mode = tmp[5]; // 0 = read, 1 = write
+			p << tmp;
 		}
-		else if (!command && mode && i == 7)
+		else if (!command && mode && i == 7) // Write reply : header size = 8
 		{
 			p.receive_header_crc(tmp);
 		}
-		else if (!command && !mode && i == 11)
+		else if (!command && !mode && i == 11) // Read reply : header size = 12
 		{
 			p.receive_header_crc(tmp);
 		}
-		else if (command && i == 15)
+		else if (command && i == 15) // All commands : header size = 16
 		{
 			p.receive_header_crc(tmp);
 		}
@@ -244,15 +245,15 @@ void Node::receiver_daemon()
 				}
 				else // Answer
 				{
-					if (verbose) std::cout << "ack received by " << name() << ": " << std::endl << p << std::endl;
-					logfile << "ack received: " << std::endl << p << std::endl;
-					ack_queue.push_back(p);
-					ack_reception.notify(SC_ZERO_TIME);
+					if (verbose) std::cout << "write reply received by " << name() << ": " << std::endl << p << std::endl;
+					logfile << "write reply received: " << std::endl << p << std::endl;
+					reply_queue.push_back(p);
+					reply_reception.notify(SC_ZERO_TIME);
 				}
 			}
 			else // Read
 			{
-				if (p.header[2][6]) // Command
+				if (p.header[2][6]) // Command received
 				{ 
 					sc_uint<16> mem_address = p.header[11];
 					std::cout << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
@@ -278,20 +279,23 @@ void Node::receiver_daemon()
 						status = 0;
 					}
 					Packet answer;
-					answer << p.source_address() << 0x01 << 0b00111001 << status << p.destination_address() << p.header[6];
+					answer << p.source_address() << 0x01 << 0b00001001 << status << p.destination_address() << 0 << p.header[6] << 0 << 0 << 0 << data.size();
 					for (sc_uint<16>& ve : data)
 						answer << ve;
 					send(answer);
 				}
-				else // Answer
+				else // Answer received
 				{
-					std::cout << sc_time_stamp() << " " << name() << " Received answer for transaction " << p.header[6] << "(read node " << p.header[4] << ")" << std::endl;
+					std::cout << sc_time_stamp() << " " << name() << " Received answer for transaction " << p.header[6] << " (read node " << p.header[4] << ")" << std::endl;
+					std::cout << p << std::endl;
 					if (verbose)
 					{
 						for (sc_uint<16>& ve : p.data)
 							std::cout << ve << ' ' << std::flush;
 						std::cout << std::endl;
 					}
+					reply_queue.push_back(p);
+					reply_reception.notify(SC_ZERO_TIME);
 				}
 			}
 		}
