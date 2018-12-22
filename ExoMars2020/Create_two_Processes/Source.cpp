@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-	const bool compile(true);
+	const bool compile(false);
 	if (compile)
 	{
 #ifdef _DEBUG
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	std::string dir("../Network/custom_build/");
 	std::string mast_path(dir + "mast_part.exe");
 	std::string rover_path(dir + "rover_part.exe");
-	std::string cla("-v -d");
+	std::string cla("-v -d -t=\"300 us\"");
 
 	
 	STARTUPINFO si;
@@ -34,7 +34,6 @@ int main(int argc, char* argv[])
 
 	CreateProcess(rover_path.c_str(),
 		const_cast<char*>((rover_path + ' ' + cla).c_str()), NULL, NULL, FALSE, 0, NULL, "../Network", &si, &pi);
-
 
 	return 0;
 }

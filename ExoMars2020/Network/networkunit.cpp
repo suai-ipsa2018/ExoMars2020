@@ -1,4 +1,7 @@
 #include "networkunit.h"
+#if NETWORK_PART == 0
+#define SQLITE_THREADSAFE 0
+#endif
 
 
 NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool use_database, bool verbose) :

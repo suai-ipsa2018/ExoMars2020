@@ -60,7 +60,7 @@
     },
 
     "2": {
-      "Declaration": {
+      "Nodes": {
         "Antenna": {
           "logical_address": 32,
           "fsize": 8,
@@ -107,7 +107,7 @@
           "speed": 24e6
         }
       },
-      "Description": [
+      "Connections": [
         {
           "sender": "CLUPI",
           "receiver": "Antenna",
