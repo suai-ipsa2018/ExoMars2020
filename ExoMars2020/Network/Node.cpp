@@ -28,6 +28,11 @@ void Node::add_transmission(const TransmissionConfig & c)
 	transmissions.push_back(c);
 }
 
+void Node::add_generation(const GenerationConfig & c)
+{
+	generations.push_back(c);
+}
+
 void Node::init_db(sqlite3 * _db)
 {
 	db = _db;
@@ -220,6 +225,8 @@ void Node::receiver_daemon()
 {
 	for (const TransmissionConfig& c : transmissions)
 		sc_spawn(sc_bind(&Node::sending_daemon, this, c));
+	for (const GenerationConfig& c : generations)
+		sc_spawn(sc_bind(&Node::generating_daemon, this, c));
 
 	sc_time t;
 	while (true)
@@ -241,14 +248,14 @@ void Node::receiver_daemon()
 					if (p.get_header_crc() || p.get_crc())
 					{
 						Packet answer(7);
-						answer << p.source_address() << p.header[1] << 0b00111001 << 0 << p.destination_address() << p.header[5] << p.header[6];
+						answer << p.source_address() << p.header[1] << 0b00110001 << 0 << p.destination_address() << p.header[5] << p.header[6];
 						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
 					}
 					else
 					{
 						Packet answer(7);
-						answer << p.source_address() << p.header[1] << 0b00111001 << 1 << p.destination_address() << p.header[5] << p.header[6];
+						answer << p.source_address() << p.header[1] << 0b00110001 << 1 << p.destination_address() << p.header[5] << p.header[6];
 						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC, writing to address " << p.header[11] << "\33[0m" << std::endl;
 						mem[p.header[11]] = p.data;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
@@ -269,7 +276,7 @@ void Node::receiver_daemon()
 					if (p.get_header_crc() || p.get_crc())
 					{
 						Packet answer;
-						answer << p.source_address() << 0x01 << 0b00001001 << 0 << p.destination_address() << p.header[5] << p.header[6] << 0 << 0 << 0 << 0;
+						answer << p.source_address() << 0x01 << 0b00000001 << 0 << p.destination_address() << p.header[5] << p.header[6] << 0 << 0 << 0 << 0;
 						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
 					}
@@ -291,7 +298,7 @@ void Node::receiver_daemon()
 							status = 0;
 						}
 						Packet answer(11);
-						answer << p.source_address() << 0x01 << 0b00001001 << status << p.destination_address() << 0 << p.header[6] << 0 << 0 << 0 << data.size();
+						answer << p.source_address() << 0x01 << 0b00000001 << status << p.destination_address() << 0 << p.header[6] << 0 << 0 << 0 << data.size();
 						for (sc_uint<16>& ve : data)
 							answer << ve;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer));
@@ -318,6 +325,21 @@ void Node::receiver_daemon()
 	}
 }
 
+void Node::generating_daemon(const GenerationConfig & c)
+{
+	size_t n_generated(0);
+	wait(c.t_start);
+	while (n_generated < c.n_generations && sc_time_stamp() < c.t_end)
+	{
+		std::vector<sc_uint<16>> data;
+		data.reserve(c.dsize);
+		for (size_t i = 0; i < c.dsize; i++)
+			data.emplace_back(rand());
+		mem[c.mem_address] = data;
+		n_generated++;
+	}
+}
+
 void Node::sending_daemon(const TransmissionConfig& c)
 {
 	sc_time t0, t1;
@@ -328,9 +350,12 @@ void Node::sending_daemon(const TransmissionConfig& c)
 		t0 = sc_time_stamp();
 		Packet p;
 		p.data.reserve(c.psize);
-		p << c.receiver_address << 0x01 << (0b01011001 | (c.mode << 5)) << 0 << cfg.address << 0 << c.id << 0 << 0 << 0 << 0 << c.mem_address << 0 << 0 << c.psize;
-		for (size_t i = 0; i < c.psize; i++)
-			p << rand();
+		p << c.receiver_address << 0x01 << (0b01010001 | (c.mode << 5)) << 0 << cfg.address << 0 << c.id << 0 << 0 << 0 << 0 << c.mem_address << 0 << 0 << c.psize;
+		if (c.mode) // If in writing mode
+		{
+			for (size_t i = 0; i < c.psize; i++)
+				p << rand();
+		}
 
 		std::cout << sc_time_stamp() << " " << name() << " sending:" << std::endl;
 		std::cout << p << std::endl;

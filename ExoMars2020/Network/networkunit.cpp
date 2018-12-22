@@ -11,7 +11,8 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool use_database, boo
 	JsonConfigLoader cfg("config/RMAP.json");
 
 	std::map<std::string, NodeConfig> addresses = cfg.get_nodes(NETWORK_PART);
-	std::vector<TransmissionConfig> traffic_desc = cfg.get_desc(NETWORK_PART);
+	std::vector<TransmissionConfig> traffic_desc = cfg.get_connections(NETWORK_PART);
+	std::vector<GenerationConfig> gencfg = cfg.get_generations(NETWORK_PART);
 	ChannelConfig channels_cfg = cfg.get_channels();
 
 	tf = sc_create_vcd_trace_file(("traces/network_" + std::to_string(NETWORK_PART)).c_str());
@@ -32,9 +33,12 @@ NetworkUnit::NetworkUnit(sc_module_name mn, double speed, bool use_database, boo
 	router.connections_done();
 	for (std::unique_ptr<Node> &i : instruments)
 	{
-		for (TransmissionConfig& cfg : traffic_desc)
-			if (cfg.sender_address == i->get_logical_address())
-				i->add_transmission(cfg);
+		for (TransmissionConfig& tcfg : traffic_desc)
+			if (tcfg.sender_address == i->get_logical_address())
+				i->add_transmission(tcfg);
+		for (GenerationConfig& gcfg : gencfg)
+			if (gcfg.generator == i->get_logical_address())
+				i->add_generation(gcfg);
 	}
 }
 

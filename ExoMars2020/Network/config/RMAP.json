@@ -1,7 +1,7 @@
 {
   "Channels": {
     "speed": 48e6,
-    "error_period": 100
+    "error_period": 0
   },
 
   "Parts": {
@@ -47,6 +47,29 @@
           "t_start": "100 us",
           "t_end": "-1 s",
           "n_packets": 1
+        },
+        {
+          "sender": "NavCam",
+          "receiver": "PanCam",
+          "mode": "read",
+          "id": 1,
+          "mem_address": 0,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        }
+      ],
+      "Generations": [
+        {
+          "generator": "PanCam",
+          "mem_address": 0,
+          "dsize": 50,
+          "delay_between_generations": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_generations": 1
         }
       ]
     }

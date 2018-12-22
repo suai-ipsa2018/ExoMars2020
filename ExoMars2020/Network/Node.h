@@ -32,6 +32,7 @@ private:
 
 	std::vector<Packet> reply_queue;
 	std::vector<TransmissionConfig> transmissions;
+	std::vector<GenerationConfig> generations;
 	std::map<sc_uint<16>, std::vector<sc_uint<16>>> mem;
 public:
 	Node(sc_module_name mn, const NodeConfig& _cfg, bool _verbose = false);
@@ -39,6 +40,7 @@ public:
   
 	sc_uint<16>& get_logical_address();
 	void add_transmission(const TransmissionConfig& c);
+	void add_generation(const GenerationConfig& c);
 	void init_db(sqlite3* _db);
 protected:
 	void send(Packet &p);
@@ -46,6 +48,8 @@ protected:
 private:
 	void send_raw(Packet &p);
 	sc_time recv_raw(Packet &p);
+
 	void receiver_daemon();
+	void generating_daemon(const GenerationConfig& c);
 	void sending_daemon(const TransmissionConfig& c);
 };

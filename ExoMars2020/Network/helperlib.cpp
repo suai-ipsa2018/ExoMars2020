@@ -98,6 +98,39 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 						}
 					}
 				}
+				if (part->value.HasMember("Generations"))
+				{
+					generations[n].reserve(part->value["Generations"].GetArray().Size());
+					for (auto &desc : part->value["Generations"].GetArray())
+					{
+						if (!nodes[n][desc["generator"].GetString()].address)
+						{
+							std::cerr << "JsonConfigLoader: No address found for node " << desc["generator"].GetString() << std::endl;
+							exit(-1);
+						}
+						else
+						{
+							auto to_time = [](const char* s) -> sc_time {
+								std::istringstream iss(s);
+								double val;
+								std::string unit;
+								iss >> val >> unit;
+								return sc_time(val, unit.c_str());
+							};
+							generations[n].push_back(
+								GenerationConfig({
+								nodes[n][desc["generator"].GetString()].address,
+								desc["mem_address"].GetInt(),
+								(size_t)desc["dsize"].GetInt(),
+								to_time(desc["delay_between_generations"].GetString()),
+								to_time(desc["t_start"].GetString()),
+								to_time(desc["t_end"].GetString()),
+								(size_t)desc["n_generations"].GetInt()
+								})
+							);
+						}
+					}
+				}
 			}
 			else
 			{
@@ -115,23 +148,43 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 	file.close();
 }
 
-const std::vector<TransmissionConfig>& JsonConfigLoader::get_desc(size_t part)
+const std::vector<TransmissionConfig>& JsonConfigLoader::get_connections(size_t part)
 {
 	if (part == 0)
 	{
-		if (!flattenned_descs.size())
+		if (!flattenned_connections.size())
 		{
-			flattenned_descs.reserve(connections.size());
+			flattenned_connections.reserve(connections.size());
 			for (auto &description : connections)
 			{
-				flattenned_descs.insert(flattenned_descs.end(), description.second.begin(), description.second.end());
+				flattenned_connections.insert(flattenned_connections.end(), description.second.begin(), description.second.end());
 			}
 		}
-		return flattenned_descs;
+		return flattenned_connections;
 	}
 	else
 	{
 		return connections[part];
+	}
+}
+
+const std::vector<GenerationConfig>& JsonConfigLoader::get_generations(size_t part)
+{
+	if (part == 0)
+	{
+		if (!flattenned_generations.size())
+		{
+			flattenned_generations.reserve(generations.size());
+			for (auto &description : generations)
+			{
+				flattenned_generations.insert(flattenned_generations.end(), description.second.begin(), description.second.end());
+			}
+		}
+		return flattenned_generations;
+	}
+	else
+	{
+		return generations[part];
 	}
 }
 
@@ -141,7 +194,7 @@ const std::map<std::string, NodeConfig>& JsonConfigLoader::get_nodes(size_t part
 	{
 		if (!flattenned_nodes.size())
 		{
-			flattenned_descs.reserve(connections.size());
+			flattenned_connections.reserve(connections.size());
 			for (auto &declaration : nodes)
 			{
 				flattenned_nodes.insert(declaration.second.begin(), declaration.second.end());
