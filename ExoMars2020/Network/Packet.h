@@ -26,14 +26,10 @@ public:
 
 	const sc_uint<16>& destination_address() const { return header[0]; }
 	const sc_uint<16>& source_address() const { return header[4]; }
-	sc_uint<16>& get_crc() { return checksum; }
-	sc_uint<16>& get_header_crc() { return header_checksum; }
+	sc_uint<16> get_crc() { return checksum; }
+	sc_uint<16> get_header_crc() { return header_checksum; }
 
-	void receive_header_crc(sc_uint<16> byte)
-	{
-		header_checksum = crc<16>(header_checksum, byte);
-		i++;
-	}
+	void receive_header_crc(sc_uint<16> byte);
 
 	size_t size();
 

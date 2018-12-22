@@ -49,6 +49,14 @@ sc_uint<16>& Packet::operator[](size_t index)
 }
 
 
+void Packet::receive_header_crc(sc_uint<16> byte)
+{
+	header_checksum = crc<16>(header_checksum, byte);
+	header_size = i;
+	header.resize(header_size);
+	i++;
+}
+
 size_t Packet::size()
 {
 	return data.size();
@@ -60,9 +68,9 @@ ostream& operator<<(ostream &flux, Packet &p)
 {
 	for (size_t i = 0; i < p.header.size(); i++)
 	{
-		flux << std::setw(5) << p.header[i] << '\t' << sc_uint<16>(p.header[i]).to_string(SC_BIN_US) << std::endl;
+		flux << std::setw(5) << p.header[i] << '\t' << p.header[i].to_string(SC_BIN_US) << std::endl;
 	}
-	flux << std::setw(5) << crc<16>(p.header_checksum, 0) << '\t' << sc_uint<16>(crc<16>(p.header_checksum, 0)).to_string(SC_BIN_US) << std::endl;
+	flux << std::setw(5) << p.header_checksum << '\t' << p.header_checksum.to_string(SC_BIN_US) << std::endl;
 	for (size_t i = 0; i < p.data.size(); i++)
 	{
 		flux << std::setw(5) << p.data[i] << '\t' << sc_uint<16>(p.data[i]).to_string(SC_BIN_US) << std::flush;
@@ -82,6 +90,6 @@ ostream& operator<<(ostream &flux, Packet &p)
 		else
 			flux << " <- ack state" << std::endl;
 	}
-	if (!p.data.empty()) flux << std::setw(5) << crc<16>(p.checksum, 0) << '\t' << crc<16>(p.checksum, 0).to_string(SC_BIN_US) << " <- CRC " << std::endl;
+	if (!p.data.empty()) flux << std::setw(5) << p.checksum << '\t' << p.checksum.to_string(SC_BIN_US) << " <- CRC " << std::endl;
 	return flux;
 }

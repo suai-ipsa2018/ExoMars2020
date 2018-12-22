@@ -1,7 +1,7 @@
 {
   "Channels": {
     "speed": 48e6,
-    "error_period": 0
+    "error_period": 100
   },
 
   "Parts": {
@@ -9,17 +9,17 @@
       "Nodes": {
         "ISEM": {
           "logical_address": 32,
-          "fsize": 8,
+          "fsize": 16,
           "speed": 24e6
         },
         "PanCam": {
           "logical_address": 33,
-          "fsize": 10,
+          "fsize": 16,
           "speed": 24e6
         },
         "NavCam": {
           "logical_address": 34,
-          "fsize": 8,
+          "fsize": 16,
           "speed": 24e6
         }
       },

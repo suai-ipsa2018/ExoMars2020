@@ -125,18 +125,29 @@ void Node::send(Packet &p)
 	{
 		for (size_t i = 0; i < reply_queue.size(); i++)
 		{
-			if (p.header[2] == reply_queue[i].header[2] && p.header[5] == reply_queue[i].header[5] && p.header[2][5] == reply_queue[i].header[2][5])
+			if (p.header[1] == reply_queue[i].header[1] && p.header[5] == reply_queue[i].header[5] && p.header[2][5] == reply_queue[i].header[2][5])
 			{
-				if (reply_queue[i].header[3])
+				if (reply_queue[i].get_header_crc() || reply_queue[i].get_crc())
 				{
-					std::cout << sc_time_stamp() << ' ' << name() << " received ack, positive response !" << std::endl;
+					std::cout << sc_time_stamp() << ' ' << name() << " \33[1;38;5;197m" << "wrong " << (reply_queue[i].get_header_crc() ? "header crc" : "") << 
+						(reply_queue[i].get_header_crc() && reply_queue[i].get_crc() ? " and " : "") <<
+						(reply_queue[i].get_crc() ? "data crc" : "") << ", must send command again" << ' ' << reply_queue[i].get_crc() << "\33[0m" << std::endl;
 					reply_queue.erase(reply_queue.begin() + i);
+					send(p);
 				}
 				else
 				{
-					std::cout << sc_time_stamp() << ' ' << name() << " received ack, negative response, must send again" << std::endl;
-					reply_queue.erase(reply_queue.begin() + i);
-					send(p);
+					if (reply_queue[i].header[3])
+					{
+						std::cout << sc_time_stamp() << ' ' << name() << " \33[1;38;5;40m" << "received reply, positive status !" << "\33[0m" << std::endl;
+						reply_queue.erase(reply_queue.begin() + i);
+					}
+					else
+					{
+						std::cout << sc_time_stamp() << ' ' << name() << " \33[1;38;5;197m" << "received reply, negative status, must send again" << "\33[0m" << std::endl;
+						reply_queue.erase(reply_queue.begin() + i);
+						send(p);
+					}
 				}
 				reply_received = true;
 				break;
@@ -229,15 +240,15 @@ void Node::receiver_daemon()
 
 					if (p.get_header_crc() || p.get_crc())
 					{
-						Packet answer;
-						answer << p.source_address() << p.header[1] << 0b00111001 << 1 << p.destination_address() << p.header[5] << p.header[6];
+						Packet answer(7);
+						answer << p.source_address() << p.header[1] << 0b00111001 << 0 << p.destination_address() << p.header[5] << p.header[6];
 						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
 					}
 					else
 					{
-						Packet answer;
-						answer << p.source_address() << p.header[1] << 0b00111001 << 0 << p.destination_address() << p.header[5] << p.header[6];
+						Packet answer(7);
+						answer << p.source_address() << p.header[1] << 0b00111001 << 1 << p.destination_address() << p.header[5] << p.header[6];
 						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC, writing to address " << p.header[11] << "\33[0m" << std::endl;
 						mem[p.header[11]] = p.data;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
@@ -245,8 +256,8 @@ void Node::receiver_daemon()
 				}
 				else // Answer
 				{
-					if (verbose) std::cout << "write reply received by " << name() << ": " << std::endl << p << std::endl;
-					logfile << "write reply received: " << std::endl << p << std::endl;
+					if (verbose) std::cout << sc_time_stamp() << "write reply received by " << name() << ": " << std::endl << p << std::endl;
+					logfile << sc_time_stamp() << "write reply received: " << std::endl << p << std::endl;
 					reply_queue.push_back(p);
 					reply_reception.notify(SC_ZERO_TIME);
 				}
@@ -254,45 +265,44 @@ void Node::receiver_daemon()
 			else // Read
 			{
 				if (p.header[2][6]) // Command received
-				{ 
-					sc_uint<16> mem_address = p.header[11];
-					std::cout << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
-					logfile << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
-
-					std::vector<sc_uint<16>> data = mem[mem_address];
-
-					bool status;
-					if (!data.empty())
+				{
+					if (p.get_header_crc() || p.get_crc())
 					{
-						if (verbose)
-						{
-							std::cout << sc_time_stamp() << " " << name() << " Read: " << std::endl;
-							for (sc_uint<16>& ve : data)
-								std::cout << ve << ' ' << std::flush;
-							std::cout << std::endl;
-						}
-						status = 1;
+						Packet answer;
+						answer << p.source_address() << 0x01 << 0b00001001 << 0 << p.destination_address() << p.header[5] << p.header[6] << 0 << 0 << 0 << 0;
+						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;197m" << "WRONG CRC" << "\33[0m" << std::endl;
+						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 0, signaling a transmission error
 					}
 					else
 					{
-						std::cout << sc_time_stamp() << " " << name() << " No data at " << mem_address << std::endl;
-						status = 0;
+
+						sc_uint<16> mem_address = p.header[11];
+						std::cout << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
+						logfile << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
+
+						std::vector<sc_uint<16>> data = mem[mem_address];
+
+						bool status;
+						if (!data.empty())
+							status = 1;
+						else
+						{
+							std::cout << sc_time_stamp() << " " << name() << " No data at " << mem_address << std::endl;
+							status = 0;
+						}
+						Packet answer(11);
+						answer << p.source_address() << 0x01 << 0b00001001 << status << p.destination_address() << 0 << p.header[6] << 0 << 0 << 0 << data.size();
+						for (sc_uint<16>& ve : data)
+							answer << ve;
+						sc_spawn(sc_bind(&Node::send_raw, this, answer));
 					}
-					Packet answer;
-					answer << p.source_address() << 0x01 << 0b00001001 << status << p.destination_address() << 0 << p.header[6] << 0 << 0 << 0 << data.size();
-					for (sc_uint<16>& ve : data)
-						answer << ve;
-					send(answer);
 				}
 				else // Answer received
 				{
 					std::cout << sc_time_stamp() << " " << name() << " Received answer for transaction " << p.header[6] << " (read node " << p.header[4] << ")" << std::endl;
-					std::cout << p << std::endl;
 					if (verbose)
 					{
-						for (sc_uint<16>& ve : p.data)
-							std::cout << ve << ' ' << std::flush;
-						std::cout << std::endl;
+						std::cout << "\33[1;48;5;33m" << p << "\33[0m" << std::endl;
 					}
 					reply_queue.push_back(p);
 					reply_reception.notify(SC_ZERO_TIME);
@@ -301,7 +311,7 @@ void Node::receiver_daemon()
 		}
 		else // In case of ack reception
 		{
-			std::cout << "Protocol not known: " << p.header[1] << std::endl;
+			std::cout << sc_time_stamp() << " " << name() << "Protocol not known: " << p.header[1] << std::endl;
 			std::cout << p << std::endl;
 			p.reset();
 		}
@@ -322,7 +332,7 @@ void Node::sending_daemon(const TransmissionConfig& c)
 		for (size_t i = 0; i < c.psize; i++)
 			p << rand();
 
-		std::cout << "sending:" << std::endl;
+		std::cout << sc_time_stamp() << " " << name() << " sending:" << std::endl;
 		std::cout << p << std::endl;
 		send(p);
 		t1 = sc_time_stamp();
