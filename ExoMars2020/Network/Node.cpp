@@ -38,6 +38,26 @@ void Node::init_db(sqlite3 * _db)
 	db = _db;
 	create_table("send");
 	create_table("recv");
+
+	std::ostringstream db_init_stream;
+	char* zErrMsg(nullptr);
+	int rc(0);
+	db_init_stream << "DROP TABLE IF EXISTS " << basename() << "_gen" << ';' << std::endl <<
+		"CREATE TABLE " << basename() << "_gen" << '(' <<
+		R"sql(
+TIME         INT   PRIMARY KEY   NOT NULL,)sql" << std::endl;
+	if (verbose) db_init_stream << "DATA   TEXT," << std::flush;
+	db_init_stream << R"sql(
+DATA_SIZE INT NOT NULL
+);
+)sql" << std::endl;
+
+	rc = sqlite3_exec(db, db_init_stream.str().c_str(), nullptr, 0, &zErrMsg);
+	if (rc != SQLITE_OK)
+	{
+		std::cerr << "Failed to create table " << basename() << "_gen: " << zErrMsg << std::endl
+			<< "Statement: " << db_init_stream.str() << std::endl;
+	}
 }
 
 void Node::send_raw(Packet & p)
@@ -261,8 +281,27 @@ void Node::generating_daemon(const GenerationConfig & c)
 		data.reserve(c.dsize);
 		for (size_t i = 0; i < c.dsize; i++)
 			data.emplace_back(rand());
+
 		mem[c.mem_address] = data;
 		n_generated++;
+
+		if (db)
+		{
+			char* zErrMsg;
+			std::ostringstream db_insert_stream;
+			db_insert_stream << "INSERT INTO " << basename() << "_gen" << " VALUES("
+				<< sc_time_stamp().value() << ",\"";
+			for (size_t i = 0; i < c.dsize - 1; i++)
+				db_insert_stream << data[i] << ',';
+			db_insert_stream << data[c.dsize - 1] << "\"," << c.dsize << ");" << std::endl;
+
+			int rc = sqlite3_exec(db, db_insert_stream.str().c_str(), nullptr, 0, &zErrMsg);
+			if (rc != SQLITE_OK)
+			{
+				std::cerr << "Failed to insert in table " << basename() << "_gen: " << zErrMsg << std::endl
+					<< "Statement: " << db_insert_stream.str() << std::endl;
+			}
+		}
 	}
 }
 
@@ -320,8 +359,7 @@ STATUS              INT,
 HEADER_CRC          INT,)sql" << std::endl;
 	if (verbose) db_init_stream << "DATA   TEXT," << std::flush;
 	db_init_stream << R"sql(
-DATA_CRC                INT,
-DATA_SIZE               INT
+DATA_CRC                INT
 );
 )sql" << std::endl;
 
@@ -369,9 +407,9 @@ void Node::insert_into(std::string name, Packet& p)
 			db_insert_stream << "NULL,";
 	}
 	if (p.header[2][6] == p.header[2][5])
-		db_insert_stream << p.get_crc() << ',' << p.size() << ");" << std::endl;
+		db_insert_stream << p.get_crc() << ");" << std::endl;
 	else
-		db_insert_stream << "NULL,NULL);" << std::endl;
+		db_insert_stream << "NULL);" << std::endl;
 
 	int rc = sqlite3_exec(db, db_insert_stream.str().c_str(), nullptr, 0, &zErrMsg);
 	if (rc != SQLITE_OK)
