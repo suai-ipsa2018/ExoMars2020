@@ -235,6 +235,7 @@ void Node::receiver_daemon()
 						logfile << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
 
 						std::vector<sc_uint<16>> data = mem[mem_address];
+						sc_uint<48> dsize = data.size();
 
 						bool status;
 						if (!data.empty())
@@ -245,7 +246,7 @@ void Node::receiver_daemon()
 							status = 0;
 						}
 						Packet answer(11);
-						answer << p.source_address() << 0x01 << 0b00000001 << status << p.destination_address() << 0 << p.header[6] << 0 << 0 << 0 << data.size();
+						answer << p.source_address() << 0x01 << 0b00000001 << status << p.destination_address() << 0 << p.header[6] << 0 << dsize.range(47, 32) << dsize.range(31, 16) << dsize.range(15, 0);
 						for (sc_uint<16>& ve : data)
 							answer << ve;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer));
