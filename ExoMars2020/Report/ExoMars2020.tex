@@ -194,14 +194,30 @@ As already explained, we used a configuration file to describe nodes behaviour a
 
 At first, we used a custom configuration file and wrote the parser ourselves. It was doing the job, but adding functionalities was complicated and error prone, and the parser itself not very fault tolerant and strong when facing syntax mistakes. Moreover, we had the idea of a GUI to describe all the parameters, and judged that it would be harsh to interact with our custom configuration file.
 
-So we moved to the JSON format, using the header-only \Cpp JSON parser RapidJSON. It proved to be much stronger, and allowed us to easily add new features, without needing to check for bugs.
+So we moved to the JSON format, using the header-only \Cpp JSON parser RapidJSON. It proved to be much stronger, and allowed us to easily add new features, without needing to check for bugs. It currently supports channels specification, network part specification, nodes declaration, description of their interaction with the network (when to send packets, how many, the type \textsl{etc}), and the self generation of packets, modelling an experiment where results are stored in a node's memory, with similar arguments. The only limitation of this configuration file is that it doesn't allow to describe routers for now, so one router is created for each network part. 
+
+To easily gather information from the DOM, we wrote a loader, which can be found in \texttt{helperlib.h} and the corresponding implementation file \texttt{helperlib.cpp}.
 
 \subsubsection*{Graphical User Interface}
 Another optional task we began is the Graphical User Interface (GUI). Sadly, we didn't have time to finish it, but is still an interesting feature of the project.
 
-We chose the Qt framework to develop it, since it's one of the most developed widget toolkit with GTK\texttt{+}, and seemed easier to use than the later, since it is written in \Cpp and thus doesn't need bindings, which is the case for GTK\texttt{+}
+We chose the Qt framework to develop it, since it's one of the most developed widget toolkit with GTK\texttt{+}, and seemed easier to use than the later, since it is written in \Cpp and thus doesn't need bindings, which is the case for GTK\texttt{+}. Moreover, the existence of QtDesigner allowed us to easily design our UI and quickly obtaining interesting results. At the time of writing, it is able to generate the configuration file, compiling and starting simulation of the different parts of the network, and also analysing the results thanks to a simple SQLite database viewer.
+
+Planned improvements are reading from existing configuration file to load network parameters, network part management when editing nodes, and possibility to choose from which database we want to read, as well as a refresh button for the database viewer.
+Further possible, but hypothetical improvements could be to add a graphical representation of the network, and a graphical editor, instead of parameters only, and real time animation of the graphical editor during the simulation.
+
 \subsection{Network Unit}
-\texttt{NetworkUnit} stayed nearly the same since our first task and the corresponding report. It is the module in charge of instantiating all the others and linking them with channels. But its way to do this changed drastically, since we choose to create
+\texttt{NetworkUnit} kept its role since our first task and the corresponding report, namely to instantiate all the others modules and linking them with channels. But its way to do this changed drastically, since everything is allocated dynamically, to allow customisation through the configuration file.
+
+To do so, it firstly recover all the configuration needed using the \texttt{JsonConfigLoader}. It then dynamically allocates every node, which pointers are stored into the vector \texttt{instruments} to keep a handle on each one of them. The same is done with channels. At the same time, we connect the instrument to the channel and the router, using the function \texttt{SwitchUnit::connect} that creates routing tables automatically. 
+\begin{quote}
+Remark: One of the goals after the first task was to increase memory safety of our application, since we used \texttt{new} and \texttt{delete}, which can cause memory leaks if the deallocation is forgotten or in case of a crash, if stack unwinding doesn't happen. This is why we used \texttt{make\_unique}, and \texttt{std::unique\_ptr<T>} declared in the header \texttt{memory}. This is a smart pointer, deallocating memory when going out of scope, and thus safer than raw pointers.
+\end{quote}
+
+
+
+
+
 \subsection{Node Unit}
 
 It is the module that describes a node, in our case it's the rover's scientific instruments. 
