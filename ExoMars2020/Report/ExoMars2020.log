@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (MiKTeX 2.9.6880 64-bit) (preloaded format=xelatex 2018.12.23)  23 DEC 2018 14:55
+This is XeTeX, Version 3.14159265-2.6-0.99999 (MiKTeX 2.9.6880 64-bit) (preloaded format=xelatex 2018.12.23)  23 DEC 2018 16:29
 entering extended mode
 **./ExoMars2020.tex
 (ExoMars2020.tex
@@ -1287,14 +1287,14 @@ File: pictures/MOMA.jpg Graphic file (type bmp)
  [7]
 File: pictures/structure_ExoMars2020.pdf Graphic file (type pdf)
 <use pictures/structure_ExoMars2020.pdf>
- [8] [9] [10] [11]
+ [8] [9] [10] [11] [12]
 (ExoMars2020.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 225.
- [12]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 225.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 246.
+ [13]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 246.
  (ExoMars2020.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 225.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 225.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 246.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 246.
 Package rerunfilecheck Info: File `ExoMars2020.out' has not changed.
 (rerunfilecheck)             Checksum: 653A2DB3BC5DF9AA5E6C60090C7A920C.
  ) 
@@ -1307,4 +1307,4 @@ Here is how much of TeX's memory you used:
  1328 hyphenation exceptions out of 8191
  53i,10n,92p,10434b,754s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ExoMars2020.pdf (13 pages).
+Output written on ExoMars2020.pdf (14 pages).

@@ -175,10 +175,31 @@ As in the first task, the SpaceWire Router is modelled by the \Cpp class \texttt
 All details about these improvements will be explained in the following subsections.
 
 \subsection{Features}
-Firstly, our project features the modelling of the the third OSI layer of the SpaceWire specification, as requested, but also of a part of the second layer, since it was already done during the first task.
-The third OSI layer covers the use of packets to transmit data from one node to another, with possible routing on the way. We modelled only a part of the second layer, since it was kept from the first task and was not mandatory for this one. We only have the transmission by frames of packets, allowing for transmission delay simulations and transmission error modelling (due to some possible incident radiation). It also made us think on the problem of data collision, since we used bidirectional channels, and forced us to create some security mechanism. But we did not implement the Error End of Packet (EEP) and error link recovery at this level.
+\subsubsection*{SpaceWire}
+Our project features the modelling of the the third OSI layer of the SpaceWire specification, as requested, but also of a part of the second layer, since it was already done during the first task.
 
-config files database et processes
+The third OSI layer covers the use of packets to transmit data from one node to another, with possible routing on the way. About the second layer, we modelled only a part of it, since it was kept from the first task and was not mandatory for this one. We only have the transmission by frames of packets, allowing for transmission delay simulations and transmission error modelling (due to some possible incident radiation). It also made us think on the problem of data collision, since we used bidirectional channels, and forced us to create some security mechanism. But we did not implement the Error End of Packet (EEP) and error link recovery at this level.
+
+The only communication protocol implemented is RMAP, since we found out that ExoMars2020 uses this protocol.
+\subsubsection*{Log system}
+We added a logging system, to increase debugging possibilities. It was at first under the form of a simple text logging.The information printed to the standard output was also written to files, with one log for each node, resulting in a less mixed output. But this was not very practical, since analysis on these files was tedious, because of no formal format used. This is why we quickly decided to investigate database logging, which was one optional task.
+
+We chose to use SQLite as database, since its use was much simpler and more adapted (at least at the moment) than MongoDB, the other database client investigated. Indeed, we wanted to use database as a handy file format to store our information, which is easily allowed by SQLite, which stores everything in one file. MongoDB on its side uses the client/server paradigm, and would have forced us to go through the localhost, bringing complications. We successfully logged packet transmission using SQLite, and the ability to perform SQL requests proved its interest, allowing us to find bugs, and permitting custom analysis of what happened during the simulation after its end.
+
+\subsubsection*{Parallelisation}
+We were asked to separate our network into two different parts, and paralellising the simulation. Indeed, we transmit in the network big packets, and the simulation began longer and longer as we added features. An idea to increase simulation speed was to run the two independent parts of the network in parallel, hoping for a performance increase. To do so, we described the two distinct parts using a configuration file (see below), and used preprocessor directives alongside preprocessor definitions to compile two different executables, each one of them being able to simulate one part of the network. We then used the Windows API, and the function \texttt{CreateProcessA} to run the two parts concurrently.
+
+\subsubsection*{Configuration file}
+As already explained, we used a configuration file to describe nodes behaviour and different parts of the network. It is also specifies parameters of the channels, which are the same in the whole network, which could be a limitation, but could also be tweaked.
+
+At first, we used a custom configuration file and wrote the parser ourselves. It was doing the job, but adding functionalities was complicated and error prone, and the parser itself not very fault tolerant and strong when facing syntax mistakes. Moreover, we had the idea of a GUI to describe all the parameters, and judged that it would be harsh to interact with our custom configuration file.
+
+So we moved to the JSON format, using the header-only \Cpp JSON parser RapidJSON. It proved to be much stronger, and allowed us to easily add new features, without needing to check for bugs.
+
+\subsubsection*{Graphical User Interface}
+Another optional task we began is the Graphical User Interface (GUI). Sadly, we didn't have time to finish it, but is still an interesting feature of the project.
+
+We chose the Qt framework to develop it, since it's one of the most developed widget toolkit with GTK\texttt{+}, and seemed easier to use than the later, since it is written in \Cpp and thus doesn't need bindings, which is the case for GTK\texttt{+}
 \subsection{Network Unit}
 \texttt{NetworkUnit} stayed nearly the same since our first task and the corresponding report. It is the module in charge of instantiating all the others and linking them with channels. But its way to do this changed drastically, since we choose to create
 \subsection{Node Unit}
