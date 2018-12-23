@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (MiKTeX 2.9.6880 64-bit) (preloaded format=xelatex 2018.12.23)  23 DEC 2018 17:18
+This is XeTeX, Version 3.14159265-2.6-0.99999 (MiKTeX 2.9.6880 64-bit) (preloaded format=xelatex 2018.12.23)  23 DEC 2018 18:19
 entering extended mode
 **./ExoMars2020.tex
 (ExoMars2020.tex
@@ -1292,28 +1292,16 @@ LaTeX Font Info:    Font shape `TU/FreeSerif(0)/m/sl' in size <12> not availabl
 e
 (Font)              Font shape `TU/FreeSerif(0)/m/it' tried instead on input li
 ne 197.
-
-Overfull \hbox (17.73991pt too wide) in paragraph at lines 199--200
-[]\TU/FreeSerif(0)/m/n/12 To easily gather information from the DOM, we wrote a
- loader, which can be found in \TU/FreeMono(0)/m/n/12 helperlib.h
- []
-
-[9] [10] [11] [12] (ExoMars2020.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 262.
- [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 262.
+ [9] [10] [11] [12]
+[13] (ExoMars2020.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 274.
+ [14]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 274.
  (ExoMars2020.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 262.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 262.
-
-
-Package rerunfilecheck Warning: File `ExoMars2020.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `ExoMars2020.out':
-(rerunfilecheck)             Before: 653A2DB3BC5DF9AA5E6C60090C7A920C
-(rerunfilecheck)             After:  F1712DA14249E2AA7472640758D3FF95.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 274.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 274.
+Package rerunfilecheck Info: File `ExoMars2020.out' has not changed.
+(rerunfilecheck)             Checksum: D56F4D9BC9F70BD49891F10CD0BA30B2.
  ) 
 Here is how much of TeX's memory you used:
  28030 strings out of 427748
@@ -1324,4 +1312,4 @@ Here is how much of TeX's memory you used:
  1328 hyphenation exceptions out of 8191
  53i,10n,92p,10434b,754s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ExoMars2020.pdf (14 pages).
+Output written on ExoMars2020.pdf (15 pages).

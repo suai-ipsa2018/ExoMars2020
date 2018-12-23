@@ -196,7 +196,7 @@ At first, we used a custom configuration file and wrote the parser ourselves. It
 
 So we moved to the JSON format, using the header-only \Cpp JSON parser RapidJSON. It proved to be much stronger, and allowed us to easily add new features, without needing to check for bugs. It currently supports channels specification, network part specification, nodes declaration, description of their interaction with the network (when to send packets, how many, the type \textsl{etc}), and the self generation of packets, modelling an experiment where results are stored in a node's memory, with similar arguments. The only limitation of this configuration file is that it doesn't allow to describe routers for now, so one router is created for each network part. 
 
-To easily gather information from the DOM, we wrote a loader, which can be found in \texttt{helperlib.h} and the corresponding implementation file \texttt{helperlib.cpp}.
+To easily gather information from the DOM, we wrote a loader contained into a class, which can be found in \texttt{helperlib.h} and the corresponding implementation file \texttt{helperlib.cpp}.
 
 \subsubsection*{Graphical User Interface}
 Another optional task we began is the Graphical User Interface (GUI). Sadly, we didn't have time to finish it, but is still an interesting feature of the project.
@@ -221,15 +221,22 @@ The definition of this module can be found in \texttt{networkunit.h} and the imp
 \subsection{Node}
 This module describes a SpaceWire node with only one port, that can be configured to our need through the configuration file. It contains multiple methods, corresponding to multiple levels of abstraction in our model of the node, which were useful to structure the code. They contain a memory that can be written or read through the RMAP protocol, or written directly by the node itself, generation data.
 
-Firstly, there are three type of daemons, which are by the way the three main type of threads of this module (we named them daemons because it usually describe threads that run in the background, handling everything important). The main one is \texttt{receiver_daemon}, in charge of handling reception of packet, and choosing what should be done with the packet. It is written to receive RMAP packets, and sending back replies if needed. This daemon is only launched once, and runs during the whole simulation, which is not necessarily the case of the others. \texttt{sending_daemon} and \texttt{generating_daemon} are very similar, the first one being in charge of sending RMAP commands, and the second one generating data directly to the node memory. Any number of these two can be spawned, according to the fields "Connections" and "Generations" of the config file. They can also terminate before the end of the simulation, if their role is finished.
+Firstly, there are three type of daemons, which are by the way the three main type of threads of this module (we named them daemons because it usually describe threads that run in the background, handling everything important). The main one is \texttt{receiver\_daemon}, in charge of handling reception of packet, and choosing what should be done with the packet. It is written to receive RMAP packets, and sending back replies if needed. This daemon is only launched once, and runs during the whole simulation, which is not necessarily the case of the others. \texttt{sending\_daemon} and \texttt{generating\_daemon} are very similar, the first one being in charge of sending RMAP commands, and the second one generating data directly to the node memory. Any number of these two can be spawned, according to the fields "Connections" and "Generations" of the config file. They can also terminate before the end of the simulation, if their role is finished.
 
 Secondly, the function \texttt{send} allows to send a packet of any type, and waiting for a reply. If the reply has a positive status (1), the function ends, and if the status is 0, the packet is sent again, until a positive status is received, allowing for safe communication and error recovery. There is no \texttt{recv} function currently, since we only use the reply as acknowledgement packet, but we could create a \texttt{recv} function that sends an acknowledgement back, for both commands and replies.
 
-Finally, the function \texttt{send_raw} and \texttt{recv_raw}
+Finally, the function \texttt{send\_raw} and \texttt{recv\_raw}, at the lowest level, each one having as parameter one packet and which are respectively in charge of sending actual data into the port and receiving actual data, determining the type of packet and accordingly create the correct packet before returning. One interesting difficulty for the \texttt{recv\_raw} function was that RMAP uses different header structures for different actions, and we had to determine the type of the packet one the fly, while receiving, to correctly determine the end of the header, and the beginning of the data.
 
-\subsection{Packet Unit}
-\subsection{Switch Unit}
+The definition of this module can be found in \texttt{Node.h} and the implementation in \texttt{Node.cpp}.
 
+\subsection{Packet}
+This class aims to simplify communication throughout the network, and clearly separating layers 2 and 3 of the OSI model. It contains two vectors, one for the header and one for the data, since each part is of variable size in the RMAP protocol, as well as two checksums (CRC), for the header and the data. Data can be inserted or extracted as it would be done for a stream, using operators \verb|<<| and \verb|>>|, which allows to compute the CRC on the fly, as it would be done in a real equipment. But this interface is not always handy, and we needed to add functions about the end of the header, because of the variable header size of the RMAP protocol, and maybe the class would need a rewrite to provide simpler interface.
+
+That being said, it is very useful to contain packets simply, more than the FIFOs we used during the first task, and can be printed in a clean way through the overloading of  \verb|operator<<|.
+
+The definition of this module can be found in \texttt{Packet.h} and the corresponding implementation in \texttt{Packet.cpp}.
+\subsection{SwitchUnit}
+\texttt{SwitchUnit} didn't change a lot. We just increased memory safety by dropping the bidimensional C-style array we had before for a \texttt{std::vector}. We also added the simple \texttt{connect} function, that allows to connect a node to the router through a channel, and automatically modify the routing table to match the new connection. The only limitation here is that we didn't write any \texttt{connect} function to link two routers, but we didn't need this at the time of writing, since ExoMars2020 contains only one router. But if we are to develop a more complete and versatile simulator, this could become a need.
 
 \pagebreak
 
