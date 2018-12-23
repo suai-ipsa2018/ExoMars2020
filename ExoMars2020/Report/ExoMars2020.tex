@@ -10,6 +10,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{siunitx}
 \usepackage[margin=2.5cm]{geometry}
 
 \author{Anas Naïri \and Julien Plante}
@@ -36,13 +37,14 @@ It will work alongside the three other spectrometers (RLS, MicrOmega, MOMA), bei
 \subsection{MicrOmega}
 
 MicrOmega is an infra-red spectrometer made to identify composition of Martian soil samples at a grain scale, after their gathering by the drilling system. It is similar as RLS and MOMA in this way, since the three spectrometers will study samples collected by the drill. The infra-red study of the samples is adapted to find evidences of past or present carbon and water presence. 
-250x256 pixels + $\lambda$ (max 320 wave length)
+It uses an infra-red hyper-spectral microscopic imager to acquire the spectrum of a 250$\times$256 pixels square (\char`\~5$\times$5 \si{\milli\metre^2}) for 320 wave length, between 0.95 and 3.65 \si{\micro\metre}. Thus having a maximum of \num{20480000} bytes to transmit.
 
 \subsection{RLS}
 RLS uses the Raman effect to find life signatures in Martian soil samples in a non-destructive way.
-The measurements carried out by the RLS will be performed as described within the ExoMars Rover Reference Surface Mission, which includes six experiment cycles (with two samples each, one extracted from a surface target and the other at depth) and two vertical surveys (with five samples each extracted at different depths).
+The measurements carried out by the RLS will be performed as described within the ExoMars Rover Reference Surface Mission, which includes six experiment cycles (with two samples each, one extracted from a surface target and the other at depth) and two vertical surveys (with five samples each extracted at different depths). It generates information about a 2048$\times$512 pixels of 15 \si{\micro\metre}, totalling a surface of approximately 30.7$\times$7.7 \si{\micro\metre^2}, and \num{1048576} bytes.
+
 \subsection{MOMA}
-Before sample analysis by MOMA, the MicrOmega and RLS instruments will conduct contextual measurements of mineralogy and organic functional groups that may be present. In cases where uplink and downlink schedules permit a tactical response during the science operations cycle, quick look snapshots of these data may be used to select or tune the MOMA analytical approach.
+MOMA (Mars Organics Molecule Analyser) is an instrument designed to detect organic molecules in spots of interest detected by the collaboration of RLS and MicrOmega. To do so, it will study samples gathered by the drill, as well as analysing the gases of the Martian atmosphere. It features to modes of operation : Gas Chromatograph-Mass Spectrometry (MOMA GC-MS) and Laser Desorption-Mass Spectrometry (MOMA LD-MS), the first one being used to analyse atmosphere gases, and the second soil samples. No information about size of data produced was found, 
 
 
 \pagebreak

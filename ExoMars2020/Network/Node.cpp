@@ -201,9 +201,10 @@ void Node::receiver_daemon()
 					else
 					{
 						Packet answer(7);
+						sc_uint<64> mem_address((p.header[8], p.header[9], p.header[10], p.header[11]));
 						answer << p.source_address() << p.header[1] << 0b00110001 << 1 << p.destination_address() << p.header[5] << p.header[6];
-						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC, writing to address " << p.header[11] << "\33[0m" << std::endl;
-						mem[p.header[11]] = p.data;
+						std::cout << sc_time_stamp() << " " << name() << " \33[1;38;5;40m" << "CORRECT CRC, writing to address " << mem_address << "\33[0m" << std::endl;
+						mem[mem_address] = p.data;
 						sc_spawn(sc_bind(&Node::send_raw, this, answer)); // Spawns a thread to send an ack packet with data 1, signaling a successful transmission
 					}
 				}
@@ -229,7 +230,7 @@ void Node::receiver_daemon()
 					else
 					{
 
-						sc_uint<16> mem_address = p.header[11];
+						sc_uint<64> mem_address = (p.header[8], p.header[9], p.header[10], p.header[11]);
 						std::cout << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
 						logfile << sc_time_stamp() << " " << name() << " Asking to read at address " << mem_address << std::endl;
 
@@ -315,7 +316,9 @@ void Node::sending_daemon(const TransmissionConfig& c)
 		t0 = sc_time_stamp();
 		Packet p;
 		p.data.reserve(c.psize);
-		p << c.receiver_address << 0x01 << (0b01010001 | (c.mode << 5)) << 0 << cfg.address << 0 << c.id << 0 << 0 << 0 << 0 << c.mem_address << 0 << 0 << c.psize;
+		sc_uint<64> mem_address(c.mem_address);
+		sc_uint<48> dsize(c.psize);
+		p << c.receiver_address << 0x01 << (0b01010001 | (c.mode << 5)) << 0 << cfg.address << 0 << c.id << 0 << mem_address.range(63, 48) << mem_address.range(47, 32) << mem_address.range(31, 16) << mem_address.range(15, 0) << dsize.range(47, 32) << dsize.range(31, 16) << dsize.range(15, 0);
 		if (c.mode) // If in writing mode
 		{
 			for (size_t i = 0; i < c.psize; i++)
@@ -385,7 +388,7 @@ void Node::insert_into(std::string name, Packet& p)
 		<< p.header[6] << ',';
 
 	if (p.header[2][6] && p.header[2][5])
-		db_insert_stream << p.header[7] << ',' << p.header[11] << ',' << p.header[14] << ',';
+		db_insert_stream << p.header[7] << ',' << (p.header[8], p.header[9], p.header[10], p.header[11]) << ',' << p.header[14] << ',';
 	else
 		db_insert_stream << "NULL,NULL,NULL,";
 	if (!p.header[2][6])

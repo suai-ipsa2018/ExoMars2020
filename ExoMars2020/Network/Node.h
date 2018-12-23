@@ -33,7 +33,7 @@ private:
 	std::vector<Packet> reply_queue;
 	std::vector<TransmissionConfig> transmissions;
 	std::vector<GenerationConfig> generations;
-	std::map<sc_uint<16>, std::vector<sc_uint<16>>> mem;
+	std::map<sc_uint<64>, std::vector<sc_uint<16>>> mem;
 public:
 	Node(sc_module_name mn, const NodeConfig& _cfg, bool _verbose = false);
 	virtual ~Node();

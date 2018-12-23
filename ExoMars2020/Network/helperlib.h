@@ -26,7 +26,7 @@ struct TransmissionConfig
 	sc_uint<16> receiver_address;
 	sc_uint<16> id;
 	sc_uint<16> mode;
-	sc_uint<16> mem_address;
+	sc_uint<64> mem_address;
 	size_t psize;
 	sc_time delay_between_packets;
 	sc_time t_start;
@@ -37,7 +37,7 @@ struct TransmissionConfig
 struct GenerationConfig
 {
 	sc_uint<16> generator;
-	sc_uint<16> mem_address;
+	sc_uint<64> mem_address;
 	size_t dsize;
 	sc_time delay_between_generation;
 	sc_time t_start;
