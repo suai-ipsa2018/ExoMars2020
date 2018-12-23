@@ -55,4 +55,9 @@ Steve Parkes.
 \newblock {\em SpaceWire User's Guide}.
 \newblock STAR-Dundee, 2012.
 
+\bibitem{RMAP}
+Steve Parkes and Chris McClements.
+\newblock {\em SpaceWire Remote Memory Access Protocol}.
+\newblock University of Dundee, 2005.
+
 \end{thebibliography}

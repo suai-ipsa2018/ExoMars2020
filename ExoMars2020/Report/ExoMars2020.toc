@@ -1,7 +1,7 @@
 \select@language {english}
 \contentsline {section}{\numberline {1}Task formulation}{2}{section.1}% 
 \contentsline {section}{\numberline {2}Introduction}{2}{section.2}% 
-\contentsline {section}{\numberline {3}Description of ExoMars2020's rover}{3}{section.3}% 
+\contentsline {section}{\numberline {3}Description of ExoMars2020 rover}{3}{section.3}% 
 \contentsline {subsection}{\numberline {3.1}PanCam}{3}{subsection.3.1}% 
 \contentsline {subsection}{\numberline {3.2}ISEM}{3}{subsection.3.2}% 
 \contentsline {subsection}{\numberline {3.3}CLUPI}{4}{subsection.3.3}% 

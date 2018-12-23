@@ -84,7 +84,7 @@ In fact, this R\&D project, which is to simulate the data-handling network archi
 \end{figure}
 
 Consequently, such amount of image transmission can be well handled by the use of a SpaceWire router, because, as we already know, SpaceWire is a good data-handling network which allies high speed of communication, low power consumption, and low cost implementation. It is ideal in the case of ExoMars2020, because it needs to connect all equipment to memory and processors. We also read that the ExoMars2020 rover uses the RMAP protocol to communicate and exchange data between different nodes, and it is an interesting task to implement this protocol, since it gives us a real packet structure, and a more accurate representation of what happens in SpaceWire networks than during our first task.\pagebreak
-\section{Description of ExoMars2020's rover}
+\section{Description of ExoMars2020 rover}
 
 The ExoMars2020 mission has for goal to search evidence of past or present life on the surface and/or subsurface of Mars. Thanks to its rover, it will, in addition, understand more the planet's surface and subsurface, like its origin of formation and the composition of it, by the use of multiple scientific instrumentation as cameras, radars and spectrometers.\smallbreak
 
@@ -171,7 +171,7 @@ Our project features the modelling of the the third OSI layer of the SpaceWire s
 
 The third OSI layer covers the use of packets to transmit data from one node to another, with possible routing on the way. About the second layer, we modelled only a part of it, since it was kept from the first task and was not mandatory for this one. We only have the transmission by frames of packets, allowing for transmission delay simulations and transmission error modelling (due to some possible incident radiation). It also made us think on the problem of data collision, since we used bidirectional channels, and forced us to create some security mechanism. But we did not implement the Error End of Packet (EEP) and error link recovery at this level.
 
-The only communication protocol implemented is RMAP, since we found out that ExoMars2020 uses this protocol.
+The only communication protocol implemented is RMAP, since we found out that ExoMars2020 uses this protocol. More details about its implementation can be found in the description of \hyperref[ssec:Node]{Node}
 \subsubsection*{Log system}
 We added a logging system, to increase debugging possibilities. It was at first under the form of a simple text logging.The information printed to the standard output was also written to files, with one log for each node, resulting in a less mixed output. But this was not very practical, since analysis on these files was tedious, because of no formal format used. This is why we quickly decided to investigate database logging, which was one optional task.
 
@@ -210,7 +210,8 @@ After that, \texttt{NetworkUnit} adds other parameters of the config file to the
 This module is also in charge of opening the database and passing its pointer to each node, as well as creating the trace file and make it watch each channel. Its definition can be found in \texttt{networkunit.h} and the implementation in \texttt{networkunit.cpp}.
 
 \subsection{Node}
-This module describes a SpaceWire node with only one port, that can be configured to our need through the configuration file. It contains multiple methods, corresponding to multiple levels of abstraction in our model of the node, which were useful to structure the code. They contain a memory that can be written or read through the RMAP protocol, or written directly by the node itself, generation data.\medbreak
+\label{ssec:Node}
+This module describes a SpaceWire node with only one port, that can be configured to our need through the configuration file. It contains multiple methods, corresponding to multiple levels of abstraction in our model of the node, which were useful to structure the code. They contain a memory that can be written or read through the RMAP protocol, or written directly by the node itself, simulating the generation of data. Since RMAP is a well known standard, we decided not to describe it in this report, but more information can be found in \cite{RMAP}\medbreak
 
 Firstly, there are three type of daemons, which are by the way the three main type of threads of this module (we named them daemons because it usually describe threads that run in the background, handling everything important). The main one is \texttt{receiver\_daemon}, in charge of handling reception of packet, and choosing what should be done with the packet. It is written to receive RMAP packets, and sending back replies if needed. This daemon is only launched once, and runs during the whole simulation, which is not necessarily the case of the others. \texttt{sending\_daemon} and \texttt{generating\_daemon} are very similar, the first one being in charge of sending RMAP commands, and the second one generating data directly to the node memory. Any number of these two can be spawned, according to the fields "Connections" and "Generations" of the config file. They can also terminate before the end of the simulation, if their role is finished.
 
