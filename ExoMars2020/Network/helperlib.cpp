@@ -88,7 +88,7 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 								desc["id"].GetInt(),
 								std::string(desc["mode"].GetString()) == "write",
 								desc["mem_address"].GetInt(),
-								(size_t)desc["psize"].GetInt(),
+								(size_t)desc["psize"].GetDouble(),
 								to_time(desc["delay_between_packets"].GetString()),
 								to_time(desc["t_start"].GetString()),
 								to_time(desc["t_end"].GetString()),
@@ -121,7 +121,7 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 								GenerationConfig({
 								nodes[n][desc["generator"].GetString()].address,
 								desc["mem_address"].GetInt(),
-								(size_t)desc["dsize"].GetInt(),
+								(size_t)desc["dsize"].GetDouble(),
 								to_time(desc["delay_between_generations"].GetString()),
 								to_time(desc["t_start"].GetString()),
 								to_time(desc["t_end"].GetString()),
