@@ -66,69 +66,60 @@
 \section{Task formulation}
 
 \begin{itemize}
-    \item Documentation about the ExoMars2020's rover to establish the rover's network structure
-    \item Implement the rover's network on SystemC, only the SpaceWire's network layer, channels must handle the speed of transmission and error bit frequency, and devices must generate data into the network and receive data from it
+    \item Read documentation about the ExoMars2020 rover to establish the rover's network structure
+    \item Implement the rover's network on SystemC, only the SpaceWire's network layer. Channels must handle the speed of transmission and error bit frequency, and devices must generate data into the network and receive data from it
     \item Create a base log-system to record results of the simulation through SQlite
-    \item Compare the time modelling between a single model and a parallel model
+    \item Split the network into two different parts to parallelise, and compare the modelling time between a single model and a parallel model
 \end{itemize}
-
 \section{Introduction}
 
-Our second project is a direct continuation with the previous one. To summarize briefly, our first R\&D project was about implementing a SpaceWire's network layer on SystemC, to simulate data sent from Earth and received on a spacecraft.\smallbreak
+Our second project is a direct continuation with the previous one. To summarize briefly, our first R\&D project was about implementing a SpaceWire network using SystemC, to simulate data sent from Earth and received on a spacecraft.\smallbreak
 
-In fact, this R\&D project, which is to simulate the data-handling network architecture of the ExoMars2020's rover, involves to use a SpaceWire router with a view to interconnecting the multiple scientific instruments. Since the rover uses a lot of cameras to observe, analyse and interpret its environment, then the processing of images taken by these instruments is well needed. In that case, as we can see in the figure below, the rover got a dedicated chip for this kind of process. Data will be sent from equipment, then to the memory, next to the processor which will give instructions to the image processor.\smallbreak
+In fact, this R\&D project, which is to simulate the data-handling network architecture of the ExoMars2020 rover, involves to use a SpaceWire router with a view to interconnecting the multiple scientific instruments. Since the rover uses a lot of cameras to observe, analyse and interpret its environment, the processing of images taken by these instruments is well needed. In that case, as we can see in the figure below, the rover got a dedicated chip for this kind of process. Data will be sent from equipment, then to the memory, next to the processor which will give instructions to the image processor.\smallbreak
 
 \begin{figure}[hb]
 	\centering
-    \includegraphics[scale = 0.5]{pictures/data_network_architecture.png}
+    \includegraphics[scale = 0.49]{pictures/data_network_architecture.png}
     \caption{Data-handling structure of ExoMars' rover}
 \end{figure}
 
-Consequently, such amount of image processing can be well handled by the use of a SpaceWire router. Because, as we already know, SpaceWire is a good data-handling network which allies high speed of communciation, low powering, and low cost implementation. It is ideal in the case of ExoMars2020, because it needs to connect all equipment to memory and processors. But, in our simulation, we had settled for a simulation involving the scientific instrumentation connected to each other via a SpaceWire router, so it can communicate between them by sending and receiving packets containing the results of a unit. We decided to do so to simplify the implementation, yet, it describes the same behaviour than if we could have put memory and processors. Moreover, ExoMars2020's rover use the RMAP protocol to pass data from equipment to memory then to processors.\smallbreak 
-
-\begin{figure}[hb]
-	\centering
-    \includegraphics[scale = 0.5]{pictures/RMAP_protocol.png}
-    \caption{Description of the RMAP protocol}
-\end{figure}
-
-
-
+Consequently, such amount of image transmission can be well handled by the use of a SpaceWire router, because, as we already know, SpaceWire is a good data-handling network which allies high speed of communication, low power consumption, and low cost implementation. It is ideal in the case of ExoMars2020, because it needs to connect all equipment to memory and processors. We also read that the ExoMars2020 rover uses the RMAP protocol to communicate and exchange data between different nodes, and it is an interesting task to implement this protocol, since it gives us a real packet structure, and a more accurate representation of what happens in SpaceWire networks than during our first task.\pagebreak
 \section{Description of ExoMars2020's rover}
 
-The ExoMars2020 mission has a goal to search evidence of past or present life on the surface and/or subsurface of Mars. Thanks to its rover, it will, in addition, understand more the planet's surface and subsurface, like its origin of formation and the composition of it, by the use of multiple scientific instrumentation as cameras and radars.\smallbreak
+The ExoMars2020 mission has for goal to search evidence of past or present life on the surface and/or subsurface of Mars. Thanks to its rover, it will, in addition, understand more the planet's surface and subsurface, like its origin of formation and the composition of it, by the use of multiple scientific instrumentation as cameras, radars and spectrometers.\smallbreak
 
 \subsection{PanCam}
-The PanCam is used to record 2D \& 3D images of the Mars' surface, in order to understand the geological and morphological situation on the planet. In fact, the PanCam is composed of two WAC (Wide Angle Camera), one on the left, the other on the right to have a stereoscopic view of the ground, and a HRC (High Resolution Camera). Also, it operates to produce images in the near infrared and visible wavelength. This device, in synergy with the others, allows the rover to chose the best potential locations site to drill, for example shallow ground that may contains gases or water. The HRC and WAC, both operates with an image resolution of 1024 x 1024 pixels, the first one in RGB, the second with a multispectral filter wheel. The PanCam communicates with packets of 10-bits' data.
-\pagebreak
+The PanCam is used to record 2D \& 3D images of the Mars' surface, in order to understand the geological and morphological situation on the planet. In fact, the PanCam is composed of two WAC (Wide Angle Camera), one on the left, the other on the right to have a stereoscopic view of the ground, and a HRC (High Resolution Camera). Also, it operates to produce images in the near infrared and visible wavelength. This device, in synergy with the others, allows the rover to chose the best potential locations site to drill, for example shallow ground that may contains gases or water. The HRC and WAC, both operates with an image resolution of 1024 x 1024 pixels, the first one in RGB, the second with a multispectral filter wheel. The PanCam communicates with packets of 10-bit data.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1]{pictures/PanCam.jpg}
+\caption{The PanCam prototype during tests in Mars-like conditions\\Credit: AMASE}
+\end{figure}
 
 \subsection{ISEM}
 
-The ISEM (or Infrared Spectrometer of ExoMars), as its name means, is an infrared beam that senses the infrared part of the sun's light reflection onto Mars' surface. With this method used on the rocks near of the rover, it obtains the spectrometer of these rocks and then get information about the geological composition of the planet's surface. Indeed, this device helps the rover to chose a potential location to drill in, because the presence of some minerals may indicate good places where to find past life on Mars. It communicates with packets of 16-bits' data.
+The ISEM (or Infrared Spectrometer of ExoMars), as its name means, is an infrared beam that senses the infrared part of the sun's light reflection onto Mars' surface. With this method used on the rocks near of the rover, it obtains the spectrometer of these rocks and then get information about the geological composition of the planet's surface. Indeed, this device helps the rover to chose a potential location to drill in, because the presence of some minerals may indicate good places where to find past life on Mars. It communicates using packets of 16-bit data.
 
 \subsection{CLUPI}
 
-The CLUPI, or Close-Up Imager, is a high-resolution camera which goal is to take close picture of rocks to be able to detect each details of these ones. Thus, we can know to what type of rock we are seeing or surrounded with, by analyse the texture, the color, the morphology, etc. Also, it will give information about the original context of possible formation of these rocks, like, geological major events that they experienced throughout their existence. Plus, with this kind of close up pictures, we should be able to detect bio-signatures at the surface of rocks. It is permitted because the CLUPI has an image resolution of 2652 x 1768 pixels in RGB. It can take picture in the visible wavelength, with an exposure time of 1024 seconds. It communicate with packets of 14-bits.
+The CLUPI, or Close-Up Imager, is a high-resolution camera which goal is to take close picture of rocks to be able to detect each details of these ones. Thus, we can know to what type of rock we are seeing or surrounded with, by analysing the texture, the color, the morphology, etc. Also, it will give information about the original context of possible formation of these rocks, like, geological major events that they experienced throughout their existence. Plus, with this kind of close up pictures, we should be able to detect bio-signatures at the surface of rocks. It is permitted because the CLUPI has an image resolution of 2652 x 1768 pixels in RGB. It can take picture in the visible wavelength, with an exposure time of 1024 seconds. It communicate with packets of 14 bits.
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.5]{pictures/close_up_image.png}
     \caption{Close up picture of a rock taken from CLUPI}
 \end{figure}
-
-\pagebreak
-
 \subsection{WISDOM}
 
 To find if there are some evidence of the past and present life on Mars, we can search in the subsurface, where organics molecules could be shielded from destructive events. In fact, the WISDOM, or Water Ice Subsurface Deposit Observation on Mars, is a ground penetrating radar which will help to notify and describe the type of the shallow surface that is pointed by this one. If an information about a place in subsurface has been processed as a potentially location of organics molecules, the ExoMars' drill will then dig in it.\smallbreak
 
-In addition, WISDOM is working with others instruments to precise if a place in the subsurface is relevant or not by gathering information from Adron, PanCam and Ma\_Miss. From the Adron, we can obtain information about the composition of a source of water in liquid or ice form. From the PanCam, we get 3D information of the rover's environment, that can help it to better filter locations to dig in. And, because the Ma\_Miss is in the drill, it is in direct contact with the subsurface, thus data from this one are compared with those from WISDOM that will permit to set a 3D map of the subsurface. By the way, WISDOM communicate with other equipment by packets of 16-bits' data.
+In addition, WISDOM is working with others instruments to precise if a place in the subsurface is relevant or not by gathering information from Adron, PanCam and Ma\_Miss. From the Adron, we can obtain information about the composition of a source of water in liquid or ice form. From the PanCam, we get 3D information of the rover's environment, that can help it to better filter locations to dig in. And, because the Ma\_Miss is in the drill, it is in direct contact with the subsurface, thus data from this one are compared with those from WISDOM that will permit to set a 3D map of the subsurface. By the way, WISDOM communicate with other equipment by packets of 16-bit data.
 
 \subsection{Adron}
 
-The Adron is a detector of radiations of neutrons that are sensed from the subsurface of the planet. With the data from WISDOM, it permits to detect the water distribution in the Mars' subsurface and the presence of certain elements in this water. Then, the combination of the both instruments' data would help to localize the best places to drill in order to find evidences of potential past or present life on or below the surface of Mars. It communicate with packets of 9-bits' data.
+The Adron is a detector of radiations of neutrons that are sensed from the subsurface of the planet. With the data from WISDOM, it permits to detect the water distribution in the Mars' subsurface and the presence of certain elements in this water. Then, the combination of the both instruments' data would help to localize the best places to drill in order to find evidences of potential past or present life on or below the surface of Mars. It communicate with packets of 9-bit data.
 
-\pagebreak
 \subsection{Ma\_MISS}
 Ma\_MISS, for Mars Multispectral Imager for Subsurface Studies, is a spectrometer located in the drill of the rover, used to determine horizontal and vertical composition of the Martian soil. By illuminating the borehole and analysing the reflected light and its spectrum, it will be able to gather information about the distribution of minerals, especially of water-related ones, to search potential indicators of life.
 
@@ -216,16 +207,18 @@ Remark: One of the goals after the first task was to increase memory safety of o
 
 After that, \texttt{NetworkUnit} adds other parameters of the config file to the nodes created, concerning generation of packets and transmissions they have to do.
 
-The definition of this module can be found in \texttt{networkunit.h} and the implementation in \texttt{networkunit.cpp}.
+This module is also in charge of opening the database and passing its pointer to each node, as well as creating the trace file and make it watch each channel. Its definition can be found in \texttt{networkunit.h} and the implementation in \texttt{networkunit.cpp}.
 
 \subsection{Node}
-This module describes a SpaceWire node with only one port, that can be configured to our need through the configuration file. It contains multiple methods, corresponding to multiple levels of abstraction in our model of the node, which were useful to structure the code. They contain a memory that can be written or read through the RMAP protocol, or written directly by the node itself, generation data.
+This module describes a SpaceWire node with only one port, that can be configured to our need through the configuration file. It contains multiple methods, corresponding to multiple levels of abstraction in our model of the node, which were useful to structure the code. They contain a memory that can be written or read through the RMAP protocol, or written directly by the node itself, generation data.\medbreak
 
 Firstly, there are three type of daemons, which are by the way the three main type of threads of this module (we named them daemons because it usually describe threads that run in the background, handling everything important). The main one is \texttt{receiver\_daemon}, in charge of handling reception of packet, and choosing what should be done with the packet. It is written to receive RMAP packets, and sending back replies if needed. This daemon is only launched once, and runs during the whole simulation, which is not necessarily the case of the others. \texttt{sending\_daemon} and \texttt{generating\_daemon} are very similar, the first one being in charge of sending RMAP commands, and the second one generating data directly to the node memory. Any number of these two can be spawned, according to the fields "Connections" and "Generations" of the config file. They can also terminate before the end of the simulation, if their role is finished.
 
 Secondly, the function \texttt{send} allows to send a packet of any type, and waiting for a reply. If the reply has a positive status (1), the function ends, and if the status is 0, the packet is sent again, until a positive status is received, allowing for safe communication and error recovery. There is no \texttt{recv} function currently, since we only use the reply as acknowledgement packet, but we could create a \texttt{recv} function that sends an acknowledgement back, for both commands and replies.
 
-Finally, the function \texttt{send\_raw} and \texttt{recv\_raw}, at the lowest level, each one having as parameter one packet and which are respectively in charge of sending actual data into the port and receiving actual data, determining the type of packet and accordingly create the correct packet before returning. One interesting difficulty for the \texttt{recv\_raw} function was that RMAP uses different header structures for different actions, and we had to determine the type of the packet one the fly, while receiving, to correctly determine the end of the header, and the beginning of the data.
+Finally, the function \texttt{send\_raw} and \texttt{recv\_raw}, at the lowest level, each one having as parameter one packet and which are respectively in charge of sending actual data into the port and receiving actual data, determining the type of packet and accordingly create the correct packet before returning. One interesting difficulty for the \texttt{recv\_raw} function was that RMAP uses different header structures for different actions, and we had to determine the type of the packet one the fly, while receiving, to correctly determine the end of the header, and the beginning of the data.\medbreak
+
+This module also features regular logging and database logging, which are not its first role, but still key points, especially for debugging and analysis of the model. Tables are firstly created in the database, to be ready to store data in the member function \texttt{init\_db}. Packets are after that automatically stored whenever one is sent or received.
 
 The definition of this module can be found in \texttt{Node.h} and the implementation in \texttt{Node.cpp}.
 
