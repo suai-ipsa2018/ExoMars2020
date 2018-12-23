@@ -29,21 +29,22 @@
 \begin{document}
 
 \begin{titlepage}
-
-\includegraphics[width = 60mm]{pictures/suai.png}
+%\begin{center}
+\includegraphics[scale=.2]{pictures/header.png}
+%\end{center}
 
     \vspace*{\fill}
 
     \begin{center}
     
         \Huge\bfseries
-        Second R\&D project report
+        R\&D project
         \vskip10pt
         \Large\bfseries
         Modelisation of ExoMars 2020's network using SystemC
         \vskip10pt
         \large
-        PLANTE Julien - NAÏRI Anas
+        Anas Naïri \:\---\: Julien Plante
         \vskip20pt
         \large
         Saint Petersburg State University of Aerospace Instrumentation.
@@ -321,9 +322,6 @@ The following trace file can be opened in the file Network\textbackslash traces\
 
 
 \subsection{Modelling time comparison}
-
-ANAS
-
 The ExoMars2020 in our project is composed of many several equipment, which are divided into two main parts : the mast and the main body of the rover. The mast can be composed of the PanCam, NavCam, and the ISEM. The main body contains the CLUPI, the Drill, Adron, WISDOM, Ma\_Miss, MicrOmega, RLS, MOMA. Both parts are connected to an antenna which should send information that were gathered to the probe in orbit around Mars, then to the Earth.\smallbreak
 
 Thus, one interesting thing to test and to compare is the modelling time between the simulation of a single model and the one of a parallel model. So, we decided to observe the modelling time of a parallel model that involves the mast part and the main body part working at the same time, and this by creating two processes which are launching two executable that were pre-compiled.\smallbreak
@@ -334,7 +332,19 @@ Next, we decided to do a first try by launching a simple simulation, where, ever
 
 \section{Conclusion}
 
-We successfully developed and ran a model of the network of ExoMars2020's rover  using SystemC. Because little information about the network itself was distributed \--- most information concerns the scientific research \--- this model may not be totally relevant, but is a strong basis for future simulations, if more details about the network's structure were to be revealed. We created 
+We successfully developed and ran a model of the network of ExoMars2020's rover  using SystemC. Because little information about the network itself was distributed \--- most information concerns the scientific research \--- this model may not be totally relevant, but is a strong basis for future simulations, if more details about the network's structure were to be revealed.
+
+We implemented the network layer of SpaceWire, as well as a part of the data link layer, to continue on the path we started during the first task. We successfully reused code from the first task, allowing a great gain of time, especially for the \texttt{SwitchUnit}, ports and channels that stayed nearly untouched, the only modifications being that \texttt{SwitchUnit} is now able to generate its routing table automatically and that channels can simulate error transmission simulation. We wrote the \texttt{Packet} class, allowing logical separation between data link layer and network layer.
+
+With the \texttt{Node} class, we created a way to describe SpaceWire RMAP-using nodes, with the only main limitation being that these nodes only have one port, which could be modified in the future, and describe them using a configuration file written with the JSON format. After separation of our network in two parts, we parallelised its simulation, allowing for a significant increase of performances when simulating without using databases. We implemented text logging and database logging, allowing great possibilities of analysis of a simulation, with the only limitation with database logging being that it removes the interest of running the simulation in parallel. And finally, we began creating a Graphical User Interface, which would allow for simple way to design any SpaceWire network.\medbreak
+
+This model, while not complete, allowed us to discover things about the key points of the ExoMars2020 rover's network. The order of magnitude of the transmission time for the heaviest packets is of a few seconds, using channels with a speed of \SI{24}{\mega b/\second}. The rover being on Mars and carrying scientific experimentation, this result is correct. Indeed, there is no need for extreme performance in this situation, the most important feature being safety of transmissions. When simulating using error simulation in channels, errors were always detected and solved by sending the buffered packet again.\medbreak
+
+But further ameliorations could still be really interesting, starting with the GUI, that we didn't have time to finish. It could evolve to a generalised SpaceWire network simulator written with SystemC, with the special feature of creating multiple network parts that can run concurrently. In that event, we should switch from SQlite to MongoDB for example, or at least another database that support parallel writes.
+
+We could also continue our work on the class \texttt{Node} to allow it to have multiple ports, which is allowed by the SpaceWire standard. Moreover, we could improve \texttt{SwitchUnit} so that it could connect to other routers automatically and modify its routing table automatically, since this feature is only available when working with nodes for the moment. We may also add some algorithm, such as Dijkstra's algorithm to find preferred route and only using best routes in the routing tables.\bigbreak
+
+To finish, the authors would like to acknowledge the support of Nikolai Sinyov, our tutor during the development of this project for his advices and availability.
 
 \pagebreak
 \nocite{*}
