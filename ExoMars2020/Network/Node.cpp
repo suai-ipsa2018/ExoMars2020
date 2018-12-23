@@ -10,7 +10,9 @@ Node::Node(sc_module_name mn, const NodeConfig& _cfg, bool _verbose)
 	rng.seed(std::random_device()());
 	logfile << "Node " << name() << " with logic address " << cfg.address << ":" << std::endl;
 
-	SC_THREAD(receiver_daemon);
+	SC_THREAD(receiver_daemon); // Only receiver daemon here because we need to wait for all configuration to be loaded
+	// by NetworkUnit, which is done after the end of this constructor. The two other daemons are spawned at the beginning
+	// of the simulation, and thus at the beginning of receiver_daemon.
 }
 
 Node::~Node()

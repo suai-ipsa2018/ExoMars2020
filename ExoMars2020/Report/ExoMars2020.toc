@@ -14,7 +14,7 @@
 \contentsline {section}{\numberline {4}Model structure and functioning description}{8}{section.4}% 
 \contentsline {subsection}{\numberline {4.1}Features}{8}{subsection.4.1}% 
 \contentsline {subsection}{\numberline {4.2}Network Unit}{10}{subsection.4.2}% 
-\contentsline {subsection}{\numberline {4.3}Node Unit}{10}{subsection.4.3}% 
+\contentsline {subsection}{\numberline {4.3}Node}{10}{subsection.4.3}% 
 \contentsline {subsection}{\numberline {4.4}Packet Unit}{10}{subsection.4.4}% 
 \contentsline {subsection}{\numberline {4.5}Switch Unit}{10}{subsection.4.5}% 
 \contentsline {section}{\numberline {5}Simulation results}{11}{section.5}% 

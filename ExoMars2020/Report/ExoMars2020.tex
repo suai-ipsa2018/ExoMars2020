@@ -214,13 +214,18 @@ To do so, it firstly recover all the configuration needed using the \texttt{Json
 Remark: One of the goals after the first task was to increase memory safety of our application, since we used \texttt{new} and \texttt{delete}, which can cause memory leaks if the deallocation is forgotten or in case of a crash, if stack unwinding doesn't happen. This is why we used \texttt{make\_unique}, and \texttt{std::unique\_ptr<T>} declared in the header \texttt{memory}. This is a smart pointer, deallocating memory when going out of scope, and thus safer than raw pointers.
 \end{quote}
 
+After that, \texttt{NetworkUnit} adds other parameters of the config file to the nodes created, concerning generation of packets and transmissions they have to do.
 
+The definition of this module can be found in \texttt{networkunit.h} and the implementation in \texttt{networkunit.cpp}.
 
+\subsection{Node}
+This module describes a SpaceWire node with only one port, that can be configured to our need through the configuration file. It contains multiple methods, corresponding to multiple levels of abstraction in our model of the node, which were useful to structure the code. They contain a memory that can be written or read through the RMAP protocol, or written directly by the node itself, generation data.
 
+Firstly, there are three type of daemons, which are by the way the three main type of threads of this module (we named them daemons because it usually describe threads that run in the background, handling everything important). The main one is \texttt{receiver_daemon}, in charge of handling reception of packet, and choosing what should be done with the packet. It is written to receive RMAP packets, and sending back replies if needed. This daemon is only launched once, and runs during the whole simulation, which is not necessarily the case of the others. \texttt{sending_daemon} and \texttt{generating_daemon} are very similar, the first one being in charge of sending RMAP commands, and the second one generating data directly to the node memory. Any number of these two can be spawned, according to the fields "Connections" and "Generations" of the config file. They can also terminate before the end of the simulation, if their role is finished.
 
-\subsection{Node Unit}
+Secondly, the function \texttt{send} allows to send a packet of any type, and waiting for a reply. If the reply has a positive status (1), the function ends, and if the status is 0, the packet is sent again, until a positive status is received, allowing for safe communication and error recovery. There is no \texttt{recv} function currently, since we only use the reply as acknowledgement packet, but we could create a \texttt{recv} function that sends an acknowledgement back, for both commands and replies.
 
-It is the module that describes a node, in our case it's the rover's scientific instruments. 
+Finally, the function \texttt{send_raw} and \texttt{recv_raw}
 
 \subsection{Packet Unit}
 \subsection{Switch Unit}
