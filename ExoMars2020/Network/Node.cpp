@@ -143,15 +143,15 @@ sc_time Node::recv_raw(Packet & p)
 			mode = tmp[5]; // 0 = read, 1 = write
 			p << tmp;
 		}
-		else if (!command && mode && i == 7) // Write reply : header size = 8
+		else if (i == 7 && !command && mode) // Write reply : header size = 8
 		{
 			p.receive_header_crc(tmp);
 		}
-		else if (!command && !mode && i == 11) // Read reply : header size = 12
+		else if (i == 11 && !command && !mode) // Read reply : header size = 12
 		{
 			p.receive_header_crc(tmp);
 		}
-		else if (command && i == 15) // All commands : header size = 16
+		else if (i == 15 && command) // All commands : header size = 16
 		{
 			p.receive_header_crc(tmp);
 		}

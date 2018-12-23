@@ -128,6 +128,7 @@ In addition, WISDOM is working with others instruments to precise if a place in 
 
 The Adron is a detector of radiations of neutrons that are sensed from the subsurface of the planet. With the data from WISDOM, it permits to detect the water distribution in the Mars' subsurface and the presence of certain elements in this water. Then, the combination of the both instruments' data would help to localize the best places to drill in order to find evidences of potential past or present life on or below the surface of Mars. It communicate with packets of 9-bits' data.
 
+\pagebreak
 \subsection{Ma\_MISS}
 Ma\_MISS, for Mars Multispectral Imager for Subsurface Studies, is a spectrometer located in the drill of the rover, used to determine horizontal and vertical composition of the Martian soil. By illuminating the borehole and analysing the reflected light and its spectrum, it will be able to gather information about the distribution of minerals, especially of water-related ones, to search potential indicators of life.
 
@@ -160,8 +161,14 @@ MOMA (Mars Organics Molecule Analyser) is an instrument designed to detect organ
 \pagebreak
 
 \section{Model structure and functioning description}
+\smallbreak
 The final structure of our project looks like this: \smallbreak
-\includegraphics[scale=1]{pictures/structure_ExoMars2020.pdf}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{pictures/structure_ExoMars2020.pdf}
+\caption{Final structure}
+\end{figure}
+\smallbreak
 
 As in the first task, the SpaceWire Router is modelled by the \Cpp class \texttt{SwitchUnit} and the top module containing all the others by \texttt{NetworkUnit}. But one major difference is that each node is modelled by the same \Cpp class named \texttt{Node}, specialised thanks to a configuration file. This was made in order to avoid boilerplate code, since all nodes have a similar behaviour, errors due to wrong copy of new functionalities in each class, and to prepare the work for a more complex simulator, using a GUI to configure any SpaceWire network.
 
@@ -169,7 +176,8 @@ All details about these improvements will be explained in the following subsecti
 
 \subsection{Features}
 Firstly, our project features the modelling of the the third OSI layer of the SpaceWire specification, as requested, but also of a part of the second layer, since it was already done during the first task.
-The third OSI layer covers the use of packets to transmit data from one node to another, with possible routing on the way. We modelled only a part of the second layer, since it was kept from the first task and was not 
+The third OSI layer covers the use of packets to transmit data from one node to another, with possible routing on the way. We modelled only a part of the second layer, since it was kept from the first task and was not mandatory for this one. We only have the transmission by frames of packets, allowing for transmission delay simulations and transmission error modelling (due to some possible incident radiation). It also made us think on the problem of data collision, since we used bidirectional channels, and forced us to create some security mechanism. But we did not implement the Error End of Packet (EEP) and error link recovery at this level.
+
 config files database et processes
 \subsection{Network Unit}
 \texttt{NetworkUnit} stayed nearly the same since our first task and the corresponding report. It is the module in charge of instantiating all the others and linking them with channels. But its way to do this changed drastically, since we choose to create
