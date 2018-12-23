@@ -64,6 +64,7 @@ void Node::send_raw(Packet & p)
 {
 	send_mutex.lock();
 	std::cout << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.destination_address() << std::endl;
+	std::cout << p << std::endl;
 	logfile << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.destination_address() << std::endl;
 	if (verbose) logfile << p << std::endl;
 	
@@ -210,8 +211,8 @@ void Node::receiver_daemon()
 				}
 				else // Answer
 				{
-					if (verbose) std::cout << sc_time_stamp() << "write reply received by " << name() << ": " << std::endl << p << std::endl;
-					logfile << sc_time_stamp() << "write reply received: " << std::endl << p << std::endl;
+					if (verbose) std::cout << sc_time_stamp() << " write reply received by " << name() << ": " << std::endl << "\33[1;48;5;33m" << p << "\33[0m" << std::endl;
+					logfile << sc_time_stamp() << " write reply received: " << std::endl << p << std::endl;
 					reply_queue.push_back(p);
 					reply_reception.notify(SC_ZERO_TIME);
 				}
@@ -326,8 +327,6 @@ void Node::sending_daemon(const TransmissionConfig& c)
 				p << rand();
 		}
 
-		std::cout << sc_time_stamp() << " " << name() << " sending:" << std::endl;
-		std::cout << p << std::endl;
 		send(p);
 		t1 = sc_time_stamp();
 		n_packets_sent++;
