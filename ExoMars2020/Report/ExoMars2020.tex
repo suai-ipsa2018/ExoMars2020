@@ -180,7 +180,7 @@ We chose to use SQLite as database, since its use was much simpler and more adap
 \subsubsection*{Parallelisation}
 We were asked to separate our network into two different parts, and paralellising the simulation. Indeed, we transmit in the network big packets, and the simulation began longer and longer as we added features. An idea to increase simulation speed was to run the two independent parts of the network in parallel, hoping for a performance increase. To do so, we described the two distinct parts using a configuration file (see below), and used preprocessor directives alongside preprocessor definitions to compile two different executables, each one of them being able to simulate one part of the network. We then used the Windows API, and the function \texttt{CreateProcessA} to run the two parts concurrently.
 
-To launch the two processes, build and run the Visual Studio Project ``Create_two_Processes''. It should use \texttt{msbuild} to compile each part of the network and then the Windows API function \texttt{CreateProcessA} to execute them. But a problem may occur, if the path to msbuild is not the same on our computers, or if the SystemC library was not compiled with the same options (Debug or Release, x86 or x64). To solve this try tweaking the Network project's options.
+To launch the two processes, build and run the Visual Studio Project ``Create\_two\_Processes''. It should use \texttt{msbuild} to compile each part of the network and then the Windows API function \texttt{CreateProcessA} to execute them. But a problem may occur, if the path to msbuild is not the same on our computers, or if the SystemC library was not compiled with the same options (Debug or Release, x86 or x64). To solve this try tweaking the Network project options.
 \subsubsection*{Configuration file}
 As already explained, we used a configuration file to describe nodes behaviour and different parts of the network. It is also specifies parameters of the channels, which are the same in the whole network, which could be a limitation, but could also be tweaked.
 
@@ -188,7 +188,7 @@ At first, we used a custom configuration file and wrote the parser ourselves. It
 
 So we moved to the JSON format, using the header-only \Cpp JSON parser RapidJSON. It proved to be much stronger, and allowed us to easily add new features, without needing to check for bugs. It currently supports channels specification, network part specification, nodes declaration, description of their interaction with the network (when to send packets, how many, the type \textsl{etc}), and the self generation of packets, modelling an experiment where results are stored in a node's memory, with similar arguments. The only limitation of this configuration file is that it doesn't allow to describe routers for now, so one router is created for each network part. 
 
-To easily gather information from the DOM, we wrote a loader contained into a class, which can be found in \texttt{helperlib.h} and the corresponding implementation file \texttt{helperlib.cpp}.
+To easily gather information from the DOM, we wrote a loader contained into a class, which can be found in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/helperlib.h}{\texttt{helperlib.h}} and the corresponding implementation file \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/helperlib.cpp}{\texttt{helperlib.cpp}}.
 
 \subsubsection*{Graphical User Interface}
 Another optional task we began is the Graphical User Interface (GUI). Sadly, we didn't have time to finish it, but is still an interesting feature of the project.
@@ -208,7 +208,7 @@ Remark: One of the goals after the first task was to increase memory safety of o
 
 After that, \texttt{NetworkUnit} adds other parameters of the config file to the nodes created, concerning generation of packets and transmissions they have to do.
 
-This module is also in charge of opening the database and passing its pointer to each node, as well as creating the trace file and make it watch each channel. Its definition can be found in \texttt{networkunit.h} and the implementation in \texttt{networkunit.cpp}.
+This module is also in charge of opening the database and passing its pointer to each node, as well as creating the trace file and make it watch each channel. Its definition can be found in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/networkunit.h}{\texttt{networkunit.h}} and the implementation in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/networkunit.cpp}{\texttt{networkunit.cpp}}.
 
 \subsection{Node}
 \label{ssec:Node}
@@ -222,28 +222,103 @@ Finally, the function \texttt{send\_raw} and \texttt{recv\_raw}, at the lowest l
 
 This module also features regular logging and database logging, which are not its first role, but still key points, especially for debugging and analysis of the model. Tables are firstly created in the database, to be ready to store data in the member function \texttt{init\_db}. Packets are after that automatically stored whenever one is sent or received.
 
-The definition of this module can be found in \texttt{Node.h} and the implementation in \texttt{Node.cpp}.
+The definition of this module can be found in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/Node.h}{\texttt{Node.h}} and the implementation in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/Node.cpp}{\texttt{Node.cpp}}.
 
 \subsection{Packet}
 This class aims to simplify communication throughout the network, and clearly separating layers 2 and 3 of the OSI model. It contains two vectors, one for the header and one for the data, since each part is of variable size in the RMAP protocol, as well as two checksums (CRC), for the header and the data. Data can be inserted or extracted as it would be done for a stream, using operators \verb|<<| and \verb|>>|, which allows to compute the CRC on the fly, as it would be done in a real equipment. But this interface is not always handy, and we needed to add functions about the end of the header, because of the variable header size of the RMAP protocol, and maybe the class would need a rewrite to provide simpler interface.
 
 That being said, it is very useful to contain packets simply, more than the FIFOs we used during the first task, and can be printed in a clean way through the overloading of  \verb|operator<<|.
 
-The definition of this module can be found in \texttt{Packet.h} and the corresponding implementation in \texttt{Packet.cpp}.
+The definition of this module can be found in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/Packet.h}{\texttt{Packet.h}} and the corresponding implementation in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/Packet.cpp}{\texttt{Packet.cpp}}.
 \subsection{SwitchUnit}
 \texttt{SwitchUnit} didn't change a lot. We just increased memory safety by dropping the bidimensional C-style array we had before for a \texttt{std::vector}. We also added the simple \texttt{connect} function, that allows to connect a node to the router through a channel, and automatically modify the routing table to match the new connection. The only limitation here is that we didn't write any \texttt{connect} function to link two routers, but we didn't need this at the time of writing, since ExoMars2020 contains only one router. But if we are to develop a more complete and versatile simulator, this could become a need.
 
+The definition of this module can be found in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/switchunit.h}{\texttt{switchunit.h}} and the corresponding implementation in \href{https://github.com/suai-ipsa2018/ExoMars2020/blob/master/ExoMars2020/Network/switchunit.cpp}{\texttt{switchunit.cpp}}.
 \pagebreak
 
 \section{Simulation results}
 
+To show the results on the console, we set an example where ISEM sends a write command with data of size 25 to PanCam, wanting to access its 10$^{th}$ memory address, then at $\SI{100}{\micro\meter}$ NavCam reads at the same address of PanCam, thus reading the data written before. Here is what we got : \smallbreak
+
 \subsection{Console output}
 
-ANAS
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.5]{results/ISEM_write.png}
+    \caption{ISEM writes inside the memory of PanCam}
+\end{figure}
+
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.5]{results/PanCam_receives.png}
+    \caption{PanCam receives the packet}
+\end{figure}
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.5]{results/reply_packet_sent.png}
+    \caption{PanCam writes the packet in its 10$^{th}$ adress, and sends a reply to ISEM, which receives it}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.5]{results/NavCam_send_read_packet.png}
+    \caption{NavCam sends a read packet to PanCam to get the packet of the address 10}
+\end{figure}
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.5]{results/PanCam_reads_at_his_address.png}
+    \caption{PanCam reads at its 10$^{th}$ address and sends it to NavCam}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.5]{results/NavCam_receives_reply_from_PanCam.png}
+    \caption{NavCam receives the reply from PanCam to read the packet from it}
+\end{figure}
+
+\pagebreak
 
 \subsection{Traces}
 
-ANAS
+The following trace file can be opened in the file Network\textbackslash traces\textbackslash network\_0.vcd, but it is modified each time we recompile the code.
+
+\smallbreak
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.36]{results/tracewave_1.png}
+    \includegraphics[scale = 0.36]{results/tracewave_2.png}
+    \caption{Trace wave - ISEM writes into PanCam}
+\end{figure}
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.7]{results/tracewave_3.png}
+    \caption{Trace wave - PanCam sends reply to ISEM}
+\end{figure}
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.36]{results/tracewave_4.png}
+    \includegraphics[scale = 0.36]{results/tracewave_5.png}
+    \caption{Trace wave - NavCam sends a read packet to PanCam}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[hb]
+	\centering
+    \includegraphics[scale = 0.55]{results/tracewave_6_et_7.png}
+    \caption{Trace wave - NavCam receives the packet from PanCam}
+\end{figure}
+
 
 \subsection{Modelling time comparison}
 

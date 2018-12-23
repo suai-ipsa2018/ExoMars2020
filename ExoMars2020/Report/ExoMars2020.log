@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (MiKTeX 2.9.6880 64-bit) (preloaded format=xelatex 2018.12.23)  23 DEC 2018 19:41
+This is XeTeX, Version 3.14159265-2.6-0.99999 (MiKTeX 2.9.6880 64-bit) (preloaded format=xelatex 2018.12.23)  23 DEC 2018 20:54
 entering extended mode
 **./ExoMars2020.tex
 (ExoMars2020.tex
@@ -1291,25 +1291,59 @@ File: pictures/structure_ExoMars2020.pdf Graphic file (type pdf)
 LaTeX Font Info:    Font shape `TU/FreeSerif(0)/m/sl' in size <12> not availabl
 e
 (Font)              Font shape `TU/FreeSerif(0)/m/it' tried instead on input li
-ne 188.
- [8] [9] [10] [11] [12]
-[13] (ExoMars2020.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 268.
- [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 268.
+ne 189.
+ [8] [9] [10] [11]
+File: results/ISEM_write.png Graphic file (type bmp)
+<results/ISEM_write.png>
+File: results/PanCam_receives.png Graphic file (type bmp)
+<results/PanCam_receives.png>
+File: results/reply_packet_sent.png Graphic file (type bmp)
+<results/reply_packet_sent.png>
+ [12]
+File: results/NavCam_send_read_packet.png Graphic file (type bmp)
+<results/NavCam_send_read_packet.png>
+File: results/PanCam_reads_at_his_address.png Graphic file (type bmp)
+<results/PanCam_reads_at_his_address.png>
+File: results/NavCam_receives_reply_from_PanCam.png Graphic file (type bmp)
+<results/NavCam_receives_reply_from_PanCam.png>
+File: results/tracewave_1.png Graphic file (type bmp)
+<results/tracewave_1.png>
+File: results/tracewave_2.png Graphic file (type bmp)
+<results/tracewave_2.png>
+File: results/tracewave_3.png Graphic file (type bmp)
+<results/tracewave_3.png>
+File: results/tracewave_4.png Graphic file (type bmp)
+<results/tracewave_4.png>
+File: results/tracewave_5.png Graphic file (type bmp)
+<results/tracewave_5.png>
+
+[13]
+File: results/tracewave_6_et_7.png Graphic file (type bmp)
+<results/tracewave_6_et_7.png>
+
+Overfull \hbox (45.25745pt too wide) in paragraph at lines 318--319
+ [][] 
+ []
+
+[14] [15] [16] [17] [18
+
+] (ExoMars2020.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 344.
+ [19]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 344.
  (ExoMars2020.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 268.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 268.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 344.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 344.
 Package rerunfilecheck Info: File `ExoMars2020.out' has not changed.
 (rerunfilecheck)             Checksum: E206E3ABC17EDE78B28780D26089822D.
  ) 
 Here is how much of TeX's memory you used:
- 28032 strings out of 427748
- 526410 string characters out of 3150980
- 629795 words of memory out of 3000000
- 31807 multiletter control sequences out of 15000+200000
- 536210 words of font info for 80 fonts, out of 3000000 for 9000
+ 28092 strings out of 427748
+ 528107 string characters out of 3150980
+ 630795 words of memory out of 3000000
+ 31851 multiletter control sequences out of 15000+200000
+ 537774 words of font info for 88 fonts, out of 3000000 for 9000
  1328 hyphenation exceptions out of 8191
- 53i,10n,92p,10434b,754s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 53i,10n,92p,10434b,779s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ExoMars2020.pdf (15 pages).
+Output written on ExoMars2020.pdf (20 pages).
