@@ -66,7 +66,7 @@ void Node::send_raw(Packet & p)
 {
 	send_mutex.lock();
 	std::cout << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.destination_address() << std::endl;
-	std::cout << p << std::endl;
+	if (verbose) std::cout << p << std::endl;
 	logfile << sc_time_stamp() << ' ' << name() << " sending packet of size " << p.size() << " to " << p.destination_address() << std::endl;
 	if (verbose) logfile << p << std::endl;
 	
@@ -295,10 +295,16 @@ void Node::generating_daemon(const GenerationConfig & c)
 			char* zErrMsg;
 			std::ostringstream db_insert_stream;
 			db_insert_stream << "INSERT INTO " << basename() << "_gen" << " VALUES("
-				<< sc_time_stamp().value() << ",\"";
-			for (size_t i = 0; i < c.dsize - 1; i++)
-				db_insert_stream << data[i] << ',';
-			db_insert_stream << data[c.dsize - 1] << "\"," << c.dsize << ");" << std::endl;
+				<< sc_time_stamp().value() << ',';
+			if (verbose)
+			{
+				db_insert_stream << '\"';
+				for (size_t i = 0; i < c.dsize - 1; i++)
+					db_insert_stream << data[i] << ',';
+				db_insert_stream << data[c.dsize - 1] << "\",";
+			}
+				
+				db_insert_stream << c.dsize << ");" << std::endl;
 
 			int rc = sqlite3_exec(db, db_insert_stream.str().c_str(), nullptr, 0, &zErrMsg);
 			if (rc != SQLITE_OK)
