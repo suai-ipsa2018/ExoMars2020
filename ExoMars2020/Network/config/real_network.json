@@ -1,0 +1,516 @@
+{
+  "Channels": {
+    "speed": 48e6,
+    "error_period": 0
+  },
+
+  "Parts": {
+    "1": {
+      "Nodes": {
+      	"Antenna": {
+          "logical_address": 32,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Memory1": {
+          "logical_address": 44,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Processor": {
+          "logical_address": 46,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Image_Processor": {
+          "logical_address": 47,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "PanCam": {
+          "logical_address": 33,
+          "fsize": 10,
+          "speed": 24e6
+        },
+        "NavCam": {
+          "logical_address": 34,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "ISEM": {
+          "logical_address": 32,
+          "fsize": 16,
+          "speed": 24e6
+        }
+      },
+      "Connections": [
+        {
+          "sender": "ISEM",
+          "receiver": "Memory1",
+          "id": 0,
+          "mode": "write",
+          "mem_address": 0,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "NavCam",
+          "receiver": "Memory1",
+          "mode": "write",
+          "id": 1,
+          "mem_address": 1,
+          "psize": 3145728,
+          "delay_between_packets": "100 us",
+          "t_start": "0 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "PanCam",
+          "receiver": "Memory1",
+          "mode": "read",
+          "id": 2,
+          "mem_address": 0,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "PanCam",
+          "receiver": "Memory1",
+          "mode": "read",
+          "id": 3,
+          "mem_address": 1,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Antenna",
+          "receiver": "Memory1",
+          "mode": "read",
+          "id": 4,
+          "mem_address": 0,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Antenna",
+          "receiver": "Memory1",
+          "mode": "read",
+          "id": 5,
+          "mem_address": 1,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "PanCam",
+          "receiver": "Memory1",
+          "mode": "write",
+          "id": 6,
+          "mem_address": 2,
+          "psize": 3145728,
+          "delay_between_packets": "100 us",
+          "t_start": "200 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "PanCam",
+          "receiver": "Memory1",
+          "mode": "write",
+          "id": 7,
+          "mem_address": 3,
+          "psize": 11534336,
+          "delay_between_packets": "100 us",
+          "t_start": "200 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Processor",
+          "receiver": "Memory1",
+          "mode": "read",
+          "id": 8,
+          "mem_address": 2,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "300 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Processor",
+          "receiver": "Memory1",
+          "mode": "read",
+          "id": 9,
+          "mem_address": 3,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "300 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Image_Processor",
+          "receiver": "Processor",
+          "mode": "read",
+          "id": 10,
+          "mem_address": 0,
+          "psize": 3145728,
+          "delay_between_packets": "100 us",
+          "t_start": "400 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Image_Processor",
+          "receiver": "Processor",
+          "mode": "read",
+          "id": 11,
+          "mem_address": 1,
+          "psize": 11534336,
+          "delay_between_packets": "100 us",
+          "t_start": "400 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        }
+      ],
+      "Generations": [
+        {
+          "generator": "Processor",
+          "mem_address": 0,
+          "dsize": 3145728,
+          "delay_between_generations": "100 us",
+          "t_start": "300 us",
+          "t_end": "-1 s",
+          "n_generations": 1
+        },
+        {
+          "generator": "Processor",
+          "mem_address": 1,
+          "dsize": 11534336,
+          "delay_between_generations": "100 us",
+          "t_start": "300 us",
+          "t_end": "-1 s",
+          "n_generations": 1
+        }
+      ]
+    },
+    "2": {
+      "Nodes": {
+      	"Antenna": {
+          "logical_address": 32,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Memory2": {
+          "logical_address": 45,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Processor": {
+          "logical_address": 46,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Image_Processor": {
+          "logical_address": 47,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "CLUPI": {
+          "logical_address": 36,
+          "fsize": 14,
+          "speed": 24e6
+        },
+        "Drill": {
+          "logical_address": 37,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "Adron": {
+          "logical_address": 38,
+          "fsize": 9,
+          "speed": 24e6
+        },
+        "WISDOM": {
+          "logical_address": 39,
+          "fsize": 16,
+          "speed": 24e6
+        },
+        "Ma_MISS": {
+          "logical_address": 40,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "MicrOmega": {
+          "logical_address": 41,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "RLS": {
+          "logical_address": 42,
+          "fsize": 8,
+          "speed": 24e6
+        },
+        "MOMA": {
+          "logical_address": 43,
+          "fsize": 8,
+          "speed": 24e6
+        }
+      },
+      "Connections": [
+        {
+          "sender": "MicrOmega",
+          "receiver": "Memory2",
+          "id": 0,
+          "mode": "write",
+          "mem_address": 0,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "RLS",
+          "receiver": "Memory2",
+          "id": 1,
+          "mode": "write",
+          "mem_address": 1,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "MOMA",
+          "receiver": "Memory2",
+          "id": 2,
+          "mode": "write",
+          "mem_address": 2,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "0 s",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Ma_MISS",
+          "receiver": "Memory2",
+          "id": 3,
+          "mode": "read",
+          "mem_address": 0,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Ma_MISS",
+          "receiver": "Memory2",
+          "id": 4,
+          "mode": "read",
+          "mem_address": 1,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Ma_MISS",
+          "receiver": "Memory2",
+          "id": 5,
+          "mode": "read",
+          "mem_address": 2,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "100 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Ma_MISS",
+          "receiver": "Memory2",
+          "id": 6,
+          "mode": "write",
+          "mem_address": 3,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "200 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "WISDOM",
+          "receiver": "Memory2",
+          "id": 7,
+          "mode": "read",
+          "mem_address": 3,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "300 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "WISDOM",
+          "receiver": "Memory2",
+          "id": 8,
+          "mode": "write",
+          "mem_address": 4,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "400 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Adron",
+          "receiver": "Memory2",
+          "id": 9,
+          "mode": "read",
+          "mem_address": 4,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "500 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "CLUPI",
+          "receiver": "Memory2",
+          "id": 10,
+          "mode": "write",
+          "mem_address": 5,
+          "psize": 14066208,
+          "delay_between_packets": "100 us",
+          "t_start": "600 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Drill",
+          "receiver": "Memory2",
+          "id": 11,
+          "mode": "write",
+          "mem_address": 6,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "600 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Adron",
+          "receiver": "Memory2",
+          "id": 12,
+          "mode": "write",
+          "mem_address": 7,
+          "psize": 2e6,
+          "delay_between_packets": "100 us",
+          "t_start": "600 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Antenna",
+          "receiver": "Memory2",
+          "id": 13,
+          "mode": "read",
+          "mem_address": 5,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "700 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Antenna",
+          "receiver": "Memory2",
+          "id": 14,
+          "mode": "read",
+          "mem_address": 6,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "700 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Antenna",
+          "receiver": "Memory2",
+          "id": 15,
+          "mode": "read",
+          "mem_address": 7,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "700 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Processor",
+          "receiver": "Memory2",
+          "id": 16,
+          "mode": "read",
+          "mem_address": 5,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "700 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        },
+        {
+          "sender": "Processor",
+          "receiver": "Memory2",
+          "id": 17,
+          "mode": "read",
+          "mem_address": 7,
+          "psize": 0,
+          "delay_between_packets": "100 us",
+          "t_start": "700 us",
+          "t_end": "-1 s",
+          "n_packets": 1
+        }
+      ],
+	  "Generations": [
+        {
+          "generator": "Processor",
+          "mem_address": 0,
+          "dsize": 14066208,
+          "delay_between_generations": "100 us",
+          "t_start": "700 us",
+          "t_end": "-1 s",
+          "n_generations": 1
+        },
+        {
+          "generator": "Processor",
+          "mem_address": 1,
+          "dsize": 2e6,
+          "delay_between_generations": "100 us",
+          "t_start": "700 us",
+          "t_end": "-1 s",
+          "n_generations": 1
+        }
+      ]
+    }
+  }
+}
