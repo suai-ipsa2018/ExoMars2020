@@ -1,13 +1,14 @@
 {
+  "_comment": "Real final network configuration",
   "Channels": {
     "speed": 48e6,
-    "error_period": 0
+    "error_period": 300
   },
 
   "Parts": {
     "1": {
       "Nodes": {
-      	"Antenna": {
+        "Antenna": {
           "logical_address": 32,
           "fsize": 8,
           "speed": 24e6
@@ -54,7 +55,7 @@
           "delay_between_packets": "100 us",
           "t_start": "0 s",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "NavCam",
@@ -66,7 +67,7 @@
           "delay_between_packets": "100 us",
           "t_start": "0 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "PanCam",
@@ -78,7 +79,7 @@
           "delay_between_packets": "100 us",
           "t_start": "100 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "PanCam",
@@ -90,7 +91,7 @@
           "delay_between_packets": "100 us",
           "t_start": "100 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Antenna",
@@ -102,7 +103,7 @@
           "delay_between_packets": "100 us",
           "t_start": "100 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Antenna",
@@ -114,7 +115,7 @@
           "delay_between_packets": "100 us",
           "t_start": "100 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "PanCam",
@@ -126,7 +127,7 @@
           "delay_between_packets": "100 us",
           "t_start": "200 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "PanCam",
@@ -138,7 +139,7 @@
           "delay_between_packets": "100 us",
           "t_start": "200 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Processor",
@@ -150,7 +151,7 @@
           "delay_between_packets": "100 us",
           "t_start": "300 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Processor",
@@ -162,7 +163,7 @@
           "delay_between_packets": "100 us",
           "t_start": "300 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Image_Processor",
@@ -174,7 +175,7 @@
           "delay_between_packets": "100 us",
           "t_start": "400 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Image_Processor",
@@ -186,7 +187,7 @@
           "delay_between_packets": "100 us",
           "t_start": "400 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         }
       ],
       "Generations": [
@@ -212,7 +213,7 @@
     },
     "2": {
       "Nodes": {
-      	"Antenna": {
+        "Antenna": {
           "logical_address": 32,
           "fsize": 8,
           "speed": 24e6
@@ -284,7 +285,7 @@
           "delay_between_packets": "100 us",
           "t_start": "0 s",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "RLS",
@@ -296,7 +297,7 @@
           "delay_between_packets": "100 us",
           "t_start": "0 s",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "MOMA",
@@ -308,7 +309,7 @@
           "delay_between_packets": "100 us",
           "t_start": "0 s",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Ma_MISS",
@@ -320,7 +321,7 @@
           "delay_between_packets": "100 us",
           "t_start": "100 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Ma_MISS",
@@ -332,7 +333,7 @@
           "delay_between_packets": "100 us",
           "t_start": "100 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Ma_MISS",
@@ -344,7 +345,7 @@
           "delay_between_packets": "100 us",
           "t_start": "100 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Ma_MISS",
@@ -356,7 +357,7 @@
           "delay_between_packets": "100 us",
           "t_start": "200 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "WISDOM",
@@ -368,7 +369,7 @@
           "delay_between_packets": "100 us",
           "t_start": "300 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "WISDOM",
@@ -380,7 +381,7 @@
           "delay_between_packets": "100 us",
           "t_start": "400 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Adron",
@@ -392,7 +393,7 @@
           "delay_between_packets": "100 us",
           "t_start": "500 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "CLUPI",
@@ -404,7 +405,7 @@
           "delay_between_packets": "100 us",
           "t_start": "600 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Drill",
@@ -416,7 +417,7 @@
           "delay_between_packets": "100 us",
           "t_start": "600 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Adron",
@@ -428,7 +429,7 @@
           "delay_between_packets": "100 us",
           "t_start": "600 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Antenna",
@@ -440,7 +441,7 @@
           "delay_between_packets": "100 us",
           "t_start": "700 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Antenna",
@@ -452,7 +453,7 @@
           "delay_between_packets": "100 us",
           "t_start": "700 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Antenna",
@@ -464,7 +465,7 @@
           "delay_between_packets": "100 us",
           "t_start": "700 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Processor",
@@ -476,7 +477,7 @@
           "delay_between_packets": "100 us",
           "t_start": "700 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         },
         {
           "sender": "Processor",
@@ -488,10 +489,10 @@
           "delay_between_packets": "100 us",
           "t_start": "700 us",
           "t_end": "-1 s",
-          "n_packets": 1
+          "n_packets": -1
         }
       ],
-	  "Generations": [
+      "Generations": [
         {
           "generator": "Processor",
           "mem_address": 0,

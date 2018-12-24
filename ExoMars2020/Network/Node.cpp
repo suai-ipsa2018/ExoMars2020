@@ -47,7 +47,8 @@ void Node::init_db(sqlite3 * _db)
 	db_init_stream << "DROP TABLE IF EXISTS " << basename() << "_gen" << ';' << std::endl <<
 		"CREATE TABLE " << basename() << "_gen" << '(' <<
 		R"sql(
-TIME         INT   PRIMARY KEY   NOT NULL,)sql" << std::endl;
+TIME         INT   PRIMARY KEY   NOT NULL,
+MEM_ADDRESS  INT                 NOT NULL,)sql" << std::endl;
 	if (verbose) db_init_stream << "DATA   TEXT," << std::flush;
 	db_init_stream << R"sql(
 DATA_SIZE INT NOT NULL
@@ -278,9 +279,9 @@ void Node::receiver_daemon()
 
 void Node::generating_daemon(const GenerationConfig & c)
 {
-	size_t n_generated(0);
+	int n_generated(0);
 	wait(c.t_start);
-	while (n_generated < c.n_generations && sc_time_stamp() < c.t_end)
+	while (c.n_generations == -1 || (n_generated < c.n_generations && sc_time_stamp() < c.t_end))
 	{
 		std::vector<sc_uint<16>> data;
 		data.reserve(c.dsize);
@@ -295,7 +296,7 @@ void Node::generating_daemon(const GenerationConfig & c)
 			char* zErrMsg;
 			std::ostringstream db_insert_stream;
 			db_insert_stream << "INSERT INTO " << basename() << "_gen" << " VALUES("
-				<< sc_time_stamp().value() << ',';
+				<< sc_time_stamp().value() << ',' << c.mem_address << ',';
 			if (verbose)
 			{
 				db_insert_stream << '\"';
@@ -319,9 +320,9 @@ void Node::generating_daemon(const GenerationConfig & c)
 void Node::sending_daemon(const TransmissionConfig& c)
 {
 	sc_time t0, t1;
-	size_t n_packets_sent(0);
+	int n_packets_sent(0);
 	wait(c.t_start);
-	while (n_packets_sent < c.n_packets && sc_time_stamp() < c.t_end)
+	while (c.n_packets == -1 || (n_packets_sent < c.n_packets && sc_time_stamp() < c.t_end))
 	{
 		t0 = sc_time_stamp();
 		Packet p;

@@ -1,4 +1,5 @@
 {
+  "_comment": "Does NOT support RMAP, also deprecated config file. Kept for legacy",
   "Channels": {
     "speed": 48e6,
     "error_period": 0

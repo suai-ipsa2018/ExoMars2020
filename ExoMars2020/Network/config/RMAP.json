@@ -1,4 +1,5 @@
 {
+  "_comment": "Simple example demonstrating RMAP capabilities",
   "Channels": {
     "speed": 48e6,
     "error_period": 0
@@ -69,7 +70,7 @@
           "delay_between_generations": "100 us",
           "t_start": "0 s",
           "t_end": "-1 s",
-          "n_generations": 1
+          "n_generations": -1
         }
       ]
     }

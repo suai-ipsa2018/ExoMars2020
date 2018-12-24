@@ -23,8 +23,9 @@
 \author{Anas Naïri \and Julien Plante}
 \title{Modelisation of ExoMars 2020's network using SystemC}
 
-\setlength{\parindent}{0cm}
+%\setlength{\parindent}{0cm}
 \newcommand{\Cpp}{C\texttt{++}}
+\setcounter{totalnumber}{5}
 
 \begin{document}
 
@@ -78,13 +79,13 @@ Our second project is a direct continuation with the previous one. To summarize 
 
 In fact, this R\&D project, which is to simulate the data-handling network architecture of the ExoMars2020 rover, involves to use a SpaceWire router with a view to interconnecting the multiple scientific instruments. Since the rover uses a lot of cameras to observe, analyse and interpret its environment, the processing of images taken by these instruments is well needed. In that case, as we can see in the figure below, the rover got a dedicated chip for this kind of process. Data will be sent from equipment, then to the memory, next to the processor which will give instructions to the image processor.\smallbreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.49]{pictures/data_network_architecture.png}
     \caption{Data-handling structure of ExoMars' rover}
 \end{figure}
 
-Consequently, such amount of image transmission can be well handled by the use of a SpaceWire router, because, as we already know, SpaceWire is a good data-handling network which allies high speed of communication, low power consumption, and low cost implementation. It is ideal in the case of ExoMars2020, because it needs to connect all equipment to memory and processors. We also read that the ExoMars2020 rover uses the RMAP protocol to communicate and exchange data between different nodes, and it is an interesting task to implement this protocol, since it gives us a real packet structure, and a more accurate representation of what happens in SpaceWire networks than during our first task.\pagebreak
+Consequently, such amount of image transmission can be well handled by the use of a Space-Wire router, because, as we already know, SpaceWire is a good data-handling network which allies high speed of communication, low power consumption, and low cost implementation. It is ideal in the case of ExoMars2020, because it needs to connect all equipment to memory and processors. We also read that the ExoMars2020 rover uses the RMAP protocol to communicate and exchange data between different nodes, and it is an interesting task to implement this protocol, since it gives us a real packet structure, and a more accurate representation of what happens in SpaceWire networks than during our first task.\pagebreak
 \section{Description of ExoMars2020 rover}
 
 The ExoMars2020 mission has for goal to search evidence of past or present life on the surface and/or subsurface of Mars. Thanks to its rover, it will, in addition, understand more the planet's surface and subsurface, like its origin of formation and the composition of it, by the use of multiple scientific instrumentation as cameras, radars and spectrometers.\smallbreak
@@ -142,7 +143,7 @@ RLS uses the Raman effect to find life signatures in Martian soil samples in a n
 The measurements carried out by the RLS will be performed as described within the ExoMars Rover Reference Surface Mission, which includes six experiment cycles (with two samples each, one extracted from a surface target and the other at depth) and two vertical surveys (with five samples each extracted at different depths). It generates information about a 2048$\times$512 pixels of 15 \si{\micro\metre}, totalling a surface of approximately 30.7$\times$7.7 \si{\micro\metre^2}, and \num{1048576} bytes.
 
 \subsection{MOMA}
-MOMA (Mars Organics Molecule Analyser) is an instrument designed to detect organic molecules in spots of interest detected by the collaboration of RLS and MicrOmega, thus providing extremely precise analysis of Martian environment, and great information about potential origin, evolution and distribution of life on the planet. To do so, it will study samples gathered by the drill, as well as analysing the gases of the Martian atmosphere. It features to modes of operation : Gas Chromatograph-Mass Spectrometry (MOMA GC-MS) and Laser Desorption-Mass Spectrometry (MOMA LD-MS), the first one being used to analyse atmosphere gases, and the second soil samples. No information about size of data produced was found.
+MOMA (Mars Organics Molecule Analyser) is an instrument designed to detect organic mole-cules in spots of interest detected by the collaboration of RLS and MicrOmega, thus providing extremely precise analysis of Martian environment, and great information about potential origin, evolution and distribution of life on the planet. To do so, it will study samples gathered by the drill, as well as analysing the gases of the Martian atmosphere. It features to modes of operation : Gas Chromatograph-Mass Spectrometry (MOMA GC-MS) and Laser Desorption-Mass Spectrometry (MOMA LD-MS), the first one being used to analyse atmosphere gases, and the second soil samples. No information about size of data produced was found.
 
 \begin{figure}[h]
 \centering
@@ -153,11 +154,12 @@ MOMA (Mars Organics Molecule Analyser) is an instrument designed to detect organ
 \pagebreak
 
 \section{Model structure and functioning description}
+\label{sec:structure}
 \smallbreak
 The final structure of our project looks like this: \smallbreak
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{pictures/structure_ExoMars2020.pdf}
+\includegraphics[scale=.5]{pictures/network_structure.png}
 \caption{Final structure}
 \end{figure}
 \smallbreak
@@ -172,7 +174,7 @@ Our project features the modelling of the the third OSI layer of the SpaceWire s
 
 The third OSI layer covers the use of packets to transmit data from one node to another, with possible routing on the way. About the second layer, we modelled only a part of it, since it was kept from the first task and was not mandatory for this one. We only have the transmission by frames of packets, allowing for transmission delay simulations and transmission error modelling (due to some possible incident radiation). It also made us think on the problem of data collision, since we used bidirectional channels, and forced us to create some security mechanism. But we did not implement the Error End of Packet (EEP) and error link recovery at this level.
 
-The only communication protocol implemented is RMAP, since we found out that ExoMars2020 uses this protocol. More details about its implementation can be found in the description of \hyperref[ssec:Node]{Node}
+The only communication protocol implemented is RMAP, since we found out that ExoMars-2020 uses this protocol. More details about its implementation can be found in the description of \hyperref[ssec:Node]{Node}
 \subsubsection*{Log system}
 We added a logging system, to increase debugging possibilities. It was at first under the form of a simple text logging.The information printed to the standard output was also written to files, with one log for each node, resulting in a less mixed output. But this was not very practical, since analysis on these files was tedious, because of no formal format used. This is why we quickly decided to investigate database logging, which was one optional task.
 
@@ -243,34 +245,36 @@ To show the results on the console, we set an example where ISEM sends a write c
 
 \subsection{Console output}
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.5]{results/ISEM_write.png}
     \caption{ISEM writes inside the memory of PanCam}
 \end{figure}
 
+\pagebreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.5]{results/PanCam_receives.png}
     \caption{PanCam receives the packet}
 \end{figure}
+\smallbreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.5]{results/reply_packet_sent.png}
-    \caption{PanCam writes the packet in its 10$^{th}$ adress, and sends a reply to ISEM, which receives it}
+    \caption{PanCam writes the packet in its 10$^{th}$ address, and sends a reply to ISEM, which receives it}
 \end{figure}
-
 \pagebreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.5]{results/NavCam_send_read_packet.png}
     \caption{NavCam sends a read packet to PanCam to get the packet of the address 10}
 \end{figure}
+\smallbreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.5]{results/PanCam_reads_at_his_address.png}
     \caption{PanCam reads at its 10$^{th}$ address and sends it to NavCam}
@@ -278,7 +282,7 @@ To show the results on the console, we set an example where ISEM sends a write c
 
 \pagebreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.5]{results/NavCam_receives_reply_from_PanCam.png}
     \caption{NavCam receives the reply from PanCam to read the packet from it}
@@ -292,41 +296,90 @@ The following trace file can be opened in the file Network\textbackslash traces\
 
 \smallbreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
-    \includegraphics[scale = 0.36]{results/tracewave_1.png}
-    \includegraphics[scale = 0.36]{results/tracewave_2.png}
+    \includegraphics[scale = 0.3]{results/tracewave_12.png}
     \caption{Trace wave - ISEM writes into PanCam}
 \end{figure}
+\smallbreak
 
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.7]{results/tracewave_3.png}
     \caption{Trace wave - PanCam sends reply to ISEM}
 \end{figure}
-
-\begin{figure}[hb]
+\smallbreak
+\begin{figure}[h]
 	\centering
-    \includegraphics[scale = 0.36]{results/tracewave_4.png}
-    \includegraphics[scale = 0.36]{results/tracewave_5.png}
+    \includegraphics[scale = 0.48]{results/tracewave_45.png}
     \caption{Trace wave - NavCam sends a read packet to PanCam}
 \end{figure}
+\smallbreak
 
-\pagebreak
-
-\begin{figure}[hb]
+\begin{figure}[h]
 	\centering
     \includegraphics[scale = 0.55]{results/tracewave_6_et_7.png}
     \caption{Trace wave - NavCam receives the packet from PanCam}
 \end{figure}
+\pagebreak
+\subsection{Database}
+
+As we explained in \hyperref[sec:structure]{Section \ref*{sec:structure}}, we added a database logging system. Here we chose to present a simple example showing the four RMAP packet types. To avoid having too complicated information, as in the previous subsection, we chose to present the database using only three nodes: ISEM (logical addreess 32), PanCam (33) and NavCam (34). ISEM firstly sends a write packet with some data to PanCam, wanting to write a data of size 25 at the memory address 10:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{database_screenshots/ISEM_send}
+\caption{ISEM sends write command to PanCam}
+\end{figure}
+\smallbreak
+After having the operation happened correctly, here is what ISEM receives from PanCam:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{database_screenshots/ISEM_recv}
+\caption{ISEM receives write reply from PanCam}
+\end{figure}
+\smallbreak
+Notice how \texttt{STATUS} takes the value 1. This means that the writing was successful. In the event where writing was not possible, or the CRC was wrong, its value would be 0, and the command packet would be sent again.
+
+Then, PanCam generates data (for example by taking a little photo of only 50 frames of 16 bits) to its address 0:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{database_screenshots/PanCam_gen}
+\caption{PanCam generates data and stores it at its memory address 0}
+\end{figure}
+\smallbreak
+The last step allows to verify if all was written correctly, and if the read primitive works as expected. NavCam first sends to PanCam a read command to read at address 10, then immediately after to read at address 0:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{database_screenshots/NavCam_send}
+\caption{NavCam sends read commands to PanCam to retrieve data stored in a distant node}
+\end{figure}
+\smallbreak
+And finally, NavCam receives the two read replies to its two read command, recovering data, that is exactly the same as the one that was written by ISEM and generated by PanCam:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{database_screenshots/NavCam_recv}
+\caption{The two read replies, with same data as written before in each memory address}
+\end{figure}
+The database logging can prove useful in the same way with the final network, simulation we can't run properly on our computers with correct parameters because of the amount of RAM it used. Because it exceeds the memory allocated to our program, we obtain a \texttt{bad\_alloc} exception before the end of the simulation. The software used to visualise the SQLite databases was useful for us, and is an open source project named DB Browser for SQLite. The interface presented in the screenshots come from this software.
 
 
 \subsection{Modelling time comparison}
-The ExoMars2020 in our project is composed of many several equipment, which are divided into two main parts : the mast and the main body of the rover. The mast can be composed of the PanCam, NavCam, and the ISEM. The main body contains the CLUPI, the Drill, Adron, WISDOM, Ma\_Miss, MicrOmega, RLS, MOMA. Both parts are connected to an antenna which should send information that were gathered to the probe in orbit around Mars, then to the Earth.\smallbreak
 
-Thus, one interesting thing to test and to compare is the modelling time between the simulation of a single model and the one of a parallel model. So, we decided to observe the modelling time of a parallel model that involves the mast part and the main body part working at the same time, and this by creating two processes which are launching two executable that were pre-compiled.\smallbreak
+The ExoMars2020 in our project is composed of several equipment, which are divided into two main parts : the mast and the main body of the rover. The mast can be composed of the PanCam, NavCam, and the ISEM. The main body contains the CLUPI, the Drill, Adron, WISDOM, Ma\_Miss, MicrOmega, RLS, MOMA. Both parts are connected to an antenna which should send information that were gathered to the probe in orbit around Mars, then to the Earth. Plus, each one got its own memory, and, also there are the two processors which process the images. One little problem we had when launching the simulation with the planned packet size according to publications about ExoMars2020, is that we exceed the memory allocated to our program, resulting in a bad\_alloc exception. We had to reduce the packet size to solve this problem, but using a more powerful computer with more RAM to simulate should solve this error.
 
-Next, we decided to do a first try by launching a simple simulation, where, every equipment is sending at least one 25-size's packet to another one, and to execute 10 times both model. And, as a result of, we got on average a time execution of $15.46 s$ for the single model, and $15.37 s$ for the parallel model. Then, we do a second try, where this time we send several packets with a consequent size.\smallbreak
+\smallbreak
+
+\begin{figure}[h]
+	\centering
+    \includegraphics[scale = 0.37]{pictures/split_network.png}
+    \caption{Network Architecture of the parallel model}
+\end{figure}
+
+Thus, one interesting thing to test and to compare is the modelling time between the simulation of a single model and the one of a parallel model. So, we decided to observe the modelling time of a parallel model that involves the mast part and the main body part working at the same time, and this by creating two processes which are launching two executable that were pre-compiled.
+
+\pagebreak
+
+Then, we decided to do a first try by launching a simple simulation without database handling the base log-system, where, every equipment is writing at least one packet with a size more than 20000 to the memory, then the antenna and the processor read packets from the memory. Ultimately, the processor writes into the image processor. So, as a result of, we got an execution time of $24.07 s$ for the single model, and $6.28 s$ for the parallel model. We obtain a very promising result. But, in the case of using SQlite, to generate database for the log-system, we got an execution time of $54.19 s$, and $50,47 s$, this can be explained by the fact that SQLite isn't made for parallel programming, the developers of it advise to avoid the use of parallel programming with database produced by SQLite. Even though, they try to suggest some tools do some within SQLite, but they are not so relevant to use. In fact, when one is opening a database to write in it, it will prevent the other part to open another one. So in future developments of this project, it would be useful to switch to another database system, such as MongoDB for example. This has still to be investigated.
 
 \pagebreak
 
@@ -341,6 +394,8 @@ With the \texttt{Node} class, we created a way to describe SpaceWire RMAP-using 
 This model, while not complete, allowed us to discover things about the key points of the ExoMars2020 rover's network. The order of magnitude of the transmission time for the heaviest packets is of a few seconds, using channels with a speed of \SI{24}{\mega b/\second}. The rover being on Mars and carrying scientific experimentation, this result is correct. Indeed, there is no need for extreme performance in this situation, the most important feature being safety of transmissions. When simulating using error simulation in channels, errors were always detected and solved by sending the buffered packet again.\medbreak
 
 But further ameliorations could still be really interesting, starting with the GUI, that we didn't have time to finish. It could evolve to a generalised SpaceWire network simulator written with SystemC, with the special feature of creating multiple network parts that can run concurrently. In that event, we should switch from SQlite to MongoDB for example, or at least another database that support parallel writes.
+
+We should also explore solutions to the \texttt{bad\_alloc} error, maybe by using in real time a database to store all packet and node informations during runtime, thus using less memory.
 
 We could also continue our work on the class \texttt{Node} to allow it to have multiple ports, which is allowed by the SpaceWire standard. Moreover, we could improve \texttt{SwitchUnit} so that it could connect to other routers automatically and modify its routing table automatically, since this feature is only available when working with nodes for the moment. We may also add some algorithm, such as Dijkstra's algorithm to find preferred route and only using best routes in the routing tables.\bigbreak
 

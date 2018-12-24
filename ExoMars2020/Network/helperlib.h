@@ -31,7 +31,7 @@ struct TransmissionConfig
 	sc_time delay_between_packets;
 	sc_time t_start;
 	sc_time t_end;
-	size_t n_packets;
+	int n_packets;
 };
 
 struct GenerationConfig
@@ -42,7 +42,7 @@ struct GenerationConfig
 	sc_time delay_between_generation;
 	sc_time t_start;
 	sc_time t_end;
-	size_t n_generations;
+	int n_generations;
 };
 
 struct ChannelConfig

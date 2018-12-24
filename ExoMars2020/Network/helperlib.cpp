@@ -92,7 +92,7 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 								to_time(desc["delay_between_packets"].GetString()),
 								to_time(desc["t_start"].GetString()),
 								to_time(desc["t_end"].GetString()),
-								(size_t)desc["n_packets"].GetInt()
+								desc["n_packets"].GetInt()
 								})
 							);
 						}
@@ -125,7 +125,7 @@ JsonConfigLoader::JsonConfigLoader(std::string path)
 								to_time(desc["delay_between_generations"].GetString()),
 								to_time(desc["t_start"].GetString()),
 								to_time(desc["t_end"].GetString()),
-								(size_t)desc["n_generations"].GetInt()
+								desc["n_generations"].GetInt()
 								})
 							);
 						}
